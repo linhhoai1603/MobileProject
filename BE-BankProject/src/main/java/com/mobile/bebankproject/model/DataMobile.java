@@ -1,0 +1,19 @@
+package com.mobile.bebankproject.model;
+
+import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
+
+@Entity
+@Getter
+@Setter
+public class DataMobile {
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    int id;
+    String packageName;
+    int quantity; // mb
+    int validDate; // days
+    double price;
+    @Enumerated(EnumType.STRING)
+    TelcoProvider telcoProvider;
+}
