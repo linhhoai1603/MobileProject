@@ -8,8 +8,5 @@ import java.util.List;
 
 @Repository
 public interface TransactionSavingRepository extends JpaRepository<TransactionSaving, Integer> {
-    List<TransactionSaving> findByMonth(int month);
-    List<TransactionSaving> findByYear(int year);
-    List<TransactionSaving> findByInterestRate(double interestRate);
-    List<TransactionSaving> findByMonthAndYear(int month, int year);
+
 } 

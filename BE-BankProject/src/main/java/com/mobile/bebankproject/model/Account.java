@@ -25,6 +25,7 @@ public class Account {
     private double balance;
 
     @Enumerated(EnumType.STRING)
+    @Column(name = "account_status", length = 20)
     private Status accountStatus;
 
     private String PIN;
@@ -44,7 +45,9 @@ public class Account {
         ACTIVE,
         INACTIVE,
         BLOCKED,
-        PENDING
+        PENDING,
+        LOCKED,
+        CLOSED
     }
 
     // Getters and Setters

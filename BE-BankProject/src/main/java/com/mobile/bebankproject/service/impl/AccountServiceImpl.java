@@ -1,14 +1,21 @@
 package com.mobile.bebankproject.service.impl;
 
-import com.mobile.bebankproject.model.Account;
-import com.mobile.bebankproject.repository.AccountRepository;
+import com.mobile.bebankproject.model.*;
+import com.mobile.bebankproject.repository.*;
 import com.mobile.bebankproject.service.AccountService;
+import com.mobile.bebankproject.dto.AccountRegister;
+import com.mobile.bebankproject.dto.AccountResponse;
+import com.mobile.bebankproject.util.PasswordEncoder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.Random;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class AccountServiceImpl implements AccountService {
@@ -17,7 +24,19 @@ public class AccountServiceImpl implements AccountService {
     private AccountRepository accountRepository;
 
     @Autowired
+    private UserRepository userRepository;
+
+    @Autowired
+    private CCCDRepository cccdRepository;
+
+    @Autowired
+    private AddressRepository addressRepository;
+
+    @Autowired
     private JavaMailSender mailSender;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     private static final int OTP_LENGTH = 6;
     private static final long OTP_VALID_DURATION = 5; // minutes
@@ -35,11 +54,11 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public Account login(String phone, String password) {
+    public AccountResponse login(String phone, String password) {
         Account account = accountRepository.findByPhone(phone)
                 .orElseThrow(() -> new RuntimeException("Account not found"));
 
-        if (!password.equals(account.getPassword())) {
+        if (!passwordEncoder.matches(password, account.getPassword())) {
             throw new RuntimeException("Invalid password");
         }
 
@@ -47,11 +66,32 @@ public class AccountServiceImpl implements AccountService {
             throw new RuntimeException("Account is not active");
         }
 
-        return account;
+        return AccountResponse.fromAccount(account);
     }
 
     @Override
-    public boolean confirmAccount(String email) {
+    public boolean confirmAccount(String email, String otp) {
+        Account account = accountRepository.findByUser_Email(email)
+                .orElseThrow(() -> new RuntimeException("Account not found"));
+
+        if (!otp.equals(account.getOTP())) {
+            throw new RuntimeException("Invalid OTP");
+        }
+
+        // Check if OTP is expired (5 minutes)
+        LocalDateTime otpGenerationTime = account.getOpeningDate();
+        if (LocalDateTime.now().isAfter(otpGenerationTime.plusMinutes(OTP_VALID_DURATION))) {
+            throw new RuntimeException("OTP has expired");
+        }
+
+        // Activate account
+        account.setAccountStatus(Account.Status.ACTIVE);
+        account.setOTP(null); // Clear OTP after successful confirmation
+        accountRepository.save(account);
+
+        // Send welcome email
+        sendWelcomeEmail(account);
+
         return true;
     }
 
@@ -75,11 +115,8 @@ public class AccountServiceImpl implements AccountService {
 
     @Override
     public boolean checkOTPToChangePassword(String OTP) {
-            accountRepository.findByOTP(OTP)
-                .orElseThrow(() -> new RuntimeException("Invalid OTP"));
-
-        // Check if OTP is expired (assuming you store OTP generation time)
-        // This is a simplified version - you might want to add more robust OTP validation
+        accountRepository.findByOTP(OTP)
+            .orElseThrow(() -> new RuntimeException("Invalid OTP"));
         return true;
     }
 
@@ -89,19 +126,115 @@ public class AccountServiceImpl implements AccountService {
             throw new RuntimeException("Passwords do not match");
         }
 
-        // Validate password strength
         if (!isValidPassword(pass1)) {
             throw new RuntimeException("Password does not meet security requirements");
         }
 
-        // Get the current account from session
         Account account = getCurrentAccount();
-        
-        account.setPassword(pass1);
-        account.setOTP(null); // Clear OTP after successful password change
+        account.setPassword(passwordEncoder.encode(pass1));
+        account.setOTP(null);
         accountRepository.save(account);
         
         return true;
+    }
+
+    @Override
+    @Transactional
+    public AccountResponse createAccount(AccountRegister accountRegister) {
+        if (accountRepository.findByPhone(accountRegister.getPhone()).isPresent()) {
+            throw new RuntimeException("Phone number already registered");
+        }
+        if (accountRepository.findByUser_Email(accountRegister.getEmail()).isPresent()) {
+            throw new RuntimeException("Email already registered");
+        }
+
+        if (!accountRegister.getPassword1().equals(accountRegister.getPassword2())) {
+            throw new RuntimeException("Passwords do not match");
+        }
+        if (!isValidPassword(accountRegister.getPassword1())) {
+            throw new RuntimeException("Password does not meet security requirements");
+        }
+
+        Address placeOfOrigin = accountRegister.getPlaceOfOrigin();
+        Address placeOfResidence = accountRegister.getPlaceOfResidence();
+        placeOfOrigin = addressRepository.save(placeOfOrigin);
+        placeOfResidence = addressRepository.save(placeOfResidence);
+
+        CCCD cccd = new CCCD();
+        cccd.setNumber(accountRegister.getNumber());
+        cccd.setPersonalId(accountRegister.getPersonalId());
+        cccd.setIssueDate(accountRegister.getIssueDate());
+        cccd.setPlaceOfIssue(accountRegister.getPlaceOfIssue());
+        cccd.setPlaceOfOrigin(placeOfOrigin);
+        cccd.setPlaceOfResidence(placeOfResidence);
+        cccd = cccdRepository.save(cccd);
+
+        User user = new User();
+        user.setFullName(accountRegister.getFullName());
+        user.setDateOfBirth(accountRegister.getDateOfBirth());
+        user.setGender(accountRegister.getGender());
+        user.setEmail(accountRegister.getEmail());
+        user.setCccd(cccd);
+        user = userRepository.save(user);
+
+        Account account = new Account();
+        account.setPhone(accountRegister.getPhone());
+        account.setPassword(passwordEncoder.encode(accountRegister.getPassword1()));
+        account.setAccountNumber(generateAccountNumber());
+        account.setAccountName(accountRegister.getFullName());
+        account.setOpeningDate(LocalDateTime.now());
+        account.setBalance(0.0);
+        account.setAccountStatus(Account.Status.PENDING);
+        account.setUser(user);
+
+        // Generate and set OTP
+        String otp = generateOTP();
+        account.setOTP(otp);
+        account = accountRepository.save(account);
+
+        // Send confirmation email with OTP
+        sendAccountConfirmationEmail(account, otp);
+
+        return AccountResponse.fromAccount(account);
+    }
+
+    private void sendAccountConfirmationEmail(Account account, String otp) {
+        SimpleMailMessage message = new SimpleMailMessage();
+        message.setTo(account.getUser().getEmail());
+        message.setSubject("Account Registration - OTP Confirmation");
+        message.setText("Dear " + account.getAccountName() + ",\n\n" +
+                "Thank you for registering with our bank.\n\n" +
+                "Your account details:\n" +
+                "Account Number: " + account.getAccountNumber() + "\n" +
+                "Phone: " + account.getPhone() + "\n\n" +
+                "To activate your account, please use the following OTP:\n" +
+                "OTP: " + otp + "\n\n" +
+                "This OTP is valid for " + OTP_VALID_DURATION + " minutes.\n\n" +
+                "Best regards,\n" +
+                "Bank Team");
+        mailSender.send(message);
+    }
+
+    private void sendWelcomeEmail(Account account) {
+        SimpleMailMessage message = new SimpleMailMessage();
+        message.setTo(account.getUser().getEmail());
+        message.setSubject("Welcome to Our Bank");
+        message.setText("Dear " + account.getAccountName() + ",\n\n" +
+                "Your account has been successfully activated!\n\n" +
+                "You can now login to your account using your phone number and password.\n\n" +
+                "Best regards,\n" +
+                "Bank Team");
+        mailSender.send(message);
+    }
+
+    private String generateRandomPassword() {
+        // Implement proper password generation logic
+        return "TEMP" + new Random().nextInt(10000);
+    }
+
+    private String generateAccountNumber() {
+        // Implement account number generation logic
+        return String.format("%010d", new Random().nextInt(1000000000));
     }
 
     // Helper methods
@@ -115,14 +248,35 @@ public class AccountServiceImpl implements AccountService {
     }
 
     private boolean isValidPassword(String password) {
-        // Implement password validation rules
-        // Example: minimum length, special characters, numbers, etc.
-        return password != null && password.length() >= 8;
+        if (password == null || password.length() < 8) {
+            return false;
+        }
+        boolean hasUpperCase = false;
+        boolean hasLowerCase = false;
+        boolean hasDigit = false;
+        boolean hasSpecialChar = false;
+
+        for (char c : password.toCharArray()) {
+            if (Character.isUpperCase(c)) hasUpperCase = true;
+            else if (Character.isLowerCase(c)) hasLowerCase = true;
+            else if (Character.isDigit(c)) hasDigit = true;
+            else hasSpecialChar = true;
+        }
+
+        return hasUpperCase && hasLowerCase && hasDigit && hasSpecialChar;
     }
 
     private Account getCurrentAccount() {
         // Implement getting current account from session
         // This is a placeholder - you'll need to implement proper session handling
         throw new RuntimeException("Not implemented");
+    }
+
+    @Override
+    public List<AccountResponse> getAllAccounts() {
+        List<Account> accounts = accountRepository.findAll();
+        return accounts.stream()
+                .map(AccountResponse::fromAccount)
+                .collect(Collectors.toList());
     }
 } 

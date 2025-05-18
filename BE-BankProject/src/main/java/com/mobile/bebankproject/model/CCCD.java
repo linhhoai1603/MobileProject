@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDate;
+import java.util.Date;
 
 @Entity
 @Table(name = "cccd")
@@ -13,13 +14,13 @@ import java.time.LocalDate;
 public class CCCD {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    int id;
-    String number;
-    String personalId;
-    LocalDate issueDate;
-    String placeOfIssue;
+    private int id;
+    private String number;
+    private String personalId;
+    private Date issueDate;
+    private String placeOfIssue;
     @OneToOne(fetch = FetchType.EAGER)
-    Address placeOfOrigin;
+    private Address placeOfOrigin;
     @OneToOne(fetch = FetchType.EAGER)
-    Address placeOfResidence;
+    private Address placeOfResidence;
 }

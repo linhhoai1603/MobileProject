@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="120dp"
+    android:height="120dp"
+    android:viewportWidth="120"
+    android:viewportHeight="120">
+    
+    <!-- Background Circle -->
+    <path
+        android:fillColor="#4A90E2"
+        android:pathData="M60,60m-60,0a60,60 0,1 1,120 0a60,60 0,1 1,-120 0"/>
+    
+    <!-- Bank Building -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M40,40L80,40L80,80L40,80Z"/>
+    
+    <!-- Bank Pillars -->
+    <path
+        android:fillColor="#4A90E2"
+        android:pathData="M45,40L45,80M55,40L55,80M65,40L65,80M75,40L75,80"/>
+    
+    <!-- Bank Roof -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M35,40L85,40L60,25Z"/>
+    
+    <!-- Bank Door -->
+    <path
+        android:fillColor="#4A90E2"
+        android:pathData="M55,60L65,60L65,80L55,80Z"/>
+</vector> 
