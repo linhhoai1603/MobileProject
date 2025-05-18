@@ -6,14 +6,25 @@
     android:background="?attr/colorPrimary">
 
     <androidx.appcompat.widget.Toolbar
-        android:id="@+id/toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@android:color/transparent"
-        android:elevation="0dp"
-        android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
-        app:navigationIcon="@drawable/ic_back"
-        app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
+            android:layout_width="411dp"
+            android:layout_height="64dp"
+            android:background="@color/green_primary"
+            android:id="@+id/toolbar"
+            tools:ignore="MissingConstraints" />
+
+    <!-- Nút Back tùy chỉnh -->
+    <ImageView
+        android:id="@+id/ivBack"
+        android:layout_width="20dp"
+        android:layout_height="30dp"
+        android:layout_marginStart="16dp"
+        android:contentDescription="Back"
+        android:src="@drawable/ic_back"
+        android:tint="#F6F6F6"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:ignore="UseAppTint" />
 
     <TextView
         android:id="@+id/tvTitle"

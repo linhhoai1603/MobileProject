@@ -9,6 +9,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.mobile.fe_bankproject.dto.AccountResponse;
+import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 public class MainActivity extends BaseAuthenticatedActivity {
 
