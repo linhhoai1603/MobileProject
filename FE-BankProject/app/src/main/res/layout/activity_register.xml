@@ -4,21 +4,22 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fillViewport="true"
-    android:background="#F5F5F5">
+    android:background="@color/primary">
 
     <LinearLayout
         android:id="@+id/main"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:padding="16dp">
+        android:padding="16dp"
+        android:background="@color/background">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Đăng ký tài khoản"
             android:textSize="24sp"
-            android:textColor="#1976D2"
+            android:textColor="@color/primary"
             android:textStyle="bold"
             android:layout_gravity="center"
             android:layout_marginBottom="24dp"/>
@@ -28,7 +29,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Thông tin CCCD"
-            android:textColor="#1976D2"
+            android:textColor="@color/primary"
             android:textSize="18sp"
             android:textStyle="bold"
             android:layout_marginBottom="8dp"/>
@@ -85,7 +86,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Quê quán"
-            android:textColor="#1976D2"
+            android:textColor="@color/primary"
             android:textSize="18sp"
             android:textStyle="bold"
             android:layout_marginTop="16dp"
@@ -156,7 +157,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Nơi thường trú"
-            android:textColor="#1976D2"
+            android:textColor="@color/primary"
             android:textSize="18sp"
             android:textStyle="bold"
             android:layout_marginTop="16dp"
@@ -227,7 +228,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Thông tin cá nhân"
-            android:textColor="#1976D2"
+            android:textColor="@color/primary"
             android:textSize="18sp"
             android:textStyle="bold"
             android:layout_marginTop="16dp"
@@ -323,7 +324,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Thông tin tài khoản"
-            android:textColor="#1976D2"
+            android:textColor="@color/primary"
             android:textSize="18sp"
             android:textStyle="bold"
             android:layout_marginTop="16dp"
@@ -365,8 +366,8 @@
             android:layout_height="wrap_content"
             android:text="Đăng ký"
             android:textSize="18sp"
-            android:backgroundTint="#1976D2"
-            android:textColor="#FFFFFF"/>
+            android:backgroundTint="@color/primary"
+            android:textColor="@color/white"/>
 
     </LinearLayout>
 </ScrollView>
