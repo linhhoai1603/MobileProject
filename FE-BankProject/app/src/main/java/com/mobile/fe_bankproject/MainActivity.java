@@ -1,5 +1,6 @@
 package com.mobile.fe_bankproject;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -8,6 +9,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.mobile.fe_bankproject.dto.AccountResponse;
+import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 public class MainActivity extends BaseAuthenticatedActivity {
 
@@ -29,7 +33,7 @@ public class MainActivity extends BaseAuthenticatedActivity {
             Log.d(TAG, "Intent extras: " + getIntent().getExtras().toString());
             accountResponse = (AccountResponse) getIntent().getExtras().getSerializable("account_response");
             Log.d(TAG, "AccountResponse received: " + (accountResponse != null ? "not null" : "null"));
-            
+
             if (accountResponse != null) {
                 Log.d(TAG, "User full name: " + accountResponse.getUser().getFullName());
                 tvUserName.setText(accountResponse.getUser().getFullName());
