@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:gravity="center"
-    android:background="#4A90E2"
+    android:background="@color/background"
     tools:context=".LoginActivity">
 
     <TextView
@@ -15,22 +15,30 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="CUSTOMER LOGIN"
+        android:textStyle="bold"
         android:textSize="24sp"
-        android:textColor="#fff"
+        android:textColor="@color/black"
         android:layout_marginBottom="16dp"/>
 
-    <!-- FontAwesome icon users/group -->
-    <TextView
-        android:id="@+id/tvUserGroupIcon"
-        android:layout_width="64dp"
-        android:layout_height="64dp"
-        android:text="\uf0c0"
-        android:textSize="48sp"
-        android:textColor="#fff"
-        android:gravity="center"
+    <!-- Logo Image -->
+    <com.google.android.material.card.MaterialCardView
+        android:layout_width="120dp"
+        android:layout_height="120dp"
         android:layout_gravity="center"
         android:layout_marginBottom="24dp"
-        android:fontFamily="@font/fontawesome" />
+        app:cardCornerRadius="60dp"
+        app:cardElevation="4dp"
+        app:cardBackgroundColor="@color/white">
+
+        <ImageView
+            android:id="@+id/ivLogo"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:src="@drawable/logo"
+            android:scaleType="centerCrop"
+            android:padding="8dp"
+            android:contentDescription="App Logo" />
+    </com.google.android.material.card.MaterialCardView>
 
     <!-- Username layout -->
     <LinearLayout
@@ -61,7 +69,7 @@
             android:inputType="phone"
             android:background="@android:color/transparent"
             android:padding="12dp"
-            android:textColor="#000" />
+            android:textColor="@color/black" />
     </LinearLayout>
 
     <!-- Password layout -->
@@ -93,7 +101,7 @@
             android:inputType="textPassword"
             android:background="@android:color/transparent"
             android:padding="12dp"
-            android:textColor="#000" />
+            android:textColor="@color/black" />
 
         <ImageButton
             android:id="@+id/btnTogglePassword"
@@ -117,7 +125,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Quên mật khẩu?"
-            android:textColor="#fff"
+            android:textColor="@color/primary"
             android:textStyle="bold"
             android:paddingEnd="8dp"/>
     </LinearLayout>
@@ -136,7 +144,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Đăng ký tài khoản?"
-        android:textColor="#fff"
+        android:textColor="@color/primary"
         android:textStyle="bold"
         android:gravity="center"
         android:layout_marginTop="16dp"/>
