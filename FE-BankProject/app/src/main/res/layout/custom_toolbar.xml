@@ -23,8 +23,8 @@
             android:layout_gravity="start"
             android:src="@android:drawable/ic_menu_revert"
             android:contentDescription="Back"
-            android:tint="@color/white"
-            android:padding="4dp"/>
+            android:padding="4dp"
+            app:tint="@color/white" />
 
         <!-- Tiêu đề -->
         <TextView
@@ -44,9 +44,9 @@
             android:layout_gravity="end"
             android:src="@android:drawable/ic_menu_compass"
             android:contentDescription="Home"
-            android:tint="@color/white"
             android:padding="4dp"
-            android:visibility="gone"/>
+            android:visibility="gone"
+            app:tint="@color/white" />
 
     </androidx.appcompat.widget.Toolbar>
 

@@ -52,7 +52,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 app:cardCornerRadius="8dp"
-                app:cardElevation="2dp">
+                app:cardElevation="2dp"
+                >
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -145,24 +146,25 @@
             </LinearLayout>
 
             <!-- Bank Details Input Fields -->
-            <com.google.android.material.textfield.TextInputLayout
-                style="@style/CustomTextInputLayout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Ngân hàng">
+<!--            <com.google.android.material.textfield.TextInputLayout-->
+<!--                style="@style/CustomTextInputLayout"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:hint="Ngân hàng">-->
 
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/edtBankName"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="Chọn ngân hàng"
-                    android:textColorHint="#CCCCCC"
-                    android:textSize="15sp"
-                    android:padding="0dp"/>
-            </com.google.android.material.textfield.TextInputLayout>
+<!--                <com.google.android.material.textfield.TextInputEditText-->
+<!--                    android:id="@+id/edtBankName"-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:hint="Chọn ngân hàng"-->
+<!--                    android:textColorHint="#CCCCCC"-->
+<!--                    android:textSize="15sp"-->
+<!--                    android:padding="0dp"/>-->
+<!--            </com.google.android.material.textfield.TextInputLayout>-->
+
 
             <com.google.android.material.textfield.TextInputLayout
-                style="@style/CustomTextInputLayout"
+                style="@style/CustomTextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
@@ -173,11 +175,12 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="number"
-                    android:text="990404204" />
+                    android:hint="Số tài khoản"
+                    />
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
-                style="@style/CustomTextInputLayout"
+                style="@style/CustomTextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
@@ -187,7 +190,8 @@
                     android:id="@+id/edtAccountName"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="PHAN VAN HOANG" />
+                    android:hint="Tên tài khoản"
+                    />
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
@@ -201,11 +205,13 @@
                     android:id="@+id/edtAmount"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:inputType="number" />
+                    android:inputType="number"
+                    android:hint="Số tiền"
+                    />
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
-                style="@style/CustomTextInputLayout"
+                style="@style/CustomTextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
@@ -215,7 +221,9 @@
                     android:id="@+id/edtTransferContent"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="PHAN VAN HOANG chuyen khoan" />
+                    android:text="PHAN VAN HOANG chuyen khoan"
+                    android:hint="Nội dung chuyển khoản"
+                    />
             </com.google.android.material.textfield.TextInputLayout>
 
 
