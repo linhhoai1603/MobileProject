@@ -10,6 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import com.mobile.bebankproject.dto.FundTransferPreview;
+
 import java.util.List;
 import java.util.Map;
 
@@ -71,30 +73,56 @@ public class AccountController {
         return ResponseEntity.ok(accounts);
     }
 
-    @PostMapping("/transfer")
-    public ResponseEntity<String> transfer(@RequestBody FundTransferRequest request) {
-        boolean result = accountService.transferFund(
-            request.getFromAccountNumber(),
-            request.getToAccountNumber(),
-            request.getAmount(),
-            request.getDescription()
+//    @PostMapping("/transfer")
+//    public ResponseEntity<String> transfer(@RequestBody FundTransferRequest request) {
+//        boolean result = accountService.transferFund(
+//            request.getFromAccountNumber(),
+//            request.getToAccountNumber(),
+//            request.getAmount(),
+//            request.getDescription()
+//        );
+//        if (result) {
+//            return ResponseEntity.ok("Transfer successful");
+//        } else {
+//            return ResponseEntity.badRequest().body("Transfer failed");
+//        }
+//    }
+
+//    Gửi thông tin chuyển khoản ban đầu để hệ thống kiểm tra và trả về bản tóm tắt giao dịch trước khi user xác nhận.
+    @PostMapping("/transfer/preview")
+    public ResponseEntity<FundTransferPreview> previewTransfer(@RequestBody FundTransferRequest request) {
+        FundTransferPreview preview = accountService.previewFundTransfer(
+                request.getFromAccountNumber(),
+                request.getToAccountNumber(),
+                request.getAmount(),
+                request.getDescription()
         );
-        if (result) {
-            return ResponseEntity.ok("Transfer successful");
-        } else {
-            return ResponseEntity.badRequest().body("Transfer failed");
-        }
+        return ResponseEntity.ok(preview);
     }
 
-    @PostMapping("/transfer/request")
-    public ResponseEntity<String> requestTransfer(@RequestBody FundTransferRequest request) {
-        accountService.requestFundTransfer(
-            request.getFromAccountNumber(),
-            request.getToAccountNumber(),
-            request.getAmount(),
-            request.getDescription()
+    //    Sau khi user xác nhận thông tin ở bước preview, gọi endpoint này để hệ thống sinh OTP, lưu pending transaction và gửi email chứa OTP.
+    // Endpoint cho yêu cầu gửi OTP qua Email
+    @PostMapping("/transfer/request/email") // Đổi tên endpoint để rõ ràng hơn
+    public ResponseEntity<String> requestEmailTransfer(@RequestBody FundTransferRequest request) {
+        accountService.requestFundTransfer( // Sử dụng phương thức requestFundTransfer cũ
+                request.getFromAccountNumber(),
+                request.getToAccountNumber(),
+                request.getAmount(),
+                request.getDescription()
         );
         return ResponseEntity.ok("OTP đã được gửi về email. Vui lòng xác nhận để hoàn tất chuyển khoản.");
+    }
+
+    // Endpoint mới cho yêu cầu gửi OTP qua Firebase
+    @PostMapping("/transfer/request/firebase")
+    public ResponseEntity<String> requestFirebaseTransfer(@RequestBody FundTransferRequest request) {
+        accountService.requestFirebaseOtp(
+                request.getFromAccountNumber(),
+                request.getToAccountNumber(),
+                request.getAmount(),
+                request.getDescription()
+        );
+        return ResponseEntity.ok("OTP đã được gửi qua SMS đến số điện thoại liên kết với tài khoản.");
     }
 
     @PostMapping("/transfer/confirm")
@@ -111,4 +139,17 @@ public class AccountController {
             return ResponseEntity.badRequest().body("Xác nhận OTP thất bại hoặc giao dịch không hợp lệ.");
         }
     }
+
+//   chỉ check otp, không thực hiện chuyển tiền
+    @PostMapping("transfer/check-otp")
+    public ResponseEntity<Boolean> checkOtpForTransfer(@RequestBody FundTransferConfirmRequest request) {
+        boolean result =  accountService.checkOtpForFundTransfer(
+                request.getFromAccountNumber(),
+                request.getToAccountNumber(),
+                request.getAmount(),
+                request.getOtp()
+        );
+        return ResponseEntity.ok(result);
+    }
+
 }
