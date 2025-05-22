@@ -3,6 +3,8 @@ package com.mobile.bebankproject.controller;
 import com.mobile.bebankproject.dto.AccountLogin;
 import com.mobile.bebankproject.dto.AccountRegister;
 import com.mobile.bebankproject.dto.AccountResponse;
+import com.mobile.bebankproject.dto.FundTransferRequest;
+import com.mobile.bebankproject.dto.FundTransferConfirmRequest;
 import com.mobile.bebankproject.service.AccountService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -67,5 +69,46 @@ public class AccountController {
     public ResponseEntity<List<AccountResponse>> getAllAccounts() {
         List<AccountResponse> accounts = accountService.getAllAccounts();
         return ResponseEntity.ok(accounts);
+    }
+
+    @PostMapping("/transfer")
+    public ResponseEntity<String> transfer(@RequestBody FundTransferRequest request) {
+        boolean result = accountService.transferFund(
+            request.getFromAccountNumber(),
+            request.getToAccountNumber(),
+            request.getAmount(),
+            request.getDescription()
+        );
+        if (result) {
+            return ResponseEntity.ok("Transfer successful");
+        } else {
+            return ResponseEntity.badRequest().body("Transfer failed");
+        }
+    }
+
+    @PostMapping("/transfer/request")
+    public ResponseEntity<String> requestTransfer(@RequestBody FundTransferRequest request) {
+        accountService.requestFundTransfer(
+            request.getFromAccountNumber(),
+            request.getToAccountNumber(),
+            request.getAmount(),
+            request.getDescription()
+        );
+        return ResponseEntity.ok("OTP đã được gửi về email. Vui lòng xác nhận để hoàn tất chuyển khoản.");
+    }
+
+    @PostMapping("/transfer/confirm")
+    public ResponseEntity<String> confirmTransfer(@RequestBody FundTransferConfirmRequest request) {
+        boolean result = accountService.confirmFundTransfer(
+            request.getFromAccountNumber(),
+            request.getToAccountNumber(),
+            request.getAmount(),
+            request.getOtp()
+        );
+        if (result) {
+            return ResponseEntity.ok("Chuyển khoản thành công!");
+        } else {
+            return ResponseEntity.badRequest().body("Xác nhận OTP thất bại hoặc giao dịch không hợp lệ.");
+        }
     }
 }

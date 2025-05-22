@@ -14,4 +14,7 @@ public interface AccountService {
     boolean changePassword(String pass1, String pass2);
     AccountResponse createAccount(AccountRegister accountRegister);
     List<AccountResponse> getAllAccounts();
+    boolean transferFund(String fromAccountNumber, String toAccountNumber, double amount, String description);
+    void requestFundTransfer(String fromAccountNumber, String toAccountNumber, double amount, String description);
+    boolean confirmFundTransfer(String fromAccountNumber, String toAccountNumber, double amount, String otp);
 } 
