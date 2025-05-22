@@ -38,6 +38,12 @@ public class AccountServiceImpl implements AccountService {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
+    @Autowired
+    private TransactionFundTransferRepository transactionFundTransferRepository;
+
+    @Autowired
+    private PendingFundTransferRepository pendingFundTransferRepository;
+
     private static final int OTP_LENGTH = 6;
     private static final long OTP_VALID_DURATION = 5; // minutes
 
@@ -278,5 +284,81 @@ public class AccountServiceImpl implements AccountService {
         return accounts.stream()
                 .map(AccountResponse::fromAccount)
                 .collect(Collectors.toList());
+    }
+
+    @Transactional
+    public boolean transferFund(String fromAccountNumber, String toAccountNumber, double amount, String description) {
+        if (fromAccountNumber.equals(toAccountNumber)) {
+            throw new RuntimeException("Cannot transfer to the same account");
+        }
+        Account fromAccount = accountRepository.findByAccountNumber(fromAccountNumber)
+                .orElseThrow(() -> new RuntimeException("Sender account not found"));
+        Account toAccount = accountRepository.findByAccountNumber(toAccountNumber)
+                .orElseThrow(() -> new RuntimeException("Receiver account not found"));
+        if (fromAccount.getAccountStatus() != Account.Status.ACTIVE || toAccount.getAccountStatus() != Account.Status.ACTIVE) {
+            throw new RuntimeException("One or both accounts are not active");
+        }
+        if (fromAccount.getBalance() < amount) {
+            throw new RuntimeException("Insufficient balance");
+        }
+        fromAccount.setBalance(fromAccount.getBalance() - amount);
+        toAccount.setBalance(toAccount.getBalance() + amount);
+        accountRepository.save(fromAccount);
+        accountRepository.save(toAccount);
+        TransactionFundTransfer transaction = new TransactionFundTransfer();
+        transaction.setFromAccount(fromAccountNumber);
+        transaction.setToAccount(toAccount);
+        transaction.setTransactionDate(LocalDateTime.now());
+        transaction.setDescription(description);
+        transaction.setAmount(amount);
+        transaction.setStatus(TransactionStatus.SUCCESS);
+        transaction.setAccount(fromAccount);
+        transactionFundTransferRepository.save(transaction);
+        return true;
+    }
+
+    @Override
+    public void requestFundTransfer(String fromAccountNumber, String toAccountNumber, double amount, String description) {
+        // Kiểm tra tài khoản tồn tại và trạng thái
+        Account fromAccount = accountRepository.findByAccountNumber(fromAccountNumber)
+                .orElseThrow(() -> new RuntimeException("Sender account not found"));
+        Account toAccount = accountRepository.findByAccountNumber(toAccountNumber)
+                .orElseThrow(() -> new RuntimeException("Receiver account not found"));
+        if (fromAccount.getAccountStatus() != Account.Status.ACTIVE || toAccount.getAccountStatus() != Account.Status.ACTIVE) {
+            throw new RuntimeException("One or both accounts are not active");
+        }
+        if (fromAccount.getBalance() < amount) {
+            throw new RuntimeException("Insufficient balance");
+        }
+        // Sinh OTP
+        String otp = generateOTP();
+        // Lưu PendingFundTransfer
+        PendingFundTransfer pending = new PendingFundTransfer();
+        pending.setFromAccountNumber(fromAccountNumber);
+        pending.setToAccountNumber(toAccountNumber);
+        pending.setAmount(amount);
+        pending.setDescription(description);
+        pending.setOtp(otp);
+        pending.setCreatedAt(LocalDateTime.now());
+        pendingFundTransferRepository.save(pending);
+        // Gửi OTP về email người chuyển
+        SimpleMailMessage message = new SimpleMailMessage();
+        message.setTo(fromAccount.getUser().getEmail());
+        message.setSubject("OTP xác nhận chuyển khoản");
+        message.setText("Mã OTP của bạn là: " + otp + "\nSử dụng để xác nhận giao dịch chuyển khoản.");
+        mailSender.send(message);
+    }
+
+    @Override
+    @Transactional
+    public boolean confirmFundTransfer(String fromAccountNumber, String toAccountNumber, double amount, String otp) {
+        PendingFundTransfer pending = pendingFundTransferRepository.findByFromAccountNumberAndToAccountNumberAndAmountAndOtp(
+                fromAccountNumber, toAccountNumber, amount, otp
+        ).orElseThrow(() -> new RuntimeException("Invalid OTP or transfer info"));
+        // Thực hiện chuyển khoản
+        boolean result = transferFund(fromAccountNumber, toAccountNumber, amount, pending.getDescription());
+        // Xóa pending
+        pendingFundTransferRepository.delete(pending);
+        return result;
     }
 } 
