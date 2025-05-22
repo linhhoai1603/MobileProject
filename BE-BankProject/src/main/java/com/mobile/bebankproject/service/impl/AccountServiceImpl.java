@@ -11,8 +11,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.transaction.annotation.Transactional;
+import com.mobile.bebankproject.dto.FundTransferPreview;
 
 import java.time.LocalDateTime;
+import java.util.Optional;
 import java.util.Random;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -317,19 +319,80 @@ public class AccountServiceImpl implements AccountService {
         return true;
     }
 
+
     @Override
-    public void requestFundTransfer(String fromAccountNumber, String toAccountNumber, double amount, String description) {
+    public boolean checkOtpForFundTransfer(String fromAccountNumber, String toAccountNumber, double amount, String otp) {
+        Optional<PendingFundTransfer> pendingOpt = pendingFundTransferRepository
+                .findByFromAccountNumberAndToAccountNumberAndAmountAndOtp(fromAccountNumber, toAccountNumber, amount, otp);
+        if (pendingOpt.isEmpty()) return false;
+        PendingFundTransfer pending = pendingOpt.get();
+        // Kiểm tra hết hạn OTP (5 phút)
+        if (pending.getCreatedAt().plusMinutes(OTP_VALID_DURATION).isBefore(LocalDateTime.now())) {
+            return false;
+        }
+        return true;
+    }
+
+
+
+    @Override
+    public FundTransferPreview previewFundTransfer(String fromAccountNumber, String toAccountNumber, double amount, String description) {
+        if (fromAccountNumber == null || fromAccountNumber.trim().isEmpty()) {
+            throw new RuntimeException("Sender account number cannot be empty");
+        }
+        if (toAccountNumber == null || toAccountNumber.trim().isEmpty()) {
+            throw new RuntimeException("Receiver account number cannot be empty");
+        }
+        if (fromAccountNumber.equals(toAccountNumber)) {
+            throw new RuntimeException("Cannot transfer to the same account");
+        }
+        if (amount <= 0) {
+            throw new RuntimeException("Transfer amount must be greater than 0");
+        }
+
         // Kiểm tra tài khoản tồn tại và trạng thái
         Account fromAccount = accountRepository.findByAccountNumber(fromAccountNumber)
                 .orElseThrow(() -> new RuntimeException("Sender account not found"));
         Account toAccount = accountRepository.findByAccountNumber(toAccountNumber)
                 .orElseThrow(() -> new RuntimeException("Receiver account not found"));
-        if (fromAccount.getAccountStatus() != Account.Status.ACTIVE || toAccount.getAccountStatus() != Account.Status.ACTIVE) {
-            throw new RuntimeException("One or both accounts are not active");
+
+        if (fromAccount.getAccountStatus() != Account.Status.ACTIVE) {
+            throw new RuntimeException("Sender account is not active");
         }
+        if (toAccount.getAccountStatus() != Account.Status.ACTIVE) {
+            throw new RuntimeException("Receiver account is not active");
+        }
+
+        // Kiểm tra số dư
         if (fromAccount.getBalance() < amount) {
             throw new RuntimeException("Insufficient balance");
         }
+
+        // Tạo đối tượng preview để trả về
+        FundTransferPreview preview = new FundTransferPreview();
+        preview.setFromAccountNumber(fromAccountNumber);
+        preview.setFromAccountName(fromAccount.getAccountName()); // Lấy tên tài khoản
+        preview.setToAccountNumber(toAccountNumber);
+        preview.setToAccountName(toAccount.getAccountName());   // Lấy tên tài khoản
+        preview.setAmount(amount);
+        preview.setDescription(description);
+        // Có thể tính và set phí giao dịch vào đây nếu có
+
+        return preview;
+    }
+
+    @Override
+    public void requestFundTransfer(String fromAccountNumber, String toAccountNumber, double amount, String description) {
+        // Phương thức này giờ sẽ được gọi SAU KHI user xác nhận giao dịch trên màn hình preview.
+        // Cần thực hiện lại một số kiểm tra cơ bản ở đây hoặc đảm bảo rằng frontend gửi lại
+        // thông tin đã được validate từ bước preview.
+
+
+        Account fromAccount = accountRepository.findByAccountNumber(fromAccountNumber)
+                .orElseThrow(() -> new RuntimeException("Sender account not found"));
+        Account toAccount = accountRepository.findByAccountNumber(toAccountNumber)
+                .orElseThrow(() -> new RuntimeException("Receiver account not found"));
+
         // Sinh OTP
         String otp = generateOTP();
         // Lưu PendingFundTransfer
@@ -345,7 +408,7 @@ public class AccountServiceImpl implements AccountService {
         SimpleMailMessage message = new SimpleMailMessage();
         message.setTo(fromAccount.getUser().getEmail());
         message.setSubject("OTP xác nhận chuyển khoản");
-        message.setText("Mã OTP của bạn là: " + otp + "\nSử dụng để xác nhận giao dịch chuyển khoản.");
+        message.setText("Mã OTP của bạn là: " + otp + "\\nSử dụng để xác nhận giao dịch chuyển khoản.");
         mailSender.send(message);
     }
 
@@ -361,4 +424,63 @@ public class AccountServiceImpl implements AccountService {
         pendingFundTransferRepository.delete(pending);
         return result;
     }
-} 
+
+    @Override
+    public void requestFirebaseOtp(String fromAccountNumber, String toAccountNumber, double amount, String description) {
+        // Phương thức này xử lý gửi OTP qua Firebase (SMS)
+
+        Account fromAccount = accountRepository.findByAccountNumber(fromAccountNumber)
+                .orElseThrow(() -> new RuntimeException("Sender account not found"));
+
+        // Bạn cần lấy số điện thoại của người dùng từ Account hoặc User entity
+//        String phoneNumber = fromAccount.getUser().getPhone(); // Thay thế bằng phương thức lấy số điện thoại chính xác
+
+
+        // Sinh OTP
+        // Bạn có thể sinh OTP ở đây hoặc để Firebase SDK tự sinh nếu cần verificationId
+        String otp = generateOTP(); // Sử dụng phương thức sinh OTP nội bộ
+
+        // Lưu PendingFundTransfer
+        // Lưu OTP đã sinh vào DB để confirmFundTransfer có thể kiểm tra sau
+        PendingFundTransfer pending = new PendingFundTransfer();
+        pending.setFromAccountNumber(fromAccountNumber);
+        pending.setToAccountNumber(toAccountNumber); // Vẫn cần lưu thông tin giao dịch đầy đủ
+        pending.setAmount(amount);
+        pending.setDescription(description);
+        pending.setOtp(otp); // Lưu OTP
+        pending.setCreatedAt(LocalDateTime.now());
+        pendingFundTransferRepository.save(pending);
+
+        // *** Gọi logic gửi OTP qua Firebase tại đây ***
+        // Đây là phần bạn cần tích hợp với code Firebase hiện có của mình.
+        // Ví dụ:
+        try {
+            // Giả định bạn có một FirebaseOtpService với phương thức sendOtp
+            // firebaseOtpService.sendOtp(phoneNumber, otp);
+
+            // Hoặc gọi trực tiếp Firebase Auth SDK nếu bạn xử lý ở đây
+             /*
+             PhoneAuthOptions options =
+                 PhoneAuthOptions.newBuilder(FirebaseAuth.getInstance())
+                     .setPhoneNumber(phoneNumber)      // Số điện thoại của người dùng
+                     .setTimeout(60L, TimeUnit.SECONDS) // Thời gian chờ OTP
+                     // Bạn có thể cần setCallbacks nếu xử lý verify ở backend,
+                     // hoặc trả về verificationId cho frontend nếu xử lý ở frontend
+                     // .setCallbacks(...)
+                     .build();
+             PhoneAuthProvider.verifyPhoneNumber(options);
+              */
+//            System.out.println("Đã yêu cầu gửi Firebase OTP đến số: " + phoneNumber + " với OTP nội bộ: " + otp); // Log placeholder
+
+        } catch (Exception e) { // Catch các Exception từ Firebase SDK hoặc service của bạn
+            // Xử lý lỗi khi gửi OTP qua Firebase (ví dụ: số điện thoại không hợp lệ, quota exceeded)
+            System.err.println("Lỗi khi gửi Firebase OTP: " + e.getMessage());
+            throw new RuntimeException("Không thể gửi mã xác thực qua SMS. Vui lòng thử lại hoặc chọn phương thức khác.", e);
+        }
+
+        // Frontend cần nhận được thông báo thành công để chuyển sang màn hình nhập OTP
+        // Phương thức này void, nên frontend sẽ nhận response 200 OK nếu không có exception
+    }
+
+
+}
