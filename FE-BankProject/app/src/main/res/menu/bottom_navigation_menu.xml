@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/nav_home"
+        android:icon="@android:drawable/ic_menu_compass"
+        android:title="Trang chủ" />
+
+    <item
+        android:id="@+id/nav_products"
+        android:icon="@android:drawable/ic_menu_gallery"
+        android:title="Sản phẩm" />
+
+    <item
+        android:id="@+id/nav_perfect"
+        android:icon="@android:drawable/ic_menu_add"
+        android:title="Perfect++" />
+
+    <item
+        android:id="@+id/nav_gifts"
+        android:icon="@android:drawable/ic_menu_help"
+        android:title="Quà tặng" />
+
+    <item
+        android:id="@+id/nav_utilities"
+        android:icon="@android:drawable/ic_menu_view"
+        android:title="Tiện ích" />
+
+</menu> 
