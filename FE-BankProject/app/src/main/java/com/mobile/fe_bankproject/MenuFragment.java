@@ -10,6 +10,13 @@ import androidx.fragment.app.Fragment;
 import android.widget.LinearLayout;
 import android.app.AlertDialog;
 import android.content.Intent;
+import android.widget.Toast;
+import com.mobile.fe_bankproject.network.RetrofitClient;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import java.util.HashMap;
+import java.util.Map;
 
 public class MenuFragment extends Fragment {
 
@@ -84,6 +91,43 @@ public class MenuFragment extends Fragment {
             });
         }
 
+        // Add click listener for Change Password item
+        LinearLayout llChangePassword = view.findViewById(R.id.tvChangePassword).getParent() instanceof LinearLayout ?
+                                        (LinearLayout) view.findViewById(R.id.tvChangePassword).getParent() : null;
+
+        if (llChangePassword != null) {
+            llChangePassword.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    // Start ChangePasswordActivity
+                    Intent intent = new Intent(getActivity(), ChangePasswordActivity.class);
+                    // Pass account number to ChangePasswordActivity
+                    if (getActivity() instanceof MainActivity) {
+                        MainActivity mainActivity = (MainActivity) getActivity();
+                        intent.putExtra("account_number", mainActivity.getAccountNumber());
+                    }
+                    startActivity(intent);
+                    // Close menu after selecting option
+                    if (menuListener != null) {
+                        menuListener.onMenuCloseRequested();
+                    }
+                }
+            });
+        }
+
+        // Add click listener for Close Account item
+        LinearLayout llCloseAccount = view.findViewById(R.id.tvCloseAccount).getParent() instanceof LinearLayout ?
+                                        (LinearLayout) view.findViewById(R.id.tvCloseAccount).getParent() : null;
+
+        if (llCloseAccount != null) {
+            llCloseAccount.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    showCloseAccountConfirmationDialog();
+                }
+            });
+        }
+
         // Add click listener for logout item
         TextView tvLogout = view.findViewById(R.id.tvLogout);
         tvLogout.setOnClickListener(new View.OnClickListener() {
@@ -94,6 +138,28 @@ public class MenuFragment extends Fragment {
         });
 
         return view;
+    }
+
+    private void showCloseAccountConfirmationDialog() {
+        new AlertDialog.Builder(requireContext())
+            .setTitle("Đóng tài khoản")
+            .setMessage("Bạn có chắc chắn muốn đóng tài khoản? Hành động này không thể hoàn tác.")
+            .setPositiveButton("Có", (dialog, which) -> {
+                if (getActivity() instanceof MainActivity) {
+                    MainActivity mainActivity = (MainActivity) getActivity();
+                    String accountNumber = mainActivity.getAccountNumber();
+                    if (accountNumber != null) {
+                        ConfirmPasswordFragment fragment = ConfirmPasswordFragment.newInstance(accountNumber);
+                        fragment.show(getParentFragmentManager(), "confirm_password");
+                    } else {
+                        Toast.makeText(getContext(), 
+                            "Không tìm thấy thông tin tài khoản", 
+                            Toast.LENGTH_SHORT).show();
+                    }
+                }
+            })
+            .setNegativeButton("Không", null)
+            .show();
     }
 
     private void showLogoutConfirmationDialog() {

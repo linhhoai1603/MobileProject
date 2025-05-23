@@ -6,6 +6,7 @@ import com.mobile.bebankproject.service.AccountService;
 import com.mobile.bebankproject.dto.AccountRegister;
 import com.mobile.bebankproject.dto.AccountResponse;
 import com.mobile.bebankproject.util.PasswordEncoder;
+import com.mobile.bebankproject.util.PasswordValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.mail.SimpleMailMessage;
@@ -126,7 +127,7 @@ public class AccountServiceImpl implements AccountService {
             throw new RuntimeException("Passwords do not match");
         }
 
-        if (!isValidPassword(pass1)) {
+        if (!PasswordValidator.isValidPassword(pass1)) {
             throw new RuntimeException("Password does not meet security requirements");
         }
 
@@ -151,7 +152,7 @@ public class AccountServiceImpl implements AccountService {
         if (!accountRegister.getPassword1().equals(accountRegister.getPassword2())) {
             throw new RuntimeException("Passwords do not match");
         }
-        if (!isValidPassword(accountRegister.getPassword1())) {
+        if (!PasswordValidator.isValidPassword(accountRegister.getPassword1())) {
             throw new RuntimeException("Password does not meet security requirements");
         }
 
@@ -278,5 +279,89 @@ public class AccountServiceImpl implements AccountService {
         return accounts.stream()
                 .map(AccountResponse::fromAccount)
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public boolean validateAccountAndPassword(String accountNumber, String currentPass) {
+        Account account = accountRepository.findByAccountNumber(accountNumber)
+                .orElseThrow(() -> new RuntimeException("Account not found"));
+        
+        if (account.getAccountStatus() != Account.Status.ACTIVE) {
+            throw new RuntimeException("Account is not active");
+        }
+        
+        return passwordEncoder.matches(currentPass, account.getPassword());
+    }
+
+    @Override
+    @Transactional
+    public boolean changePasswordLogined(String accountNumber, String newPass) {
+        Account account = accountRepository.findByAccountNumber(accountNumber)
+                .orElseThrow(() -> new RuntimeException("Account not found"));
+
+        if (!PasswordValidator.isValidPassword(newPass)) {
+            throw new RuntimeException("New password does not meet security requirements");
+        }
+
+        account.setPassword(passwordEncoder.encode(newPass));
+        accountRepository.save(account);
+        return true;
+    }
+
+    @Override
+    @Transactional
+    public boolean closeAccount(String accountNumber, String password) {
+        Account account = accountRepository.findByAccountNumber(accountNumber)
+                .orElseThrow(() -> new RuntimeException("Account not found"));
+
+        // Verify password
+        if (!passwordEncoder.matches(password, account.getPassword())) {
+            throw new RuntimeException("Invalid password");
+        }
+
+        // Check if account is active
+        if (account.getAccountStatus() != Account.Status.ACTIVE) {
+            throw new RuntimeException("Account is not active");
+        }
+
+        // Check if account has balance
+        if (account.getBalance() > 0) {
+            throw new RuntimeException("Cannot close account with remaining balance");
+        }
+
+        // Check if account has any active cards
+        if (account.getCards() != null && !account.getCards().isEmpty()) {
+            throw new RuntimeException("Please cancel all cards before closing the account");
+        }
+
+        // Check if account has any pending transactions
+        if (account.getListTransactions() != null && 
+            account.getListTransactions().stream().anyMatch(t -> t.getStatus() == TransactionStatus.PENDING)) {
+            throw new RuntimeException("Please wait for all pending transactions to complete");
+        }
+
+        // Close the account
+        account.setAccountStatus(Account.Status.CLOSED);
+        accountRepository.save(account);
+
+        // Send notification email
+        sendAccountClosureEmail(account);
+
+        return true;
+    }
+
+    private void sendAccountClosureEmail(Account account) {
+        SimpleMailMessage message = new SimpleMailMessage();
+        message.setTo(account.getUser().getEmail());
+        message.setSubject("Account Closure Confirmation");
+        message.setText("Dear " + account.getAccountName() + ",\n\n" +
+                "Your account has been successfully closed.\n\n" +
+                "Account Details:\n" +
+                "Account Number: " + account.getAccountNumber() + "\n" +
+                "Closure Date: " + LocalDateTime.now() + "\n\n" +
+                "Thank you for being our customer.\n\n" +
+                "Best regards,\n" +
+                "Bank Team");
+        mailSender.send(message);
     }
 } 

@@ -3,6 +3,7 @@ package com.mobile.fe_bankproject.network;
 import com.mobile.fe_bankproject.dto.AccountLogin;
 import com.mobile.fe_bankproject.dto.AccountRegister;
 import com.mobile.fe_bankproject.dto.AccountResponse;
+import com.mobile.fe_bankproject.dto.ChangePasswordRequest;
 import com.mobile.fe_bankproject.dto.OTPVerifyRequest;
 import java.util.Map;
 import retrofit2.Call;
@@ -21,4 +22,13 @@ public interface ApiService {
 
     @POST("account/send-otp")
     Call<Void> resendOTP(@Body String email);
+
+    @POST("account/change-password-logined")
+    Call<Void> changePassword(@Body ChangePasswordRequest request);
+
+    @POST("account/send-otp-change-password")
+    Call<Void> sendOtpChangePassword(@Body String accountNumber);
+    
+    @POST("account/close")
+    Call<Void> closeAccount(@Body Map<String, String> request);
 } 
