@@ -27,6 +27,11 @@
         <activity
             android:name=".ChangeAvatarActivity"
             android:exported="false" />
+            android:name=".transferSuccess"
+            android:exported="false" />
+        <activity
+            android:name=".fill_OTP"
+            android:exported="false" />
         <activity
             android:name=".LogoActivity"
             android:exported="true"

@@ -18,4 +18,5 @@ public interface AccountRepository extends JpaRepository<Account, Integer> {
     Optional<Account> findByAccountNumber(String accountNumber);
     @Query("SELECT a FROM Account a WHERE a.user.email = :email")
     Optional<Account> findByUserEmail(@Param("email") String email);
+    Optional<Account> findByAccountNumber(String accountNumber);
 } 
