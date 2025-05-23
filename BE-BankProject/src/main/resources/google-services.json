@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "452263115647",
+    "project_id": "clear-destiny-417516",
+    "storage_bucket": "clear-destiny-417516.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:452263115647:android:19509227dfdea4dcdd384a",
+        "android_client_info": {
+          "package_name": "com.mobile.bebankproject"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBPPtf3O3euE1rzQ3Ozuw5YdKdNgmTlaD8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
