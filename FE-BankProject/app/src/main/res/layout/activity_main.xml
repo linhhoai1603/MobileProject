@@ -1,28 +1,88 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout 
+    android:id="@+id/mainLayout"
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/primary"
+    android:background="@color/background"
+    android:clickable="true"
+    android:focusable="true"
     tools:context=".MainActivity">
 
-    <include
-        android:id="@+id/toolbar"
-        layout="@layout/custom_toolbar"
+    <!-- Background Image -->
+    <ImageView
+        android:id="@+id/ivBackground"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
+        android:scaleType="centerCrop"
+        android:src="@drawable/default_background"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+    <!-- Container for the menu fragment -->
+    <FrameLayout
+        android:id="@+id/menu_fragment_container"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:clickable="true"
+        android:focusable="true"
+        android:elevation="8dp"
+        android:translationZ="8dp"
+        android:background="@color/white"
+        android:visibility="gone"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintWidth_percent="0.66"/>
+
+    <!-- Overlay to handle clicks outside menu -->
+    <View
+        android:id="@+id/overlay"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:clickable="true"
+        android:focusable="true"
+        android:background="#80000000"
+        android:visibility="gone"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@id/menu_fragment_container"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+    <!-- Top App Bar -->
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/topAppBar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="#673AB7"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Mobile Bank"
+            android:textColor="#FFFFFF"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:layout_marginStart="16dp"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <!-- Content area (Scrollable) -->
     <androidx.core.widget.NestedScrollView
         android:id="@+id/scrollView"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        app:layout_constraintTop_toBottomOf="@id/toolbar"
+        app:layout_constraintTop_toBottomOf="@+id/topAppBar"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toTopOf="@+id/bottomNavigationView">
@@ -30,37 +90,32 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:background="@color/background">
+            android:orientation="vertical">
 
             <!-- Header Section -->
             <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/headerSection"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="#00A0B0"
-                android:padding="16dp">
+                android:padding="16dp"
+                android:background="@drawable/default_background">
 
-                <!-- User Icon -->
-                <ImageView
-                    android:id="@+id/ivUserIcon"
+                <!-- Menu Icon (Placeholder) -->
+                <TextView
+                    android:id="@+id/ivMenuIcon"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@android:drawable/ic_menu_gallery"
+                    android:text="&#xf0c9;"
+                    android:textSize="24sp"
+                    android:textColor="#FFFFFF"
+                    android:gravity="center"
+                    android:fontFamily="@font/fontawesome"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintStart_toStartOf="parent"/>
 
-                <!-- Notification Icon -->
-                <ImageView
-                    android:id="@+id/ivNotificationIcon"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@android:drawable/ic_notification_overlay"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"/>
-
-                <!-- Logo -->
+                <!-- Perfect Text -->
                 <TextView
-                    android:id="@+id/tvLogo"
+                    android:id="@+id/tvPerfect"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Perfect"
@@ -68,9 +123,33 @@
                     android:textColor="#FFFFFF"
                     android:textStyle="bold"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/ivUserIcon"
-                    app:layout_constraintEnd_toStartOf="@+id/ivNotificationIcon"
-                    app:layout_constraintHorizontal_bias="0.5"/>
+                    app:layout_constraintStart_toEndOf="@+id/ivMenuIcon"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintEnd_toStartOf="@+id/ivRedDot"/>
+
+                <!-- Red Dot Icon (Placeholder) -->
+                <TextView
+                    android:id="@+id/ivRedDot"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="&#xf111;"
+                    android:textSize="12sp"
+                    android:textColor="#FF0000"
+                    android:gravity="center"
+                    android:fontFamily="@font/fontawesome"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"/>
+
+                <!-- Avatar Image -->
+                <ImageView
+                    android:id="@+id/ivAvatar"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:src="@android:drawable/ic_menu_gallery"
+                    android:scaleType="centerCrop"
+                    android:layout_marginTop="16dp"
+                    app:layout_constraintTop_toBottomOf="@+id/tvPerfect"
+                    app:layout_constraintStart_toStartOf="parent"/>
 
                 <!-- User Name -->
                 <TextView
@@ -82,7 +161,20 @@
                     android:textColor="#FFFFFF"
                     android:textStyle="bold"
                     android:layout_marginTop="16dp"
-                    app:layout_constraintTop_toBottomOf="@+id/tvLogo"
+                    android:layout_marginStart="8dp"
+                    app:layout_constraintTop_toTopOf="@+id/ivAvatar"
+                    app:layout_constraintBottom_toBottomOf="@+id/ivAvatar"
+                    app:layout_constraintStart_toEndOf="@+id/ivAvatar"/>
+
+                <!-- Activation Text -->
+                <TextView
+                    android:id="@+id/tvActivation"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="KÍCH HOẠT ĐỂ ĐƯỢC BẢO VỆ"
+                    android:textSize="14sp"
+                    android:textColor="#FFEB3B"
+                    app:layout_constraintTop_toBottomOf="@+id/tvUserName"
                     app:layout_constraintStart_toStartOf="parent"/>
 
                 <!-- View Account Button -->
@@ -90,9 +182,11 @@
                     android:id="@+id/btnViewAccount"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Xem tài khoản"
+                    android:text="XEM TÀI KHOẢN"
+                    android:backgroundTint="#673AB7"
+                    android:textColor="#FFFFFF"
                     android:layout_marginTop="16dp"
-                    app:layout_constraintTop_toBottomOf="@+id/tvUserName"
+                    app:layout_constraintTop_toBottomOf="@+id/tvActivation"
                     app:layout_constraintStart_toStartOf="parent"/>
 
                 <!-- Down Arrow Icon -->
@@ -113,7 +207,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:padding="16dp">
+                android:padding="16dp"
+                android:background="@android:color/white">
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -140,16 +235,21 @@
                         android:orientation="vertical"
                         android:gravity="center"
                         android:padding="8dp">
-                        <ImageView
+                        <TextView
                             android:layout_width="40dp"
                             android:layout_height="40dp"
-                            android:src="@android:drawable/ic_menu_send"/>
+                            android:text="&#xf1d8;"
+                            android:textSize="24sp"
+                            android:textColor="@android:color/darker_gray"
+                            android:gravity="center"
+                            android:fontFamily="@font/fontawesome"/>
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Chuyển tiền"
                             android:gravity="center"
-                            android:layout_marginTop="4dp"/>
+                            android:layout_marginTop="4dp"
+                            android:textSize="12sp"/>
                     </LinearLayout>
 
                     <!-- Vay tiền -->
@@ -160,16 +260,21 @@
                         android:orientation="vertical"
                         android:gravity="center"
                         android:padding="8dp">
-                        <ImageView
+                        <TextView
                             android:layout_width="40dp"
                             android:layout_height="40dp"
-                            android:src="@android:drawable/ic_menu_share"/>
+                            android:text="&#xf1e0;"
+                            android:textSize="24sp"
+                            android:textColor="@android:color/darker_gray"
+                            android:gravity="center"
+                            android:fontFamily="@font/fontawesome"/>
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Vay tiền"
                             android:gravity="center"
-                            android:layout_marginTop="4dp"/>
+                            android:layout_marginTop="4dp"
+                            android:textSize="12sp"/>
                     </LinearLayout>
 
                     <!-- Quét QR -->
@@ -180,16 +285,21 @@
                         android:orientation="vertical"
                         android:gravity="center"
                         android:padding="8dp">
-                        <ImageView
+                        <TextView
                             android:layout_width="40dp"
                             android:layout_height="40dp"
-                            android:src="@android:drawable/ic_menu_camera"/>
+                            android:text="&#xf030;"
+                            android:textSize="24sp"
+                            android:textColor="@android:color/darker_gray"
+                            android:gravity="center"
+                            android:fontFamily="@font/fontawesome"/>
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Quét QR"
                             android:gravity="center"
-                            android:layout_marginTop="4dp"/>
+                            android:layout_marginTop="4dp"
+                            android:textSize="12sp"/>
                     </LinearLayout>
 
                     <!-- Thanh toán -->
@@ -200,16 +310,21 @@
                         android:orientation="vertical"
                         android:gravity="center"
                         android:padding="8dp">
-                        <ImageView
+                        <TextView
                             android:layout_width="40dp"
                             android:layout_height="40dp"
-                            android:src="@android:drawable/ic_menu_upload"/>
+                            android:text="&#xf093;"
+                            android:textSize="24sp"
+                            android:textColor="@android:color/darker_gray"
+                            android:gravity="center"
+                            android:fontFamily="@font/fontawesome"/>
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Thanh toán"
                             android:gravity="center"
-                            android:layout_marginTop="4dp"/>
+                            android:layout_marginTop="4dp"
+                            android:textSize="12sp"/>
                     </LinearLayout>
 
                     <!-- Nạp điện thoại -->
@@ -220,16 +335,21 @@
                         android:orientation="vertical"
                         android:gravity="center"
                         android:padding="8dp">
-                        <ImageView
+                        <TextView
                             android:layout_width="40dp"
                             android:layout_height="40dp"
-                            android:src="@android:drawable/ic_menu_call"/>
+                            android:text="&#xf095;"
+                            android:textSize="24sp"
+                            android:textColor="@android:color/darker_gray"
+                            android:gravity="center"
+                            android:fontFamily="@font/fontawesome"/>
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Nạp điện thoại"
                             android:gravity="center"
-                            android:layout_marginTop="4dp"/>
+                            android:layout_marginTop="4dp"
+                            android:textSize="12sp"/>
                     </LinearLayout>
 
                     <!-- Dịch vụ thẻ -->
@@ -240,16 +360,21 @@
                         android:orientation="vertical"
                         android:gravity="center"
                         android:padding="8dp">
-                        <ImageView
+                        <TextView
                             android:layout_width="40dp"
                             android:layout_height="40dp"
-                            android:src="@android:drawable/ic_menu_view"/>
+                            android:text="&#xf06e;"
+                            android:textSize="24sp"
+                            android:textColor="@android:color/darker_gray"
+                            android:gravity="center"
+                            android:fontFamily="@font/fontawesome"/>
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Dịch vụ thẻ"
                             android:gravity="center"
-                            android:layout_marginTop="4dp"/>
+                            android:layout_marginTop="4dp"
+                            android:textSize="12sp"/>
                     </LinearLayout>
 
                 </GridLayout>
@@ -261,7 +386,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:padding="16dp">
+                android:padding="16dp"
+                android:background="@android:color/white">
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -275,8 +401,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
-                    android:scrollbars="none"
-                    android:contentDescription="@{null}">
+                    android:scrollbars="none">
 
                     <LinearLayout
                         android:layout_width="wrap_content"
@@ -293,8 +418,7 @@
                             <ImageView
                                 android:layout_width="60dp"
                                 android:layout_height="60dp"
-                                android:src="@android:drawable/sym_def_app_icon"
-                                android:contentDescription="@{null}"/>
+                                android:src="@android:drawable/sym_def_app_icon"/>
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
@@ -311,8 +435,7 @@
                             <ImageView
                                 android:layout_width="60dp"
                                 android:layout_height="60dp"
-                                android:src="@android:drawable/sym_def_app_icon"
-                                android:contentDescription="@{null}"/>
+                                android:src="@android:drawable/sym_def_app_icon"/>
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
@@ -329,8 +452,7 @@
                             <ImageView
                                 android:layout_width="60dp"
                                 android:layout_height="60dp"
-                                android:src="@android:drawable/sym_def_app_icon"
-                                android:contentDescription="@{null}"/>
+                                android:src="@android:drawable/sym_def_app_icon"/>
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
@@ -347,8 +469,7 @@
                             <ImageView
                                 android:layout_width="60dp"
                                 android:layout_height="60dp"
-                                android:src="@android:drawable/sym_def_app_icon"
-                                android:contentDescription="@{null}"/>
+                                android:src="@android:drawable/sym_def_app_icon"/>
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
@@ -395,9 +516,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
-                    android:contentDescription="@{null}"
-                    android:scrollbars="none"
-                    tools:ignore="SpeakableTextPresentCheck">
+                    android:scrollbars="none">
 
                     <LinearLayout
                         android:layout_width="wrap_content"
@@ -409,7 +528,6 @@
                             android:layout_width="200dp"
                             android:layout_height="100dp"
                             android:layout_marginEnd="8dp"
-                            android:contentDescription="@{null}"
                             android:src="@android:drawable/gallery_thumb" />
 
                         <!-- Placeholder for promotion 2 -->
@@ -417,14 +535,12 @@
                             android:layout_width="200dp"
                             android:layout_height="100dp"
                             android:layout_marginEnd="8dp"
-                            android:contentDescription="@{null}"
                             android:src="@android:drawable/gallery_thumb" />
 
                         <!-- Placeholder for promotion 3 -->
                         <ImageView
                             android:layout_width="200dp"
                             android:layout_height="100dp"
-                            android:contentDescription="@{null}"
                             android:src="@android:drawable/gallery_thumb" />
 
                     </LinearLayout>
@@ -441,10 +557,8 @@
         android:id="@+id/bottomNavigationView"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="Hello World!"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
