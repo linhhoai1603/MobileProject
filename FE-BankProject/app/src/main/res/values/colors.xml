@@ -15,8 +15,6 @@
     <color name="success">#4CAF50</color>
     <color name="warning">#FFC107</color>
     <color name="info">#2196F3</color>
-    
-    <!-- Thêm các màu còn thiếu -->
     <color name="green_primary">#4CAF50</color>
     <color name="green_primary_dark">#388E3C</color>
     <color name="green_secondary">#8BC34A</color>

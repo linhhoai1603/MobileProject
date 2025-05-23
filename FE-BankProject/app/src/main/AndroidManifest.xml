@@ -17,6 +17,14 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
+            android:name=".ChangeInfomationActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ChangeBackgroundImageActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ChangeAvatarActivity"
+            android:exported="false" />
             android:name=".transferSuccess"
             android:exported="false" />
         <activity
