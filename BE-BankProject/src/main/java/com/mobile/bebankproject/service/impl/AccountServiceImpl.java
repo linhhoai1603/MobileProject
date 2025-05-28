@@ -13,6 +13,7 @@ import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.transaction.annotation.Transactional;
 import com.mobile.bebankproject.dto.FundTransferPreview;
+import com.mobile.bebankproject.dto.UpdateProfileRequest;
 
 import java.time.LocalDateTime;
 import java.util.Optional;
@@ -287,5 +288,304 @@ public class AccountServiceImpl implements AccountService {
         return accounts.stream()
                 .map(AccountResponse::fromAccount)
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public boolean validateAccountAndPassword(String accountNumber, String currentPass) {
+        Account account = accountRepository.findByAccountNumber(accountNumber)
+                .orElseThrow(() -> new RuntimeException("Account not found"));
+        
+        if (account.getAccountStatus() != Account.Status.ACTIVE) {
+            throw new RuntimeException("Account is not active");
+        }
+        
+        return passwordEncoder.matches(currentPass, account.getPassword());
+    }
+
+    @Override
+    @Transactional
+    public boolean changePasswordLogined(String accountNumber, String newPass) {
+        Account account = accountRepository.findByAccountNumber(accountNumber)
+                .orElseThrow(() -> new RuntimeException("Account not found"));
+
+        if (!PasswordValidator.isValidPassword(newPass)) {
+            throw new RuntimeException("New password does not meet security requirements");
+        }
+
+        account.setPassword(passwordEncoder.encode(newPass));
+        accountRepository.save(account);
+        return true;
+    }
+
+    @Override
+    @Transactional
+    public boolean closeAccount(String accountNumber, String password) {
+        Account account = accountRepository.findByAccountNumber(accountNumber)
+                .orElseThrow(() -> new RuntimeException("Account not found"));
+
+        // Verify password
+        if (!passwordEncoder.matches(password, account.getPassword())) {
+            throw new RuntimeException("Invalid password");
+        }
+
+        // Check if account is active
+        if (account.getAccountStatus() != Account.Status.ACTIVE) {
+            throw new RuntimeException("Account is not active");
+        }
+
+        // Check if account has balance
+        if (account.getBalance() > 0) {
+            throw new RuntimeException("Cannot close account with remaining balance");
+        }
+
+        // Check if account has any active cards
+        if (account.getCards() != null && !account.getCards().isEmpty()) {
+            throw new RuntimeException("Please cancel all cards before closing the account");
+        }
+
+        // Check if account has any pending transactions
+        if (account.getListTransactions() != null && 
+            account.getListTransactions().stream().anyMatch(t -> t.getStatus() == TransactionStatus.PENDING)) {
+            throw new RuntimeException("Please wait for all pending transactions to complete");
+        }
+
+        // Close the account
+        account.setAccountStatus(Account.Status.CLOSED);
+        accountRepository.save(account);
+
+        // Send notification email
+        sendAccountClosureEmail(account);
+
+        return true;
+    }
+
+    @Override
+    public FundTransferPreview previewFundTransfer(String fromAccountNumber, String toAccountNumber, double amount, String description) {
+        if (fromAccountNumber == null || fromAccountNumber.trim().isEmpty()) {
+            throw new RuntimeException("Sender account number cannot be empty");
+        }
+        if (toAccountNumber == null || toAccountNumber.trim().isEmpty()) {
+            throw new RuntimeException("Receiver account number cannot be empty");
+        }
+        if (fromAccountNumber.equals(toAccountNumber)) {
+            throw new RuntimeException("Cannot transfer to the same account");
+        }
+        if (amount <= 0) {
+            throw new RuntimeException("Transfer amount must be greater than 0");
+        }
+
+        // Kiểm tra tài khoản tồn tại và trạng thái
+        Account fromAccount = accountRepository.findByAccountNumber(fromAccountNumber)
+                .orElseThrow(() -> new RuntimeException("Sender account not found"));
+        Account toAccount = accountRepository.findByAccountNumber(toAccountNumber)
+                .orElseThrow(() -> new RuntimeException("Receiver account not found"));
+
+        if (fromAccount.getAccountStatus() != Account.Status.ACTIVE) {
+            throw new RuntimeException("Sender account is not active");
+        }
+        if (toAccount.getAccountStatus() != Account.Status.ACTIVE) {
+            throw new RuntimeException("Receiver account is not active");
+        }
+
+        // Kiểm tra số dư
+        if (fromAccount.getBalance() < amount) {
+            throw new RuntimeException("Insufficient balance");
+        }
+
+        // Tạo đối tượng preview để trả về
+        FundTransferPreview preview = new FundTransferPreview();
+        preview.setFromAccountNumber(fromAccountNumber);
+        preview.setFromAccountName(fromAccount.getAccountName()); // Lấy tên tài khoản
+        preview.setToAccountNumber(toAccountNumber);
+        preview.setToAccountName(toAccount.getAccountName());   // Lấy tên tài khoản
+        preview.setAmount(amount);
+        preview.setDescription(description);
+        // Có thể tính và set phí giao dịch vào đây nếu có
+
+        return preview;
+    }
+
+    @Transactional
+    public boolean transferFund(String fromAccountNumber, String toAccountNumber, double amount, String description) {
+        if (fromAccountNumber.equals(toAccountNumber)) {
+            throw new RuntimeException("Cannot transfer to the same account");
+        }
+        Account fromAccount = accountRepository.findByAccountNumber(fromAccountNumber)
+                .orElseThrow(() -> new RuntimeException("Sender account not found"));
+        Account toAccount = accountRepository.findByAccountNumber(toAccountNumber)
+                .orElseThrow(() -> new RuntimeException("Receiver account not found"));
+        if (fromAccount.getAccountStatus() != Account.Status.ACTIVE || toAccount.getAccountStatus() != Account.Status.ACTIVE) {
+            throw new RuntimeException("One or both accounts are not active");
+        }
+        if (fromAccount.getBalance() < amount) {
+            throw new RuntimeException("Insufficient balance");
+        }
+        fromAccount.setBalance(fromAccount.getBalance() - amount);
+        toAccount.setBalance(toAccount.getBalance() + amount);
+        accountRepository.save(fromAccount);
+        accountRepository.save(toAccount);
+        TransactionFundTransfer transaction = new TransactionFundTransfer();
+        transaction.setFromAccount(fromAccountNumber);
+        transaction.setToAccount(toAccount);
+        transaction.setTransactionDate(LocalDateTime.now());
+        transaction.setDescription(description);
+        transaction.setAmount(amount);
+        transaction.setStatus(TransactionStatus.SUCCESS);
+        transaction.setAccount(fromAccount);
+        transactionFundTransferRepository.save(transaction);
+        return true;
+    }
+
+    @Override
+    public void requestFundTransfer(String fromAccountNumber, String toAccountNumber, double amount, String description) {
+        // Phương thức này giờ sẽ được gọi SAU KHI user xác nhận giao dịch trên màn hình preview.
+        // Cần thực hiện lại một số kiểm tra cơ bản ở đây hoặc đảm bảo rằng frontend gửi lại
+        // thông tin đã được validate từ bước preview.
+
+        Account fromAccount = accountRepository.findByAccountNumber(fromAccountNumber)
+                .orElseThrow(() -> new RuntimeException("Sender account not found"));
+        Account toAccount = accountRepository.findByAccountNumber(toAccountNumber)
+                .orElseThrow(() -> new RuntimeException("Receiver account not found"));
+
+        // Sinh OTP
+        String otp = generateOTP();
+        // Lưu PendingFundTransfer
+        PendingFundTransfer pending = new PendingFundTransfer();
+        pending.setFromAccountNumber(fromAccountNumber);
+        pending.setToAccountNumber(toAccountNumber);
+        pending.setAmount(amount);
+        pending.setDescription(description);
+        pending.setOtp(otp);
+        pending.setCreatedAt(LocalDateTime.now());
+        pendingFundTransferRepository.save(pending);
+        // Gửi OTP về email người chuyển
+        SimpleMailMessage message = new SimpleMailMessage();
+        message.setTo(fromAccount.getUser().getEmail());
+        message.setSubject("OTP xác nhận chuyển khoản");
+        message.setText("Mã OTP của bạn là: " + otp + "\\nSử dụng để xác nhận giao dịch chuyển khoản.");
+        mailSender.send(message);
+    }
+
+    @Override
+    @Transactional
+    public boolean confirmFundTransfer(String fromAccountNumber, String toAccountNumber, double amount, String otp) {
+        PendingFundTransfer pending = pendingFundTransferRepository.findByFromAccountNumberAndToAccountNumberAndAmountAndOtp(
+                fromAccountNumber, toAccountNumber, amount, otp
+        ).orElseThrow(() -> new RuntimeException("Invalid OTP or transfer info"));
+        // Thực hiện chuyển khoản
+        boolean result = transferFund(fromAccountNumber, toAccountNumber, amount, pending.getDescription());
+        // Xóa pending
+        pendingFundTransferRepository.delete(pending);
+        return result;
+    }
+
+    @Override
+    public boolean checkOtpForFundTransfer(String fromAccountNumber, String toAccountNumber, double amount, String otp) {
+        Optional<PendingFundTransfer> pendingOpt = pendingFundTransferRepository
+                .findByFromAccountNumberAndToAccountNumberAndAmountAndOtp(fromAccountNumber, toAccountNumber, amount, otp);
+        if (pendingOpt.isEmpty()) return false;
+        PendingFundTransfer pending = pendingOpt.get();
+        // Kiểm tra hết hạn OTP (5 phút)
+        if (pending.getCreatedAt().plusMinutes(OTP_VALID_DURATION).isBefore(LocalDateTime.now())) {
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public void requestFirebaseOtp(String fromAccountNumber, String toAccountNumber, double amount, String description) {
+        // Phương thức này xử lý gửi OTP qua Firebase (SMS)
+
+        Account fromAccount = accountRepository.findByAccountNumber(fromAccountNumber)
+                .orElseThrow(() -> new RuntimeException("Sender account not found"));
+
+        // Sinh OTP
+        String otp = generateOTP();
+
+        // Lưu PendingFundTransfer
+        PendingFundTransfer pending = new PendingFundTransfer();
+        pending.setFromAccountNumber(fromAccountNumber);
+        pending.setToAccountNumber(toAccountNumber);
+        pending.setAmount(amount);
+        pending.setDescription(description);
+        pending.setOtp(otp);
+        pending.setCreatedAt(LocalDateTime.now());
+        pendingFundTransferRepository.save(pending);
+
+        // TODO: Implement Firebase SMS OTP sending
+        // For now, just send via email
+        sendTransferOtpEmail(fromAccount, otp, previewFundTransfer(fromAccountNumber, toAccountNumber, amount, description));
+    }
+
+    private void sendTransferOtpEmail(Account account, String otp, FundTransferPreview preview) {
+        SimpleMailMessage message = new SimpleMailMessage();
+        message.setTo(account.getUser().getEmail());
+        message.setSubject("Fund Transfer OTP");
+        message.setText("Dear " + account.getAccountName() + ",\n\n" +
+                "Your OTP for the fund transfer is: " + otp + "\n\n" +
+                "Transfer Details:\n" +
+                "From: " + preview.getFromAccountNumber() + " (" + preview.getFromAccountName() + ")\n" +
+                "To: " + preview.getToAccountNumber() + " (" + preview.getToAccountName() + ")\n" +
+                "Amount: " + preview.getAmount() + "\n" +
+                "Description: " + preview.getDescription() + "\n\n" +
+                "This OTP is valid for " + OTP_VALID_DURATION + " minutes.\n\n" +
+                "Best regards,\n" +
+                "Bank Team");
+        mailSender.send(message);
+    }
+
+    private void sendAccountClosureEmail(Account account) {
+        SimpleMailMessage message = new SimpleMailMessage();
+        message.setTo(account.getUser().getEmail());
+        message.setSubject("Account Closure Confirmation");
+        message.setText("Dear " + account.getAccountName() + ",\n\n" +
+                "Your account has been successfully closed.\n\n" +
+                "Account Details:\n" +
+                "Account Number: " + account.getAccountNumber() + "\n" +
+                "Closure Date: " + LocalDateTime.now() + "\n\n" +
+                "Thank you for being our customer.\n\n" +
+                "Best regards,\n" +
+                "Bank Team");
+        mailSender.send(message);
+    }
+
+    @Override
+    @Transactional
+    public boolean updateProfile(UpdateProfileRequest request) {
+        // Find account by account number
+        Account account = accountRepository.findByAccountNumber(request.getAccountNumber())
+                .orElseThrow(() -> new RuntimeException("Account not found"));
+
+        // Verify PIN
+        if (!account.getPIN().equals(request.getPin())) {
+            throw new RuntimeException("Invalid PIN");
+        }
+
+        // Check if email is already taken by another account
+        if (!account.getUser().getEmail().equals(request.getEmail())) {
+            if (accountRepository.findByUser_Email(request.getEmail()).isPresent()) {
+                throw new RuntimeException("Email already registered");
+            }
+        }
+
+        // Check if phone is already taken by another account
+        if (!account.getPhone().equals(request.getPhone())) {
+            if (accountRepository.findByPhone(request.getPhone()).isPresent()) {
+                throw new RuntimeException("Phone number already registered");
+            }
+        }
+
+        // Update user information
+        User user = account.getUser();
+        user.setFullName(request.getFullName());
+        user.setEmail(request.getEmail());
+        userRepository.save(user);
+
+        // Update account information
+        account.setPhone(request.getPhone());
+        account.setAccountName(request.getFullName());
+        accountRepository.save(account);
+
+        return true;
     }
 } 

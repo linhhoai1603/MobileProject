@@ -3,6 +3,7 @@ package com.mobile.bebankproject.service;
 import com.mobile.bebankproject.dto.AccountRegister;
 import com.mobile.bebankproject.dto.AccountResponse;
 import com.mobile.bebankproject.dto.FundTransferPreview;
+import com.mobile.bebankproject.dto.UpdateProfileRequest;
 
 import java.util.List;
 
@@ -49,4 +50,6 @@ public interface AccountService {
      * @param description
      */
     void requestFirebaseOtp(String fromAccountNumber, String toAccountNumber, double amount, String description);
+
+    boolean updateProfile(UpdateProfileRequest request);
 }

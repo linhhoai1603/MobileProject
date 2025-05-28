@@ -13,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import com.mobile.bebankproject.dto.FundTransferPreview;
+import com.mobile.bebankproject.dto.UpdateProfileRequest;
 
 import java.util.List;
 import java.util.Map;
@@ -205,5 +206,19 @@ public class AccountController {
         return ResponseEntity.ok(result);
     }
 
->>>>>>> 4e53119a40f6549d53194061d53ac5cd89674f63
+    @PutMapping("/update-profile")
+    public ResponseEntity<?> updateProfile(@RequestBody UpdateProfileRequest request) {
+        try {
+            boolean result = accountService.updateProfile(request);
+            return ResponseEntity.ok(Map.of(
+                "status", "success",
+                "message", "Profile updated successfully"
+            ));
+        } catch (RuntimeException e) {
+            return ResponseEntity.badRequest().body(Map.of(
+                "status", "error",
+                "message", e.getMessage()
+            ));
+        }
+    }
 }

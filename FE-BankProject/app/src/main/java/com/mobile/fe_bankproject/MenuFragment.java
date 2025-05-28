@@ -11,16 +11,24 @@ import android.widget.LinearLayout;
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.widget.Toast;
+import android.widget.Button;
 import com.mobile.fe_bankproject.network.RetrofitClient;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import java.util.HashMap;
 import java.util.Map;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 public class MenuFragment extends Fragment {
 
     private MenuListener menuListener;
+    private Button btnTransfer, btnDeposit, btnWithdraw, btnHistory;
+    private Button btnEditProfile, btnCloseAccount, btnLogout;
+    private TextView tvChangeAvatar, tvChangeBackground, tvChangeInfo;
+    private TextView tvChangePassword, tvCloseAccount, tvLogout;
+    private TextView btnCloseMenu;
 
     public interface MenuListener {
         void onMenuCloseRequested();
@@ -50,94 +58,88 @@ public class MenuFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_menu, container, false);
 
-        // Add click listener for close button
-        TextView btnCloseMenu = view.findViewById(R.id.btnCloseMenu);
-        btnCloseMenu.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (menuListener != null) {
-                    menuListener.onMenuCloseRequested();
-                }
+        // Initialize views
+        btnCloseMenu = view.findViewById(R.id.btnCloseMenu);
+        tvChangeAvatar = view.findViewById(R.id.tvChangeAvatar);
+        tvChangeBackground = view.findViewById(R.id.tvChangeBackground);
+        tvChangeInfo = view.findViewById(R.id.tvChangeInfo);
+        tvChangePassword = view.findViewById(R.id.tvChangePassword);
+        tvCloseAccount = view.findViewById(R.id.tvCloseAccount);
+        tvLogout = view.findViewById(R.id.tvLogout);
+
+        // Set up click listeners
+        btnCloseMenu.setOnClickListener(v -> {
+            if (menuListener != null) {
+                menuListener.onMenuCloseRequested();
             }
         });
 
-        // Add click listener for Change Avatar item
-        LinearLayout llChangeAvatar = view.findViewById(R.id.tvChangeAvatar).getParent() instanceof LinearLayout ?
-                                        (LinearLayout) view.findViewById(R.id.tvChangeAvatar).getParent() : null;
-
-        if (llChangeAvatar != null) {
-            llChangeAvatar.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (menuListener != null) {
-                        menuListener.onSelectAvatarRequested();
-                    }
-                }
-            });
-        }
-
-        // Add click listener for Change Background item
-        LinearLayout llChangeBackground = view.findViewById(R.id.tvChangeBackground).getParent() instanceof LinearLayout ?
-                                        (LinearLayout) view.findViewById(R.id.tvChangeBackground).getParent() : null;
-
-        if (llChangeBackground != null) {
-            llChangeBackground.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (menuListener != null) {
-                        menuListener.onSelectBackgroundRequested();
-                    }
-                }
-            });
-        }
-
-        // Add click listener for Change Password item
-        LinearLayout llChangePassword = view.findViewById(R.id.tvChangePassword).getParent() instanceof LinearLayout ?
-                                        (LinearLayout) view.findViewById(R.id.tvChangePassword).getParent() : null;
-
-        if (llChangePassword != null) {
-            llChangePassword.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    // Start ChangePasswordActivity
-                    Intent intent = new Intent(getActivity(), ChangePasswordActivity.class);
-                    // Pass account number to ChangePasswordActivity
-                    if (getActivity() instanceof MainActivity) {
-                        MainActivity mainActivity = (MainActivity) getActivity();
-                        intent.putExtra("account_number", mainActivity.getAccountNumber());
-                    }
-                    startActivity(intent);
-                    // Close menu after selecting option
-                    if (menuListener != null) {
-                        menuListener.onMenuCloseRequested();
-                    }
-                }
-            });
-        }
-
-        // Add click listener for Close Account item
-        LinearLayout llCloseAccount = view.findViewById(R.id.tvCloseAccount).getParent() instanceof LinearLayout ?
-                                        (LinearLayout) view.findViewById(R.id.tvCloseAccount).getParent() : null;
-
-        if (llCloseAccount != null) {
-            llCloseAccount.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    showCloseAccountConfirmationDialog();
-                }
-            });
-        }
-
-        // Add click listener for logout item
-        TextView tvLogout = view.findViewById(R.id.tvLogout);
-        tvLogout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showLogoutConfirmationDialog();
+        // Set up click listeners for menu items
+        ((View) tvChangeAvatar.getParent()).setOnClickListener(v -> {
+            if (menuListener != null) {
+                menuListener.onSelectAvatarRequested();
             }
         });
+
+        ((View) tvChangeBackground.getParent()).setOnClickListener(v -> {
+            if (menuListener != null) {
+                menuListener.onSelectBackgroundRequested();
+            }
+        });
+
+        ((View) tvChangeInfo.getParent()).setOnClickListener(v -> navigateToEditProfile());
+
+        ((View) tvChangePassword.getParent()).setOnClickListener(v -> {
+            // Start ChangePasswordActivity
+            Intent intent = new Intent(getActivity(), ChangePasswordActivity.class);
+            // Pass account number to ChangePasswordActivity
+            if (getActivity() instanceof MainActivity) {
+                MainActivity mainActivity = (MainActivity) getActivity();
+                intent.putExtra("account_number", mainActivity.getAccountNumber());
+            }
+            startActivity(intent);
+            // Close menu after selecting option
+            if (menuListener != null) {
+                menuListener.onMenuCloseRequested();
+            }
+        });
+
+        ((View) tvCloseAccount.getParent()).setOnClickListener(v -> showCloseAccountConfirmationDialog());
+
+        ((View) tvLogout.getParent()).setOnClickListener(v -> showLogoutConfirmationDialog());
 
         return view;
+    }
+
+    private void navigateToTransfer() {
+        // TODO: Implement transfer navigation
+    }
+
+    private void navigateToDeposit() {
+        // TODO: Implement deposit navigation
+    }
+
+    private void navigateToWithdraw() {
+        // TODO: Implement withdraw navigation
+    }
+
+    private void navigateToHistory() {
+        // TODO: Implement history navigation
+    }
+
+    private void navigateToEditProfile() {
+        Intent intent = new Intent(getActivity(), EditProfileActivity.class);
+        // Pass account number to EditProfileActivity
+        if (getActivity() instanceof MainActivity) {
+            MainActivity mainActivity = (MainActivity) getActivity();
+            intent.putExtra("account_number", mainActivity.getAccountNumber());
+        }
+        startActivity(intent);
+        
+        // Close menu after navigation
+        if (menuListener != null) {
+            menuListener.onMenuCloseRequested();
+        }
     }
 
     private void showCloseAccountConfirmationDialog() {
