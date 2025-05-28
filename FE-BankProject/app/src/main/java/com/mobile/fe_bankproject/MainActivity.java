@@ -269,4 +269,11 @@ public class MainActivity extends AppCompatActivity implements MenuFragment.Menu
         startActivity(intent);
         finish();
     }
+
+    public String getAccountNumber() {
+        if (accountResponse != null && accountResponse != null) {
+            return accountResponse.getAccountNumber();
+        }
+        return null;
+    }
 }
