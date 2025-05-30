@@ -1,3 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name"></string>
+    
+    <!-- FontAwesome Icons -->
+    <string name="fa_mobile">&#xf3ce;</string>
+    <string name="fa_address_book">&#xf2b9;</string>
+    <string name="fa_clock_rotate_left">&#xf1da;</string>
+    <string name="fa_chevron_right">&#xf054;</string>
 </resources>
