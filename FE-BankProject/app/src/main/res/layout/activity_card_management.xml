@@ -1,166 +1,234 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#F5F5F5">
+    android:background="@color/background">
 
-    <LinearLayout
+    <!-- Toolbar -->
+    <include
+        android:id="@+id/toolbar"
+        layout="@layout/custom_toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="16dp">
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
 
-        <!-- Banner -->
-        <ImageView
-            android:id="@+id/bannerImage"
-            android:layout_width="match_parent"
-            android:layout_height="160dp"
-            android:scaleType="centerCrop"
-            android:src="@drawable/banner_card"
-            android:background="@drawable/banner_gradient"
-            android:contentDescription="Banner" />
+    <!-- Banner -->
+    <ImageView
+        android:id="@+id/bannerImage"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:contentDescription="Banner"
+        android:scaleType="centerCrop"
+        android:src="@drawable/banner"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/toolbar" />
 
-        <!-- Dịch vụ -->
+    <!-- CardView chứa nội dung -->
+    <androidx.cardview.widget.CardView
+        android:id="@+id/card_services"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginTop="12dp"
+        app:cardCornerRadius="12dp"
+        app:cardElevation="4dp"
+        app:layout_constraintTop_toBottomOf="@id/bannerImage"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginTop="16dp">
+            android:orientation="vertical"
+            android:padding="16dp">
 
-            <TextView
-                android:layout_width="0dp"
+            <!-- Tiêu đề dịch vụ -->
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Danh sách dịch vụ"
-                android:textSize="16sp"
-                android:textStyle="bold"
-                android:textColor="#000000" />
+                android:orientation="horizontal">
 
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Danh sách dịch vụ"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    android:textColor="#000000" />
+            </LinearLayout>
+
+            <!-- Grid dịch vụ -->
+            <GridLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:columnCount="3"
+                android:layout_marginTop="16dp">
+
+                <!-- 1: Thông tin thẻ -->
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_columnWeight="1"
+                    android:orientation="vertical"
+                    android:gravity="center"
+                    android:padding="12dp">
+
+                    <ImageView
+                        android:layout_width="32dp"
+                        android:layout_height="32dp"
+                        android:src="@drawable/ic_card_info"
+                        app:tint="#00A94F" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Thông tin thẻ"
+                        android:textSize="12sp"
+                        android:gravity="center"
+                        android:textColor="#333333"
+                        android:layout_marginTop="8dp" />
+                </LinearLayout>
+
+                <!-- 2: Lịch sử rút tiền -->
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_columnWeight="1"
+                    android:orientation="vertical"
+                    android:gravity="center"
+                    android:padding="12dp">
+
+                    <ImageView
+                        android:layout_width="32dp"
+                        android:layout_height="32dp"
+                        android:src="@drawable/ic_card_history"
+                        app:tint="#00A94F" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Lịch sử rút tiền"
+                        android:textSize="12sp"
+                        android:gravity="center"
+                        android:textColor="#333333"
+                        android:layout_marginTop="8dp" />
+                </LinearLayout>
+
+                <!-- 3: Mở thẻ mới -->
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_columnWeight="1"
+                    android:orientation="vertical"
+                    android:gravity="center"
+                    android:padding="12dp">
+
+                    <ImageView
+                        android:layout_width="32dp"
+                        android:layout_height="32dp"
+                        android:src="@drawable/ic_card_add"
+                        app:tint="#00A94F" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Mở thẻ mới"
+                        android:textSize="12sp"
+                        android:gravity="center"
+                        android:textColor="#333333"
+                        android:layout_marginTop="8dp" />
+                </LinearLayout>
+            </GridLayout>
+
+            <!-- Danh sách thẻ -->
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Tất cả dịch vụ"
-                android:textColor="#00A94F"
-                android:textSize="14sp" />
-        </LinearLayout>
+                android:text="Danh sách thẻ của tôi (1)"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:layout_marginTop="24dp"
+                android:textColor="#000000" />
 
-        <!-- Grid dịch vụ -->
-        <GridLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:columnCount="3"
-            android:layout_marginTop="12dp">
+            <!-- Hình ảnh thẻ -->
+            <ImageView
+                android:id="@+id/cardImage"
+                android:layout_width="match_parent"
+                android:layout_height="180dp"
+                android:layout_marginTop="12dp"
+                android:src="@drawable/card"
+                android:scaleType="fitXY"
+                android:background="@drawable/card_background" />
 
-            <!-- 1 dịch vụ -->
-            <LinearLayout
-                android:layout_width="0dp"
+            <!-- Số thẻ -->
+            <TextView
+                android:id="@+id/cardNumber"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_columnWeight="1"
-                android:orientation="vertical"
-                android:gravity="center"
-                android:padding="12dp">
+                android:text="4189 8241 8981 4180"
+                android:textStyle="bold"
+                android:textSize="18sp"
+                android:textColor="#000000"
+                android:layout_marginTop="12dp"
+                android:gravity="center" />
 
-                <ImageView
-                    android:layout_width="32dp"
-                    android:layout_height="32dp"
-                    android:src="@drawable/ic_card_add"
-                    app:tint="#00A94F" />
-                <!--                    android:tint="#00A94F" />-->
-                <TextView
-                    android:layout_width="wrap_content"
+            <!-- Tên chủ thẻ -->
+            <TextView
+                android:id="@+id/cardHolder"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="PHAN VAN HOANG"
+                android:textSize="14sp"
+                android:textColor="#666666"
+                android:layout_marginTop="4dp"
+                android:gravity="center" />
+
+            <!-- Nút thao tác -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center"
+                android:layout_marginTop="20dp"
+                android:weightSum="3">
+
+                <Button
+                    android:id="@+id/btnLock"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:text="Phát hành thẻ online"
-                    android:textSize="12sp"
-                    android:gravity="center"
-                    android:textColor="#333333"
-                    android:layout_marginTop="8dp" />
+                    android:layout_weight="1"
+                    android:text="Khóa/Mở thẻ"
+                    android:backgroundTint="#00A94F"
+                    android:textColor="#FFFFFF" />
+
+                <Button
+                    android:id="@+id/btnPin"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Home"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:backgroundTint="#00A94F"
+                    android:textColor="#FFFFFF" />
+
+                <Button
+                    android:id="@+id/btnMore"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Đặt mã PIN mới"
+                    android:backgroundTint="#00A94F"
+                    android:textColor="#FFFFFF" />
             </LinearLayout>
 
-            <!-- Lặp lại 5 dịch vụ khác theo mẫu -->
-
-        </GridLayout>
-
-        <!-- Danh sách thẻ -->
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Danh sách thẻ của tôi (1)"
-            android:textSize="16sp"
-            android:textStyle="bold"
-            android:layout_marginTop="24dp"
-            android:textColor="#000000" />
-
-        <!-- Thẻ -->
-        <ImageView
-            android:id="@+id/cardImage"
-            android:layout_width="match_parent"
-            android:layout_height="180dp"
-            android:layout_marginTop="12dp"
-            android:src="@drawable/card_sample"
-            android:scaleType="fitXY"
-            android:background="@drawable/card_background" />
-
-        <!-- Số thẻ (canh giữa) -->
-        <TextView
-            android:id="@+id/cardNumber"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="4189 8241 8981 4180"
-            android:textStyle="bold"
-            android:textSize="18sp"
-            android:textColor="#000000"
-            android:layout_marginTop="12dp"
-            android:gravity="center" />
-
-        <!-- Tên chủ thẻ (canh giữa) -->
-        <TextView
-            android:id="@+id/cardHolder"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="PHAN VAN HOANG"
-            android:textSize="14sp"
-            android:textColor="#666666"
-            android:layout_marginTop="4dp"
-            android:gravity="center" />
-
-        <!-- Nút -->
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center"
-            android:layout_marginTop="20dp"
-            android:weightSum="3">
-
-            <Button
-                android:id="@+id/btnLock"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Khóa/Mở thẻ"
-                android:backgroundTint="#00A94F"
-                android:textColor="#FFFFFF" />
-
-            <Button
-                android:id="@+id/btnPin"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Đặt mã PIN mới"
-                android:layout_marginStart="8dp"
-                android:layout_marginEnd="8dp"
-                android:backgroundTint="#00A94F"
-                android:textColor="#FFFFFF" />
-
-            <Button
-                android:id="@+id/btnMore"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Xem thêm"
-                android:backgroundTint="#00A94F"
-                android:textColor="#FFFFFF" />
         </LinearLayout>
-    </LinearLayout>
-</ScrollView>
+    </androidx.cardview.widget.CardView>
+</androidx.constraintlayout.widget.ConstraintLayout>
