@@ -3,6 +3,7 @@ package com.mobile.bebankproject.service;
 import com.mobile.bebankproject.dto.AccountRegister;
 import com.mobile.bebankproject.dto.AccountResponse;
 import com.mobile.bebankproject.dto.FundTransferPreview;
+import com.mobile.bebankproject.dto.UpdateProfileRequest;
 
 import java.util.List;
 
@@ -16,7 +17,13 @@ public interface AccountService {
     boolean changePassword(String pass1, String pass2);
     AccountResponse createAccount(AccountRegister accountRegister);
     List<AccountResponse> getAllAccounts();
+    
+    // New methods for password change functionality
+    boolean validateAccountAndPassword(String accountNumber, String currentPass);
+    boolean changePasswordLogined(String accountNumber, String newPass);
 
+    // New method for closing account
+    boolean closeAccount(String accountNumber, String password);
 
     /**
      * Validates fund transfer details and returns a preview for user confirmation.
@@ -43,4 +50,6 @@ public interface AccountService {
      * @param description
      */
     void requestFirebaseOtp(String fromAccountNumber, String toAccountNumber, double amount, String description);
+
+    boolean updateProfile(UpdateProfileRequest request);
 }
