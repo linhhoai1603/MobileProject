@@ -9,7 +9,7 @@ public class RetrofitClient {
     // Base URL configuration
     // For emulator: use "http://10.0.2.2:8080/"
     // For real device: use your computer's IP address (e.g., "http://192.168.1.5:8080/")
-    private static final String BASE_URL = "http://192.168.1.4:8080/api/"; // thay bằng ip wifi
+    private static final String BASE_URL = "http://10.0.2.2:8080/api/"; // thay bằng ip wifi
     // vào cmd, gõ ipconfig -> xem dòng wifi... inet4: ...., mac ifconfig ->>
     private static RetrofitClient instance;
     private final Retrofit retrofit;
