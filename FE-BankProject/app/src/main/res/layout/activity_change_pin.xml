@@ -79,12 +79,12 @@
         app:layout_constraintEnd_toEndOf="parent"/>
 
     <!-- Nút quên mã PIN -->
-    <TextView
-        android:id="@+id/tvForgotPin"
+    <Button
+        android:id="@+id/btnForgotPin"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Quên mã PIN?"
-        android:textColor="#2196F3"
+        android:textColor="#FFFFFF"
         android:textStyle="bold"
         android:layout_marginTop="16dp"
         android:clickable="true"
