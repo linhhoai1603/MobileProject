@@ -37,4 +37,16 @@ public interface ApiService {
 
     @PUT("account/update-profile")
     Call<Void> updateProfile(@Body UpdateProfileRequest request);
+
+    @POST("api/cards/change-pin")
+    Call<Void> changePin(@Body Map<String, String> request);
+
+    @POST("api/cards/forgot-pin/send-otp")
+    Call<Void> sendOtpForPin(@Body Map<String, String> request);
+
+    @POST("api/cards/forgot-pin/verify-otp")
+    Call<Void> verifyOtpForPin(@Body Map<String, String> request);
+
+    @POST("api/cards/forgot-pin/reset-pin")
+    Call<Void> resetPin(@Body Map<String, String> request);
 }
