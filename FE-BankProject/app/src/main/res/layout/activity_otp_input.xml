@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/background">
+
+    <!-- Status Bar -->
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="24dp"
+        android:background="@color/primary"
+        android:paddingHorizontal="16dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_centerVertical="true"
+            android:text="11:32"
+            android:textColor="@color/white"
+            android:textSize="14sp"/>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentEnd="true"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="18dp"
+                android:layout_height="18dp"
+                android:src="@drawable/ic_signal"
+                android:layout_marginEnd="4dp"/>
+
+            <ImageView
+                android:layout_width="18dp"
+                android:layout_height="18dp"
+                android:src="@drawable/ic_wifi"
+                android:layout_marginEnd="4dp"/>
+
+            <ImageView
+                android:layout_width="18dp"
+                android:layout_height="18dp"
+                android:src="@drawable/ic_battery"/>
+        </LinearLayout>
+    </RelativeLayout>
+
+    <!-- Toolbar -->
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:background="@color/primary"
+        android:paddingHorizontal="16dp">
+
+        <ImageButton
+            android:id="@+id/backButton"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_centerVertical="true"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:src="@drawable/ic_back"
+            android:tint="@color/white"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="Lấy mã OTP"
+            android:textColor="@color/white"
+            android:textSize="20sp"/>
+
+        <ImageButton
+            android:id="@+id/homeButton"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:src="@drawable/ic_home"
+            android:tint="@color/white"/>
+    </RelativeLayout>
+
+    <!-- Nội dung phía trên -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="vertical"
+        android:background="@color/background"
+        android:paddingLeft="24dp"
+        android:paddingRight="24dp">
+
+        <TextView
+            android:id="@+id/tvGuide"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Mã xác thực giao dịch (OTP) có hiệu lực trong vòng 95 giây"
+            android:textColor="@color/black"
+            android:textSize="15sp"
+            android:layout_marginTop="32dp"
+            android:gravity="center"
+            android:textAlignment="center"/>
+
+        <!-- Mã OTP hiển thị -->
+        <TextView
+            android:id="@+id/tvOtpCode"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="5 1 7 4   8 8 0 1"
+            android:textColor="@color/primary"
+            android:textSize="32sp"
+            android:textStyle="bold"
+            android:gravity="center"
+            android:background="@drawable/bg_card"
+            android:layout_marginTop="16dp"
+            android:padding="12dp"
+            android:letterSpacing="0.2"/>
+
+        <!-- Nút nhập OTP -->
+        <Button
+            android:id="@+id/btnInputOtp"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:text="Nhập OTP"
+            android:textColor="@color/white"
+            android:backgroundTint="@color/primary"
+            android:textStyle="bold"
+            android:textSize="16sp"
+            android:background="@drawable/bg_button_confirm"
+            android:layout_marginTop="16dp"/>
+
+        <!-- Ô nhập OTP (ẩn/hiện tùy trạng thái) -->
+        <EditText
+            android:id="@+id/edtOtpInput"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:background="@drawable/bg_card"
+            android:inputType="number"
+            android:gravity="center"
+            android:textSize="20sp"
+            android:layout_marginTop="16dp"
+            android:hint=""
+            android:visibility="visible"/>
+
+    </LinearLayout>
+
+    <!-- Confirm Button Section -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="@color/white"
+        android:padding="16dp">
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:background="@color/primary"
+            android:layout_marginBottom="16dp"/>
+
+        <Button
+            android:id="@+id/btnContinue"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:text="Tiếp tục"
+            android:textColor="@color/white"
+            android:backgroundTint="@color/primary"
+            android:textStyle="bold"
+            android:textSize="16sp"
+            android:background="@drawable/bg_button_confirm"
+            android:enabled="false"
+            android:alpha="0.5"/>
+    </LinearLayout>
+</LinearLayout> 

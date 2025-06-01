@@ -7,7 +7,9 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
+import androidx.viewpager2.widget.ViewPager2;
+import com.google.android.material.tabs.TabLayout;
+import com.google.android.material.tabs.TabLayoutMediator;
 import com.google.android.material.button.MaterialButton;
 
 public class TopUpPhoneActivity extends AppCompatActivity {
@@ -20,32 +22,47 @@ public class TopUpPhoneActivity extends AppCompatActivity {
     private View contactsButton;
     private View autoTopupLayout;
     private long selectedAmount = 0;
+    private ViewPager2 viewPager;
+    private TabLayout tabLayout;
+
+    private final String[] tabTitles = new String[]{"Thẻ điện thoại", "Data 4G"};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_top_up_phone);
 
-        // Initialize toolbar
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setTitle("Nạp tiền điện thoại");
-
         // Initialize views
+        initViews();
+        setupViewPager();
+        setupTabLayout();
+
+        // Set click listeners
+        setClickListeners();
+    }
+
+    private void initViews() {
         phoneNumberInput = findViewById(R.id.phoneNumberInput);
         totalAmountText = findViewById(R.id.totalAmountText);
         topUpButton = findViewById(R.id.topUpButton);
         contactsButton = findViewById(R.id.contactsButton);
         autoTopupLayout = findViewById(R.id.autoTopupLayout);
+        viewPager = findViewById(R.id.viewPager);
+        tabLayout = findViewById(R.id.tabLayout);
 
         // Initialize amount buttons
         initializeAmountButtons();
+    }
 
-        // Set click listeners
-        topUpButton.setOnClickListener(v -> handleTopUp());
-        contactsButton.setOnClickListener(v -> openContacts());
-        autoTopupLayout.setOnClickListener(v -> openAutoTopup());
+    private void setupViewPager() {
+        TopUpPagerAdapter pagerAdapter = new TopUpPagerAdapter(this);
+        viewPager.setAdapter(pagerAdapter);
+    }
+
+    private void setupTabLayout() {
+        new TabLayoutMediator(tabLayout, viewPager,
+            (tab, position) -> tab.setText(tabTitles[position])
+        ).attach();
     }
 
     private void initializeAmountButtons() {
@@ -76,6 +93,19 @@ public class TopUpPhoneActivity extends AppCompatActivity {
         amount500k.setOnClickListener(amountClickListener);
     }
 
+    private void setClickListeners() {
+        topUpButton.setOnClickListener(v -> handleTopUp());
+        contactsButton.setOnClickListener(v -> openContacts());
+        autoTopupLayout.setOnClickListener(v -> openAutoTopup());
+
+        findViewById(R.id.backButton).setOnClickListener(v -> onBackPressed());
+        findViewById(R.id.homeButton).setOnClickListener(v -> finish());
+    }
+
+    private void updateTotalAmount() {
+        totalAmountText.setText(String.format("%,dđ", selectedAmount));
+    }
+
     private void updateButtonStates(MaterialButton selectedButton) {
         MaterialButton[] buttons = {amount10k, amount20k, amount30k, amount50k, 
                                   amount100k, amount200k, amount300k, amount500k};
@@ -85,10 +115,6 @@ public class TopUpPhoneActivity extends AppCompatActivity {
                 button == selectedButton ? R.color.selected_amount_button : R.color.unselected_amount_button
             ));
         }
-    }
-
-    private void updateTotalAmount() {
-        totalAmountText.setText(String.format("%,d đ", selectedAmount));
     }
 
     private void handleTopUp() {
@@ -109,11 +135,5 @@ public class TopUpPhoneActivity extends AppCompatActivity {
     private void openAutoTopup() {
         // Handle opening auto top-up settings
         Toast.makeText(this, "Mở cài đặt nạp tiền tự động", Toast.LENGTH_SHORT).show();
-    }
-
-    @Override
-    public boolean onSupportNavigateUp() {
-        onBackPressed();
-        return true;
     }
 } 

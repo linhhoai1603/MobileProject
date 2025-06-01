@@ -1,220 +1,375 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:background="@color/white">
 
-    <androidx.appcompat.widget.Toolbar
-        android:id="@+id/toolbar"
+    <!-- Status Bar -->
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        android:background="@color/green_500"
-        android:elevation="4dp"
-        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-        app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
+        android:layout_height="24dp"
+        android:background="@color/primary"
+        android:paddingHorizontal="16dp">
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_centerVertical="true"
+            android:text="11:32"
+            android:textColor="@color/white"
+            android:textSize="14sp"/>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentEnd="true"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="18dp"
+                android:layout_height="18dp"
+                android:src="@drawable/ic_signal"
+                android:layout_marginEnd="4dp"/>
+
+            <ImageView
+                android:layout_width="18dp"
+                android:layout_height="18dp"
+                android:src="@drawable/ic_wifi"
+                android:layout_marginEnd="4dp"/>
+
+            <ImageView
+                android:layout_width="18dp"
+                android:layout_height="18dp"
+                android:src="@drawable/ic_battery"/>
+        </LinearLayout>
+    </RelativeLayout>
+
+    <!-- Toolbar -->
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:background="@color/primary"
+        android:paddingHorizontal="16dp">
+
+        <ImageButton
+            android:id="@+id/backButton"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_centerVertical="true"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:src="@drawable/ic_back"
+            android:tint="@color/white"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="Nạp tiền điện thoại"
+            android:textColor="@color/white"
+            android:textSize="20sp"/>
+
+        <ImageButton
+            android:id="@+id/homeButton"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:src="@drawable/ic_home"
+            android:tint="@color/white"/>
+    </RelativeLayout>
+
+    <!-- Tab Layout -->
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/tabLayout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@android:color/white"
-        app:tabTextColor="@color/black"
-        app:tabSelectedTextColor="@color/green_500"
-        app:tabIndicatorColor="@color/green_500">
+        android:layout_height="48dp"
+        android:background="@color/white"
+        app:tabTextColor="@color/gray"
+        app:tabSelectedTextColor="@color/primary"
+        app:tabIndicatorColor="@color/primary"
+        app:tabIndicatorHeight="2dp"
+        app:tabMode="fixed"
+        app:tabGravity="fill">
 
         <com.google.android.material.tabs.TabItem
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Trả trước" />
+            android:text="Thẻ điện thoại"/>
 
         <com.google.android.material.tabs.TabItem
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Thẻ điện thoại" />
-
-        <com.google.android.material.tabs.TabItem
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Trả sau" />
+            android:text="Data 4G"/>
     </com.google.android.material.tabs.TabLayout>
 
-    <ScrollView
+    <!-- Content -->
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1">
+        android:layout_weight="1"
+        android:orientation="vertical"
+        android:padding="16dp">
 
+        <!-- Phone Number Card -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:padding="16dp">
+            android:background="@drawable/bg_card"
+            android:padding="12dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/rounded_border_background"
-                android:padding="12dp"
                 android:orientation="horizontal"
                 android:gravity="center_vertical">
 
-                <TextView
+                <ImageView
                     android:layout_width="24dp"
                     android:layout_height="24dp"
-                    android:gravity="center"
-                    android:text="@string/fa_mobile"
-                    android:textColor="@color/green_500"
-                    android:textSize="18sp"
-                    android:fontFamily="@font/fontawesome" />
+                    android:src="@drawable/ic_viettel"/>
 
-                <EditText
-                    android:id="@+id/phoneNumberInput"
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Tôi"
+                    android:textColor="@color/gray"
+                    android:layout_marginStart="8dp"/>
+
+                <TextView
+                    android:id="@+id/phoneNumberText"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:layout_marginStart="12dp"
-                    android:background="@null"
-                    android:hint="Nhập số điện thoại"
-                    android:inputType="phone"
-                    android:textSize="16sp" />
+                    android:text="033 505 9497"
+                    android:textColor="@color/black"
+                    android:textSize="16sp"
+                    android:layout_marginStart="8dp"/>
 
-                <TextView
+                <ImageButton
                     android:id="@+id/contactsButton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:background="?attr/selectableItemBackgroundBorderless"
-                    android:text="@string/fa_address_book"
-                    android:textColor="@color/gray"
-                    android:textSize="20sp"
-                    android:padding="8dp"
-                    android:fontFamily="@font/fontawesome" />
+                    android:src="@drawable/ic_contacts"
+                    android:padding="4dp"/>
             </LinearLayout>
+        </LinearLayout>
 
-            <GridLayout
-                android:layout_width="match_parent"
+        <!-- My Number -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Tôi"
+            android:textColor="@color/gray"
+            android:layout_marginTop="16dp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="0335059497"
+            android:textColor="@color/black"
+            android:textSize="16sp"
+            android:layout_marginTop="4dp"/>
+
+        <!-- Amount Grid -->
+        <GridLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:columnCount="3"
+            android:layout_marginTop="16dp">
+
+            <Button
+                android:id="@+id/amount10k"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:columnCount="3"
-                android:rowCount="3"
-                android:layout_marginTop="24dp">
+                android:layout_columnWeight="1"
+                android:layout_margin="4dp"
+                android:text="10.000đ"
+                android:textColor="@color/black"
+                android:backgroundTint="#E6F9F0"/>
 
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/amount10k"
-                    style="@style/AmountButton"
-                    android:text="10.000đ" />
-
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/amount20k"
-                    style="@style/AmountButton"
-                    android:text="20.000đ" />
-
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/amount30k"
-                    style="@style/AmountButton"
-                    android:text="30.000đ" />
-
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/amount50k"
-                    style="@style/AmountButton"
-                    android:text="50.000đ" />
-
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/amount100k"
-                    style="@style/AmountButton"
-                    android:text="100.000đ" />
-
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/amount200k"
-                    style="@style/AmountButton"
-                    android:text="200.000đ" />
-
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/amount300k"
-                    style="@style/AmountButton"
-                    android:text="300.000đ" />
-
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/amount500k"
-                    style="@style/AmountButton"
-                    android:text="500.000đ" />
-            </GridLayout>
-
-            <LinearLayout
-                android:id="@+id/autoTopupLayout"
-                android:layout_width="match_parent"
+            <Button
+                android:id="@+id/amount20k"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginTop="24dp"
-                android:padding="16dp"
-                android:background="@drawable/rounded_border_background">
+                android:layout_columnWeight="1"
+                android:layout_margin="4dp"
+                android:text="20.000đ"
+                android:textColor="@color/black"
+                android:backgroundTint="@color/white"/>
 
-                <TextView
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    android:gravity="center"
-                    android:text="@string/fa_clock_rotate_left"
-                    android:textColor="@color/green_500"
-                    android:textSize="18sp"
-                    android:fontFamily="@font/fontawesome" />
+            <Button
+                android:id="@+id/amount30k"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_columnWeight="1"
+                android:layout_margin="4dp"
+                android:text="30.000đ"
+                android:textColor="@color/black"
+                android:backgroundTint="@color/white"/>
 
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:layout_marginStart="12dp"
-                    android:text="Kích hoạt nạp tiền điện thoại tự động"
-                    android:textSize="14sp" />
+            <Button
+                android:id="@+id/amount50k"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_columnWeight="1"
+                android:layout_margin="4dp"
+                android:text="50.000đ"
+                android:textColor="@color/black"
+                android:backgroundTint="@color/white"/>
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/fa_chevron_right"
-                    android:textColor="@color/gray"
-                    android:textSize="18sp"
-                    android:fontFamily="@font/fontawesome" />
-            </LinearLayout>
+            <Button
+                android:id="@+id/amount100k"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_columnWeight="1"
+                android:layout_margin="4dp"
+                android:text="100.000đ"
+                android:textColor="@color/black"
+                android:backgroundTint="@color/white"/>
+
+            <Button
+                android:id="@+id/amount200k"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_columnWeight="1"
+                android:layout_margin="4dp"
+                android:text="200.000đ"
+                android:textColor="@color/black"
+                android:backgroundTint="@color/white"/>
+
+            <Button
+                android:id="@+id/amount300k"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_columnWeight="1"
+                android:layout_margin="4dp"
+                android:text="300.000đ"
+                android:textColor="@color/black"
+                android:backgroundTint="@color/white"/>
+
+            <Button
+                android:id="@+id/amount500k"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_columnWeight="1"
+                android:layout_margin="4dp"
+                android:text="500.000đ"
+                android:textColor="@color/black"
+                android:backgroundTint="@color/white"/>
+        </GridLayout>
+
+        <!-- Quantity Section -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:layout_marginTop="16dp"
+            android:background="@drawable/bg_card"
+            android:padding="12dp">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:text="Không lo bỏ lỡ khuyến mãi từ nhà mạng, tài khoản luôn còn tiền"
-                android:textSize="12sp"
-                android:textColor="@android:color/darker_gray" />
+                android:text="Số lượng"
+                android:textColor="@color/black"/>
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_weight="1"/>
+
+            <ImageButton
+                android:id="@+id/btnDecrease"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@drawable/ic_minus"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:tint="@color/black"/>
+
+            <TextView
+                android:id="@+id/tvQuantity"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="1"
+                android:textSize="16sp"
+                android:textColor="@color/black"
+                android:layout_marginHorizontal="16dp"/>
+
+            <ImageButton
+                android:id="@+id/btnIncrease"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@drawable/ic_plus"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:tint="@color/primary"/>
         </LinearLayout>
-    </ScrollView>
+    </LinearLayout>
+
+    <!-- Bottom Section -->
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/divider"/>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:padding="16dp"
-        android:background="@android:color/white"
-        android:elevation="8dp">
+        android:padding="16dp">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Tổng tiền:"
-            android:textSize="14sp" />
-
-        <TextView
-            android:id="@+id/totalAmountText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="10.000 đ"
-            android:textSize="18sp"
-            android:textStyle="bold"
-            android:textColor="@color/black"
-            android:layout_marginTop="4dp" />
-
-        <Button
-            android:id="@+id/topUpButton"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:text="Nạp tiền"
-            android:textColor="@android:color/white"
-            android:background="@drawable/rounded_button_background"
-            android:backgroundTint="@color/green_500" />
+            android:orientation="horizontal"
+            android:gravity="center_vertical">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Tổng tiền:"
+                    android:textColor="@color/gray"/>
+
+                <TextView
+                    android:id="@+id/totalAmountText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="10.000đ"
+                    android:textColor="@color/black"
+                    android:textStyle="bold"
+                    android:textSize="18sp"/>
+            </LinearLayout>
+
+            <Button
+                android:id="@+id/topUpButton"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:text="Nạp tiền"
+                android:drawableStart="@drawable/ic_money"
+                android:drawablePadding="8dp"
+                android:textColor="@color/white"
+                android:backgroundTint="@color/primary"
+                android:paddingHorizontal="24dp"/>
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="4dp"
+            android:background="@color/black"
+            android:layout_marginTop="1dp"/>
     </LinearLayout>
 </LinearLayout> 

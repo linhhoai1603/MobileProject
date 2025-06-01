@@ -15,8 +15,6 @@
     <color name="success">#4CAF50</color>
     <color name="warning">#FFC107</color>
     <color name="info">#2196F3</color>
-    
-    <!-- Thêm các màu còn thiếu -->
     <color name="green_primary">#4CAF50</color>
     <color name="green_primary_dark">#388E3C</color>
     <color name="green_secondary">#8BC34A</color>
@@ -25,6 +23,8 @@
     <color name="outline_color">#4CAF50</color>
     <color name="green_500">#4CAF50</color>
     <color name="gray_300">#E0E0E0</color>
-    <color name="selected_amount_button">#E8F5E9</color>
-    <color name="unselected_amount_button">@android:color/white</color>
+    <color name="selected_amount_button">#A5D6A7</color>
+    <color name="unselected_amount_button">#FFFFFF</color>
+    <color name="light_gray">#E0E0E0</color>
+    <color name="card">#FFFFFF</color>
 </resources>

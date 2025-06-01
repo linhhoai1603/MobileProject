@@ -1,0 +1,27 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp"
+    android:height="24dp"
+    android:viewportWidth="24"
+    android:viewportHeight="24">
+
+    <!-- Hình thẻ -->
+    <path
+        android:fillColor="#00A94F"
+        android:pathData="
+            M3,5h18a1,1 0 0,1 1,1v3H2V6a1,1 0 0,1 1,-1z
+            M2,10h20v8a1,1 0 0,1 -1,1H3a1,1 0 0,1 -1,-1v-8z
+            M4,14h4v2H4z" />
+
+<!--    &lt;!&ndash; Vòng tròn nhỏ góc dưới phải &ndash;&gt;-->
+<!--    <path-->
+<!--        android:fillColor="#FFFFFF"-->
+<!--        android:pathData="M16,13a3,3 0 1,0 6,0a3,3 0 1,0 -6,0z" />-->
+
+    <!-- Dấu cộng trong vòng tròn -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:strokeWidth="0"
+        android:pathData="
+            M18,12.5v1.5h-1.5v1h1.5v1.5h1v-1.5h1.5v-1h-1.5v-1.5h-1z" />
+
+</vector>
