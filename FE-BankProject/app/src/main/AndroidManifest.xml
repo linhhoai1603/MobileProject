@@ -31,6 +31,9 @@
             android:name=".ChangeAvatarActivity"
             android:exported="false" />
         <activity
+            android:name=".Demo"
+            android:exported="false" />
+        <activity
             android:name=".transferSuccess"
             android:exported="false" />
         <activity
@@ -64,6 +67,8 @@
         <activity
             android:name=".ChangePasswordActivity"
             android:exported="false" />
+        <activity
+            android:name=".TopUpPhoneActivity"
 		<activity
             android:name=".ChangePinActivity"
             android:exported="false" />
