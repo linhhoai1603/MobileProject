@@ -43,4 +43,23 @@
         <item name="android:paddingBottom">12dp</item>
         <item name="cornerRadius">8dp</item>
     </style>
+
+    <style name="Theme.BankApp" parent="Theme.MaterialComponents.Light.NoActionBar">
+        <!-- Status bar color -->
+        <item name="android:statusBarColor">@color/primary</item>
+        <item name="android:windowLightStatusBar">true</item>
+        
+        <!-- Primary brand color -->
+        <item name="colorPrimary">@color/primary</item>
+        <item name="colorPrimaryVariant">@color/primary_dark</item>
+        <item name="colorOnPrimary">@color/white</item>
+        
+        <!-- Secondary brand color -->
+        <item name="colorSecondary">@color/primary</item>
+        <item name="colorSecondaryVariant">@color/primary_dark</item>
+        <item name="colorOnSecondary">@color/white</item>
+        
+        <!-- Background color -->
+        <item name="android:windowBackground">@color/white</item>
+    </style>
 </resources>

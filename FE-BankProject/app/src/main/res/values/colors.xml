@@ -21,4 +21,10 @@
     <color name="green_secondary_dark">#689F38</color>
     <color name="gray">#757575</color>
     <color name="outline_color">#4CAF50</color>
+    <color name="green_500">#4CAF50</color>
+    <color name="gray_300">#E0E0E0</color>
+    <color name="selected_amount_button">#A5D6A7</color>
+    <color name="unselected_amount_button">#FFFFFF</color>
+    <color name="light_gray">#E0E0E0</color>
+    <color name="card">#FFFFFF</color>
 </resources>
