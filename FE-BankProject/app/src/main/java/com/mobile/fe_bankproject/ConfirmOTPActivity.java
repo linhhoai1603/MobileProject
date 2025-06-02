@@ -88,7 +88,7 @@ public class ConfirmOTPActivity extends AppCompatActivity {
         request.put("email", email);
         request.put("otp", etOTP.getText().toString());
 
-        RetrofitClient.getInstance().getApiService().confirmAccount(request).enqueue(new Callback<Void>() {
+        RetrofitClient.getInstance().getAccountService().confirmAccount(request).enqueue(new Callback<Void>() {
             @Override
             public void onResponse(Call<Void> call, Response<Void> response) {
                 if (response.isSuccessful()) {
@@ -123,7 +123,7 @@ public class ConfirmOTPActivity extends AppCompatActivity {
     }
 
     private void resendOTP() {
-        RetrofitClient.getInstance().getApiService().resendOTP(email).enqueue(new Callback<Void>() {
+        RetrofitClient.getInstance().getAccountService().resendOTP(email).enqueue(new Callback<Void>() {
             @Override
             public void onResponse(Call<Void> call, Response<Void> response) {
                 if (response.isSuccessful()) {

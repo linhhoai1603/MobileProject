@@ -22,6 +22,7 @@ import java.io.InputStream;
 import java.io.File;
 import android.graphics.BitmapFactory;
 import android.graphics.Bitmap;
+import android.widget.LinearLayout;
 
 import com.mobile.fe_bankproject.dto.AccountResponse;
 
@@ -130,6 +131,20 @@ public class MainActivity extends AppCompatActivity implements MenuFragment.Menu
         // Load saved images on startup
         loadImageFromInternalStorage();
         loadBackgroundFromInternalStorage();
+
+        LinearLayout btnPhoneRecharge = findViewById(R.id.btnPhoneRecharge);
+        btnPhoneRecharge.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Chuyển sang giao diện nạp tiền điện thoại (RechargeFragment)
+                getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.menu_fragment_container, new com.mobile.fe_bankproject.ui.RechargeFragment())
+                    .addToBackStack(null)
+                    .commit();
+                menuFragmentContainer.setVisibility(View.VISIBLE);
+                overlay.setVisibility(View.VISIBLE);
+            }
+        });
     }
 
     private void showMenuFragment() {

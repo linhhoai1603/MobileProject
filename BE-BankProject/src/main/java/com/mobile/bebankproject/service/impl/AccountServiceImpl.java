@@ -52,18 +52,6 @@ public class AccountServiceImpl implements AccountService {
     private static final long OTP_VALID_DURATION = 5; // minutes
 
     @Override
-    public void logout() {
-        // Implementation for manual logout
-        // This could involve clearing session data, etc.
-    }
-
-    @Override
-    public void autoLogout() {
-        // Implementation for automatic logout after session timeout
-        // This could involve checking session expiration and logging out if needed
-    }
-
-    @Override
     public AccountResponse login(String phone, String password) {
         Account account = accountRepository.findByPhone(phone)
                 .orElseThrow(() -> new RuntimeException("Account not found"));

@@ -9,6 +9,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import com.mobile.fe_bankproject.dto.ChangePasswordRequest;
+import com.mobile.fe_bankproject.network.AccountService;
 import com.mobile.fe_bankproject.network.RetrofitClient;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -22,7 +23,7 @@ public class ChangePasswordActivity extends AppCompatActivity {
     private TextInputLayout tilNewPassword;
     private TextInputLayout tilConfirmNewPassword;
     private Button btnChangePassword;
-    private com.mobile.fe_bankproject.network.ApiService apiService;
+    private AccountService apiService;
     private String accountNumber;
 
     @Override
@@ -38,7 +39,7 @@ public class ChangePasswordActivity extends AppCompatActivity {
             return;
         }
 
-        apiService = RetrofitClient.getInstance().getApiService();
+        apiService = RetrofitClient.getInstance().getAccountService();
         
         // Initialize views
         etCurrentPassword = findViewById(R.id.etCurrentPassword);
