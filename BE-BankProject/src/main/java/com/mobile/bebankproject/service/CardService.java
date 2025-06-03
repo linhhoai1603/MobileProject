@@ -3,54 +3,70 @@ package com.mobile.bebankproject.service;
 import com.mobile.bebankproject.model.Card;
 import com.mobile.bebankproject.model.CardStatus;
 import com.mobile.bebankproject.repository.CardRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;  // hoặc dùng mã hóa khác
+import com.mobile.bebankproject.exception.CardNotFoundException;
+import com.mobile.bebankproject.exception.InvalidPinException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
-import java.util.Optional;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class CardService {
 
     private final CardRepository cardRepository;
-    private final BCryptPasswordEncoder passwordEncoder;
+    private final PasswordEncoder passwordEncoder;
 
-    @Autowired
-    public CardService(CardRepository cardRepository) {
+    public CardService(CardRepository cardRepository, PasswordEncoder passwordEncoder) {
         this.cardRepository = cardRepository;
-        this.passwordEncoder = new BCryptPasswordEncoder();
+        this.passwordEncoder = passwordEncoder;
     }
 
-    // Tìm thẻ theo số thẻ
-    public Optional<Card> findByNumber(String number) {
-        return cardRepository.findByNumber(number);
+    public Card getCardByNumber(String cardNumber) {
+        return cardRepository.findByCardNumber(cardNumber)
+            .orElseThrow(() -> new CardNotFoundException("Thẻ không tồn tại"));
     }
 
-    // Kiểm tra PIN có đúng không (so sánh với mã hóa)
-    public boolean checkPIN(Card card, String rawPIN) {
-        return passwordEncoder.matches(rawPIN, card.getPIN());
+    @Transactional
+    public void lockCard(String cardNumber, String pin) {
+        Card card = getCardByNumber(cardNumber);
+        if (!passwordEncoder.matches(pin, card.getPin())) {
+            throw new InvalidPinException("Mã PIN không đúng");
+        }
+        card.setStatus(CardStatus.LOCKED);
+        cardRepository.save(card);
     }
 
-    // Đổi PIN (mã hóa PIN mới rồi lưu)
-    public boolean changePIN(String cardNumber, String oldPIN, String newPIN) {
-        Optional<Card> optCard = cardRepository.findByNumber(cardNumber);
-        if (optCard.isEmpty()) return false;
+    @Transactional
+    public void unlockCard(String cardNumber, String pin) {
+        Card card = getCardByNumber(cardNumber);
+        if (!passwordEncoder.matches(pin, card.getPin())) {
+            throw new InvalidPinException("Mã PIN không đúng");
+        }
+        card.setStatus(CardStatus.ACTIVE);
+        cardRepository.save(card);
+    }
 
-        Card card = optCard.get();
+    public boolean verifyPin(String cardNumber, String pin) {
+        Card card = getCardByNumber(cardNumber);
+        return passwordEncoder.matches(pin, card.getPin());
+    }
+
+    @Transactional
+    public boolean changePin(String cardNumber, String oldPin, String newPin) {
+        Card card = getCardByNumber(cardNumber);
 
         // Kiểm tra trạng thái thẻ
-        if (card.getCardStatus() != CardStatus.ACTIVE) {
+        if (card.getStatus() != CardStatus.ACTIVE) {
             return false;  // chỉ cho đổi PIN khi thẻ active
         }
 
         // Kiểm tra PIN cũ đúng không
-        if (!checkPIN(card, oldPIN)) {
+        if (!passwordEncoder.matches(oldPin, card.getPin())) {
             return false;
         }
 
         // Mã hóa PIN mới rồi lưu
-        String encodedNewPIN = passwordEncoder.encode(newPIN);
-        card.setPIN(encodedNewPIN);
+        String encodedNewPin = passwordEncoder.encode(newPin);
+        card.setPin(encodedNewPin);
 
         cardRepository.save(card);
         return true;
