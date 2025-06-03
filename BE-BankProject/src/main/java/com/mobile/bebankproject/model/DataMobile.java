@@ -14,6 +14,7 @@ public class DataMobile {
     int quantity; // mb
     int validDate; // days
     double price;
+    int inStock;
     @Enumerated(EnumType.STRING)
     TelcoProvider telcoProvider;
 }

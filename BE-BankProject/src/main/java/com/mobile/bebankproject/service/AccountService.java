@@ -8,8 +8,6 @@ import com.mobile.bebankproject.dto.UpdateProfileRequest;
 import java.util.List;
 
 public interface AccountService {
-    void logout();
-    void autoLogout();
     AccountResponse login(String phone, String password);
     boolean confirmAccount(String email, String otp);
     void sendOTPToChangePassword(String email);

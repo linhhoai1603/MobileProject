@@ -5,7 +5,6 @@ import com.mobile.fe_bankproject.dto.AccountRegister;
 import com.mobile.fe_bankproject.dto.AccountResponse;
 import com.mobile.fe_bankproject.dto.CardResponse;
 import com.mobile.fe_bankproject.dto.ChangePasswordRequest;
-import com.mobile.fe_bankproject.dto.OTPVerifyRequest;
 import com.mobile.fe_bankproject.dto.UpdateProfileRequest;
 
 import java.util.Map;
@@ -18,7 +17,7 @@ import retrofit2.http.POST;
 import retrofit2.http.PUT;
 import retrofit2.http.Path;
 
-public interface ApiService {
+public interface AccountService {
     @POST("account/login")
     Call<AccountResponse> login(@Body AccountLogin loginRequest);
 

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fillViewport="true"
@@ -22,7 +23,8 @@
             android:textColor="@color/primary"
             android:textStyle="bold"
             android:layout_gravity="center"
-            android:layout_marginBottom="24dp"/>
+            android:layout_marginBottom="24dp"
+            tools:ignore="HardcodedText" />
 
         <!-- CCCD Information -->
         <TextView
@@ -95,7 +97,70 @@
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
+            android:layout_marginTop="16dp"
+            android:hint="Tỉnh/Thành phố quê quán"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+
+            <Spinner
+                android:id="@+id/spOriginProvince"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:minHeight="48dp"
+                android:padding="12dp"
+                android:background="@android:color/white"
+                android:spinnerMode="dropdown"
+                android:popupBackground="@android:color/white"
+                android:scrollbars="vertical"
+                android:fadeScrollbars="false"
+                android:scrollbarStyle="outsideOverlay" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:hint="Quận/Huyện quê quán"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+
+            <Spinner
+                android:id="@+id/spOriginDistrict"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:minHeight="48dp"
+                android:padding="12dp"
+                android:background="@android:color/white"
+                android:spinnerMode="dropdown"
+                android:popupBackground="@android:color/white"
+                android:scrollbars="vertical"
+                android:fadeScrollbars="false"
+                android:scrollbarStyle="outsideOverlay" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:hint="Phường/Xã quê quán"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+
+            <Spinner
+                android:id="@+id/spOriginWard"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:minHeight="48dp"
+                android:padding="12dp"
+                android:background="@android:color/white"
+                android:spinnerMode="dropdown"
+                android:popupBackground="@android:color/white"
+                android:scrollbars="vertical"
+                android:fadeScrollbars="false"
+                android:scrollbarStyle="outsideOverlay" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
 
             <com.google.android.material.textfield.TextInputEditText
@@ -103,51 +168,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Đường/Phố"
-                android:inputType="text"
-                android:background="@android:color/white"/>
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/etOriginWard"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Phường/Xã"
-                android:inputType="text"
-                android:background="@android:color/white"/>
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/etOriginDistrict"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Quận/Huyện"
-                android:inputType="text"
-                android:background="@android:color/white"/>
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/etOriginCity"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Tỉnh/Thành phố"
                 android:inputType="text"
                 android:background="@android:color/white"/>
         </com.google.android.material.textfield.TextInputLayout>
@@ -166,7 +186,70 @@
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
+            android:layout_marginTop="16dp"
+            android:hint="Tỉnh/Thành phố nơi thường trú"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+
+            <Spinner
+                android:id="@+id/spResidenceProvince"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:minHeight="48dp"
+                android:padding="12dp"
+                android:background="@android:color/white"
+                android:spinnerMode="dropdown"
+                android:popupBackground="@android:color/white"
+                android:scrollbars="vertical"
+                android:fadeScrollbars="false"
+                android:scrollbarStyle="outsideOverlay" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:hint="Quận/Huyện nơi thường trú"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+
+            <Spinner
+                android:id="@+id/spResidenceDistrict"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:minHeight="48dp"
+                android:padding="12dp"
+                android:background="@android:color/white"
+                android:spinnerMode="dropdown"
+                android:popupBackground="@android:color/white"
+                android:scrollbars="vertical"
+                android:fadeScrollbars="false"
+                android:scrollbarStyle="outsideOverlay" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:hint="Phường/Xã nơi thường trú"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+
+            <Spinner
+                android:id="@+id/spResidenceWard"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:minHeight="48dp"
+                android:padding="12dp"
+                android:background="@android:color/white"
+                android:spinnerMode="dropdown"
+                android:popupBackground="@android:color/white"
+                android:scrollbars="vertical"
+                android:fadeScrollbars="false"
+                android:scrollbarStyle="outsideOverlay" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
 
             <com.google.android.material.textfield.TextInputEditText
@@ -174,51 +257,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Đường/Phố"
-                android:inputType="text"
-                android:background="@android:color/white"/>
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/etResidenceWard"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Phường/Xã"
-                android:inputType="text"
-                android:background="@android:color/white"/>
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/etResidenceDistrict"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Quận/Huyện"
-                android:inputType="text"
-                android:background="@android:color/white"/>
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/etResidenceCity"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Tỉnh/Thành phố"
                 android:inputType="text"
                 android:background="@android:color/white"/>
         </com.google.android.material.textfield.TextInputLayout>
@@ -265,29 +303,26 @@
                 android:background="@android:color/white"/>
         </com.google.android.material.textfield.TextInputLayout>
 
-        <RadioGroup
-            android:id="@+id/rgGender"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
             android:layout_marginBottom="8dp"
-            android:background="@android:color/white"
-            android:padding="8dp">
+            android:orientation="vertical">
 
-            <RadioButton
-                android:id="@+id/rbMale"
+            <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Nam"
-                android:textColor="#1976D2"/>
+                android:layout_marginBottom="4dp"
+                android:text="Giới tính" />
 
-            <RadioButton
-                android:id="@+id/rbFemale"
-                android:layout_width="wrap_content"
+            <Spinner
+                android:id="@+id/spGender"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Nữ"
-                android:textColor="#1976D2"/>
-        </RadioGroup>
+                android:minHeight="48dp"
+                android:popupBackground="@android:color/white"
+                android:spinnerMode="dropdown" />
+        </LinearLayout>
 
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
@@ -318,6 +353,23 @@
                 android:inputType="phone"
                 android:background="@android:color/white"/>
         </com.google.android.material.textfield.TextInputLayout>
+
+        <!-- Address Selection -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Địa chỉ"
+            android:textColor="@color/primary"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="8dp"/>
+
+        <FrameLayout
+            android:id="@+id/addressContainer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"/>
 
         <!-- Account Information -->
         <TextView
@@ -368,6 +420,27 @@
             android:textSize="18sp"
             android:backgroundTint="@color/primary"
             android:textColor="@color/white"/>
+
+        <!-- Login Link -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:layout_marginTop="16dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Đã có tài khoản? "/>
+
+            <TextView
+                android:id="@+id/loginLink"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Đăng nhập"
+                android:textColor="@color/primary"/>
+        </LinearLayout>
 
     </LinearLayout>
 </ScrollView>

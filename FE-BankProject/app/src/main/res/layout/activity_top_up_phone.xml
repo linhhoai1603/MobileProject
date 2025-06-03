@@ -108,6 +108,13 @@
             android:text="Data 4G"/>
     </com.google.android.material.tabs.TabLayout>
 
+    <!-- ViewPager2 -->
+    <androidx.viewpager2.widget.ViewPager2
+        android:id="@+id/viewPager"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"/>
+
     <!-- Content -->
     <LinearLayout
         android:layout_width="match_parent"
@@ -142,15 +149,18 @@
                     android:textColor="@color/gray"
                     android:layout_marginStart="8dp"/>
 
-                <TextView
-                    android:id="@+id/phoneNumberText"
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/phoneNumberInput"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="033 505 9497"
+                    android:hint="Nhập số điện thoại"
+                    android:inputType="phone"
+                    android:maxLength="10"
                     android:textColor="@color/black"
                     android:textSize="16sp"
-                    android:layout_marginStart="8dp"/>
+                    android:layout_marginStart="8dp"
+                    android:background="@null"/>
 
                 <ImageButton
                     android:id="@+id/contactsButton"

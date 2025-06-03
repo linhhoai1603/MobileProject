@@ -18,6 +18,7 @@ public class TopUpFragment extends Fragment {
     private MaterialButton amount300k, amount500k;
     private View contactsButton;
     private View autoTopupLayout;
+    private MaterialButton topUpButton;
     private long selectedAmount = 0;
 
     @Nullable
@@ -33,6 +34,7 @@ public class TopUpFragment extends Fragment {
         totalAmountText = view.findViewById(R.id.totalAmountText);
         contactsButton = view.findViewById(R.id.contactsButton);
         autoTopupLayout = view.findViewById(R.id.autoTopupLayout);
+        topUpButton = view.findViewById(R.id.topUpButton);
 
         // Initialize amount buttons
         amount10k = view.findViewById(R.id.amount10k);
@@ -65,7 +67,7 @@ public class TopUpFragment extends Fragment {
 
         contactsButton.setOnClickListener(v -> openContacts());
         autoTopupLayout.setOnClickListener(v -> openAutoTopup());
-        view.findViewById(R.id.topUpButton).setOnClickListener(v -> handleTopUp());
+        topUpButton.setOnClickListener(v -> handleTopUp());
     }
 
     private void updateButtonStates(MaterialButton selectedButton) {

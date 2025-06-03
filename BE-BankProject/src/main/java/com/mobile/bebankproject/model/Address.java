@@ -13,7 +13,8 @@ public class Address {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     private String vilage;
-    private String commune;
     private String district;
+    private String ward;
+    private String street;
     private String province;
 }

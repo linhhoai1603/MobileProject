@@ -97,7 +97,7 @@ public class ConfirmPasswordFragment extends DialogFragment {
         Log.d(TAG, "Request body: " + request.toString());
 
         // Call API to close account
-        RetrofitClient.getInstance().getApiService().closeAccount(request).enqueue(new Callback<Void>() {
+        RetrofitClient.getInstance().getAccountService().closeAccount(request).enqueue(new Callback<Void>() {
             @Override
             public void onResponse(Call<Void> call, Response<Void> response) {
                 // Reset button state

@@ -1,32 +1,35 @@
 package com.mobile.fe_bankproject.network;
 
 import okhttp3.OkHttpClient;
+import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 import java.util.concurrent.TimeUnit;
 
 public class RetrofitClient {
-    // Base URL configuration
-    // For emulator: use "http://10.0.2.2:8080/"
-    // For real device: use your computer's IP address (e.g., "http://192.168.1.5:8080/")
-    private static final String BASE_URL = "http://192.168.137.1:8080/api/"; // thay bằng ip wifi
-    // vào cmd, gõ ipconfig -> xem dòng wifi... inet4: ...., mac ifconfig ->>
+    private static final String API_URL = "http://192.168.1.6:8080/api/";
     private static RetrofitClient instance;
     private final Retrofit retrofit;
 
     private RetrofitClient() {
+        // Create logging interceptor
+        HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor();
+        loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
+
+        // Create OkHttpClient with timeout and logging
         OkHttpClient okHttpClient = new OkHttpClient.Builder()
-            .connectTimeout(30, TimeUnit.SECONDS)
-            .readTimeout(30, TimeUnit.SECONDS)
-            .writeTimeout(30, TimeUnit.SECONDS)
-            .retryOnConnectionFailure(true)
-            .build();
+                .addInterceptor(loggingInterceptor)
+                .connectTimeout(30, TimeUnit.SECONDS)
+                .readTimeout(30, TimeUnit.SECONDS)
+                .writeTimeout(30, TimeUnit.SECONDS)
+                .build();
 
         retrofit = new Retrofit.Builder()
-            .baseUrl(BASE_URL)
-            .client(okHttpClient)
-            .addConverterFactory(GsonConverterFactory.create())
-            .build();
+                .baseUrl(API_URL)
+                .client(okHttpClient)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
     }
 
     public static synchronized RetrofitClient getInstance() {
@@ -36,11 +39,11 @@ public class RetrofitClient {
         return instance;
     }
 
-    public ApiService getApiService() {
-        return retrofit.create(ApiService.class);
+    public AddressService getAddressService() {
+        return retrofit.create(AddressService.class);
     }
 
-    public String getBaseUrl() {
-        return BASE_URL;
+    public AccountService getAccountService() {
+        return retrofit.create(AccountService.class);
     }
 } 
