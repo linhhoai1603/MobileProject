@@ -69,4 +69,15 @@ public class CardController {
         boolean isValid = cardService.verifyPin(cardNumber, pin);
         return ResponseEntity.ok(Map.of("isValid", isValid));
     }
+
+    @PostMapping("/create")
+    public ResponseEntity<?> createNewCard(@RequestBody Map<String, String> request) {
+        String accountNumber = request.get("accountNumber");
+        try {
+            CardResponse newCard = cardService.createNewCard(accountNumber);
+            return ResponseEntity.ok(newCard);
+        } catch (IllegalStateException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
 }

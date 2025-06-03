@@ -69,4 +69,7 @@ public interface ApiService {
 
     @POST("api/cards/verify-pin")
     Call<Map<String, Boolean>> verifyPin(@Body Map<String, String> request);
+
+    @POST("api/cards/create")
+    Call<CardResponse> createCard(@Body Map<String, String> request);
 }

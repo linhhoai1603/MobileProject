@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.LinearLayout;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -18,6 +19,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 import okhttp3.MediaType;
 import okhttp3.RequestBody;
@@ -30,12 +33,14 @@ public class CardManagementActivity extends AppCompatActivity {
     private TextView cardNumber;
     private TextView cardHolder;
     private Button btnLock;
+    private LinearLayout btnNewCard;
     private boolean isCardLocked = false;
     private ApiService apiService;
     private String originalCardNumber;
     private String originalCardHolder;
     private static final String PREF_NAME = "CardPrefs";
     private static final String KEY_CARD_NUMBER = "card_number";
+    private static final String KEY_ACCOUNT_NUMBER = "account_number";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,6 +51,7 @@ public class CardManagementActivity extends AppCompatActivity {
         cardNumber = findViewById(R.id.cardNumber);
         cardHolder = findViewById(R.id.cardHolder);
         btnLock = findViewById(R.id.btnLock);
+        btnNewCard = findViewById(R.id.btnNewCard);
         apiService = RetrofitClient.getInstance().getApiService();
 
         // Lấy số thẻ từ Intent hoặc SharedPreferences
@@ -64,12 +70,10 @@ public class CardManagementActivity extends AppCompatActivity {
 
             // Lấy thông tin thẻ từ database
             loadCardInfo(cardNum);
-        } else {
-            Toast.makeText(this, "Không tìm thấy thông tin thẻ", Toast.LENGTH_SHORT).show();
-            finish();
         }
 
         btnLock.setOnClickListener(v -> showPinDialog());
+        btnNewCard.setOnClickListener(v -> handleNewCardRequest());
     }
 
     private void loadCardInfo(String cardNum) {
@@ -91,7 +95,6 @@ public class CardManagementActivity extends AppCompatActivity {
                 } else {
                     Toast.makeText(CardManagementActivity.this, 
                         "Không thể tải thông tin thẻ", Toast.LENGTH_SHORT).show();
-                    finish();
                 }
             }
 
@@ -99,7 +102,6 @@ public class CardManagementActivity extends AppCompatActivity {
             public void onFailure(Call<CardResponse> call, Throwable t) {
                 Toast.makeText(CardManagementActivity.this, 
                     "Không thể tải thông tin thẻ: " + t.getMessage(), Toast.LENGTH_SHORT).show();
-                finish();
             }
         });
     }
@@ -114,29 +116,69 @@ public class CardManagementActivity extends AppCompatActivity {
         return formatted.toString();
     }
 
-    private void checkCardStatus() {
-        if (originalCardNumber == null) return;
-        
-        apiService.getCardStatus(originalCardNumber).enqueue(new Callback<ResponseBody>() {
+    private void handleNewCardRequest() {
+        SharedPreferences prefs = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
+        String accountNumber = prefs.getString(KEY_ACCOUNT_NUMBER, null);
+
+        if (accountNumber == null) {
+            Toast.makeText(this, "Không tìm thấy thông tin tài khoản", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        Map<String, String> request = new HashMap<>();
+        request.put("accountNumber", accountNumber);
+
+        apiService.createCard(request).enqueue(new Callback<CardResponse>() {
             @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+            public void onResponse(Call<CardResponse> call, Response<CardResponse> response) {
                 if (response.isSuccessful() && response.body() != null) {
+                    CardResponse newCard = response.body();
+                    showNewCardDialog(newCard);
+                    
+                    // Lưu số thẻ mới vào SharedPreferences
+                    SharedPreferences.Editor editor = getSharedPreferences(PREF_NAME, MODE_PRIVATE).edit();
+                    editor.putString(KEY_CARD_NUMBER, newCard.getCardNumber());
+                    editor.apply();
+                } else {
                     try {
-                        JSONObject jsonObject = new JSONObject(response.body().string());
-                        isCardLocked = "LOCKED".equals(jsonObject.getString("status"));
-                        updateCardDisplay();
-                    } catch (JSONException | IOException e) {
-                        e.printStackTrace();
+                        String errorBody = response.errorBody().string();
+                        Toast.makeText(CardManagementActivity.this, 
+                            errorBody, Toast.LENGTH_LONG).show();
+                    } catch (IOException e) {
+                        Toast.makeText(CardManagementActivity.this, 
+                            "Không thể tạo thẻ mới", Toast.LENGTH_SHORT).show();
                     }
                 }
             }
 
             @Override
-            public void onFailure(Call<ResponseBody> call, Throwable t) {
+            public void onFailure(Call<CardResponse> call, Throwable t) {
                 Toast.makeText(CardManagementActivity.this, 
-                    "Không thể kiểm tra trạng thái thẻ", Toast.LENGTH_SHORT).show();
+                    "Lỗi kết nối: " + t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    private void showNewCardDialog(CardResponse card) {
+        Dialog dialog = new Dialog(this);
+        dialog.setContentView(R.layout.dialog_new_card_info);
+
+        TextView tvCardNumber = dialog.findViewById(R.id.tvCardNumber);
+        TextView tvCardHolder = dialog.findViewById(R.id.tvCardHolder);
+        TextView tvPin = dialog.findViewById(R.id.tvPin);
+        Button btnOk = dialog.findViewById(R.id.btnOk);
+
+        tvCardNumber.setText(formatCardNumber(card.getCardNumber()));
+        tvCardHolder.setText(card.getCardHolder());
+        tvPin.setText(card.getDefaultPin());
+
+        btnOk.setOnClickListener(v -> {
+            dialog.dismiss();
+            // Refresh card info với thẻ mới
+            loadCardInfo(card.getCardNumber());
+        });
+
+        dialog.show();
     }
 
     private void showPinDialog() {

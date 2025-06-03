@@ -4,6 +4,7 @@ public class CardResponse {
     private String cardNumber;
     private String cardHolder;
     private String status;
+    private String defaultPin;
 
     public String getCardNumber() {
         return cardNumber;
@@ -27,5 +28,13 @@ public class CardResponse {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public String getDefaultPin() {
+        return defaultPin;
+    }
+
+    public void setDefaultPin(String defaultPin) {
+        this.defaultPin = defaultPin;
     }
 } 
