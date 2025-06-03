@@ -72,4 +72,7 @@ public interface ApiService {
 
     @POST("api/cards/create")
     Call<CardResponse> createCard(@Body Map<String, String> request);
+
+    @GET("account/{accountNumber}")
+    Call<AccountResponse> getAccountInfo(@Path("accountNumber") String accountNumber);
 }

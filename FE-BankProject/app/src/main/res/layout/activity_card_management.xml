@@ -73,11 +73,15 @@
 
                 <!-- 1: Thông tin thẻ -->
                 <LinearLayout
+                    android:id="@+id/btnCardInfo"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_columnWeight="1"
                     android:orientation="vertical"
                     android:gravity="center"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:background="?attr/selectableItemBackground"
                     android:padding="12dp">
 
                     <ImageView

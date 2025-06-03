@@ -14,6 +14,7 @@ import com.google.android.material.textfield.TextInputEditText;
 import com.mobile.fe_bankproject.network.RetrofitClient;
 import com.mobile.fe_bankproject.network.ApiService;
 import com.mobile.fe_bankproject.dto.CardResponse;
+import com.mobile.fe_bankproject.dto.AccountResponse;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -34,6 +35,7 @@ public class CardManagementActivity extends AppCompatActivity {
     private TextView cardHolder;
     private Button btnLock;
     private LinearLayout btnNewCard;
+    private LinearLayout btnCardInfo;
     private boolean isCardLocked = false;
     private ApiService apiService;
     private String originalCardNumber;
@@ -52,6 +54,7 @@ public class CardManagementActivity extends AppCompatActivity {
         cardHolder = findViewById(R.id.cardHolder);
         btnLock = findViewById(R.id.btnLock);
         btnNewCard = findViewById(R.id.btnNewCard);
+        btnCardInfo = findViewById(R.id.btnCardInfo);
         apiService = RetrofitClient.getInstance().getApiService();
 
         // Lấy số thẻ từ Intent hoặc SharedPreferences
@@ -74,6 +77,7 @@ public class CardManagementActivity extends AppCompatActivity {
 
         btnLock.setOnClickListener(v -> showPinDialog());
         btnNewCard.setOnClickListener(v -> handleNewCardRequest());
+        btnCardInfo.setOnClickListener(v -> showCardInfoDialog());
     }
 
     private void loadCardInfo(String cardNum) {
@@ -289,5 +293,54 @@ public class CardManagementActivity extends AppCompatActivity {
             cardHolder.setText(originalCardHolder);
             btnLock.setText("Khóa thẻ");
         }
+    }
+
+    private void showCardInfoDialog() {
+        if (originalCardNumber == null) {
+            Toast.makeText(this, "Không có thông tin thẻ", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        Dialog dialog = new Dialog(this);
+        dialog.setContentView(R.layout.dialog_card_info);
+
+        TextView tvCardNumber = dialog.findViewById(R.id.tvCardNumber);
+        TextView tvCardHolder = dialog.findViewById(R.id.tvCardHolder);
+        TextView tvStatus = dialog.findViewById(R.id.tvStatus);
+        TextView tvBalance = dialog.findViewById(R.id.tvBalance);
+        Button btnClose = dialog.findViewById(R.id.btnClose);
+
+        // Hiển thị thông tin thẻ
+        tvCardNumber.setText(formatCardNumber(originalCardNumber));
+        tvCardHolder.setText(originalCardHolder);
+        tvStatus.setText(isCardLocked ? "THẺ ĐÃ BỊ KHÓA" : "ĐANG HOẠT ĐỘNG");
+        tvStatus.setTextColor(isCardLocked ? 
+            getResources().getColor(android.R.color.holo_red_dark) : 
+            getResources().getColor(android.R.color.holo_green_dark));
+
+        // Lấy số dư từ tài khoản
+        SharedPreferences prefs = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
+        String accountNumber = prefs.getString(KEY_ACCOUNT_NUMBER, null);
+        if (accountNumber != null) {
+            apiService.getAccountInfo(accountNumber).enqueue(new Callback<AccountResponse>() {
+                @Override
+                public void onResponse(Call<AccountResponse> call, Response<AccountResponse> response) {
+                    if (response.isSuccessful() && response.body() != null) {
+                        AccountResponse account = response.body();
+                        String balance = String.format("%,d VNĐ", (long)account.getBalance());
+                        tvBalance.setText(balance);
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<AccountResponse> call, Throwable t) {
+                    tvBalance.setText("Không thể lấy thông tin số dư");
+                }
+            });
+        }
+
+        btnClose.setOnClickListener(v -> dialog.dismiss());
+
+        dialog.show();
     }
 } 
