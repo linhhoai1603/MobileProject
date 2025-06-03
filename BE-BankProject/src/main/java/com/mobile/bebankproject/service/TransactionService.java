@@ -1,4 +1,5 @@
 package com.mobile.bebankproject.service;
 
-public class MyService {
+public interface TransactionService {
+
 }

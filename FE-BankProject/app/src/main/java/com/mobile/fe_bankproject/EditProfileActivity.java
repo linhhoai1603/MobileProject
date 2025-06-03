@@ -130,7 +130,7 @@ public class EditProfileActivity extends AppCompatActivity {
         request.setPhone(etPhone.getText().toString());
         request.setPin(etPin.getText().toString());
 
-        RetrofitClient.getInstance().getApiService().updateProfile(request).enqueue(new Callback<Void>() {
+        RetrofitClient.getInstance().getAccountService().updateProfile(request).enqueue(new Callback<Void>() {
             @Override
             public void onResponse(Call<Void> call, Response<Void> response) {
                 if (response.isSuccessful()) {

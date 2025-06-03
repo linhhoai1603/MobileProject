@@ -95,7 +95,7 @@ public class ChangePinActivity extends AppCompatActivity {
         request.put("oldPIN", etOldPin.getText().toString().trim());
         request.put("newPIN", etNewPin.getText().toString().trim());
 
-        RetrofitClient.getInstance().getApiService().changePin(request).enqueue(new Callback<Void>() {
+        RetrofitClient.getInstance().getAccountService().changePin(request).enqueue(new Callback<Void>() {
             @Override
             public void onResponse(Call<Void> call, Response<Void> response) {
                 if (response.isSuccessful()) {

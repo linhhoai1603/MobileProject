@@ -28,7 +28,6 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 import java.io.IOException;
-import java.io.Serializable;
 
 public class LoginActivity extends AppCompatActivity {
     private EditText etPassword;
@@ -114,10 +113,9 @@ public class LoginActivity extends AppCompatActivity {
         Log.d("LoginDebug", "Phone: " + phone);
         Log.d("LoginDebug", "Password: " + password);
         Log.d("LoginDebug", "Request JSON: " + requestJson);
-        Log.d("LoginDebug", "Base URL: " + RetrofitClient.getInstance().getBaseUrl());
 
         // Gọi API login
-        RetrofitClient.getInstance().getApiService().login(loginRequest).enqueue(new Callback<AccountResponse>() {
+        RetrofitClient.getInstance().getAccountService().login(loginRequest).enqueue(new Callback<AccountResponse>() {
             @Override
             public void onResponse(Call<AccountResponse> call, Response<AccountResponse> response) {
                 // Log response details
