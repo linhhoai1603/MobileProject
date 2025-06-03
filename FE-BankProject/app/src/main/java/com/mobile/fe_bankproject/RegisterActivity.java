@@ -1,16 +1,18 @@
 package com.mobile.fe_bankproject;
 
+import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.RadioButton;
-import android.widget.RadioGroup;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
@@ -22,11 +24,12 @@ import androidx.core.view.WindowInsetsCompat;
 import com.google.android.material.textfield.TextInputEditText;
 import com.mobile.fe_bankproject.dto.AccountRegister;
 import com.mobile.fe_bankproject.dto.Address;
-import com.mobile.fe_bankproject.dto.Province;
-import com.mobile.fe_bankproject.dto.District;
-import com.mobile.fe_bankproject.dto.Ward;
+import com.mobile.fe_bankproject.dto.DistrictDTO;
+import com.mobile.fe_bankproject.dto.ProvinceDTO;
+import com.mobile.fe_bankproject.dto.WardDTO;
+import com.mobile.fe_bankproject.network.AccountService;
+import com.mobile.fe_bankproject.network.AddressService;
 import com.mobile.fe_bankproject.network.RetrofitClient;
-import com.mobile.fe_bankproject.dto.ProvinceResponse;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -49,19 +52,22 @@ public class RegisterActivity extends AppCompatActivity {
     private TextInputEditText etOriginStreet, etResidenceStreet;
     private TextInputEditText etFullName, etDateOfBirth, etEmail, etPhone;
     private TextInputEditText etPassword1, etPassword2;
-    private RadioGroup rgGender;
+    private Spinner spGender;
     private Button btnRegister;
     private Calendar calendar;
     private SimpleDateFormat displayDateFormat;
     private SimpleDateFormat apiDateFormat;
-    
-    private List<Province> provinces;
-    private Province selectedOriginProvince;
-    private District selectedOriginDistrict;
-    private Ward selectedOriginWard;
-    private Province selectedResidenceProvince;
-    private District selectedResidenceDistrict;
-    private Ward selectedResidenceWard;
+    private TextView loginLink;
+    private AddressService addressService;
+    private AccountService accountService;
+
+    private List<ProvinceDTO> provinces = new ArrayList<>();
+    private List<DistrictDTO> districts = new ArrayList<>();
+    private List<WardDTO> wards = new ArrayList<>();
+
+    private ArrayAdapter<ProvinceDTO> provinceAdapter;
+    private ArrayAdapter<DistrictDTO> districtAdapter;
+    private ArrayAdapter<WardDTO> wardAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,7 +91,27 @@ public class RegisterActivity extends AppCompatActivity {
         initializeViews();
         setupDatePickers();
         setupButtons();
-        loadProvinces();
+        setupGenderSpinner();
+        setupAddressSpinners();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        // Clear adapters
+        if (provinceAdapter != null) {
+            provinceAdapter.clear();
+        }
+        if (districtAdapter != null) {
+            districtAdapter.clear();
+        }
+        if (wardAdapter != null) {
+            wardAdapter.clear();
+        }
+        // Clear lists
+        provinces.clear();
+        districts.clear();
+        wards.clear();
     }
 
     private void initializeViews() {
@@ -109,7 +135,7 @@ public class RegisterActivity extends AppCompatActivity {
         // Personal Information
         etFullName = findViewById(R.id.etFullName);
         etDateOfBirth = findViewById(R.id.etDateOfBirth);
-        rgGender = findViewById(R.id.rgGender);
+        spGender = findViewById(R.id.spGender);
         etEmail = findViewById(R.id.etEmail);
         etPhone = findViewById(R.id.etPhone);
 
@@ -117,340 +143,19 @@ public class RegisterActivity extends AppCompatActivity {
         etPassword1 = findViewById(R.id.etPassword1);
         etPassword2 = findViewById(R.id.etPassword2);
         btnRegister = findViewById(R.id.btnRegister);
-
-        // Setup spinners with empty adapters initially
-        setupEmptySpinners();
-        setupSpinnerListeners();
+        loginLink = findViewById(R.id.loginLink);
+        
+        addressService = RetrofitClient.getInstance().getAddressService();
+        accountService = RetrofitClient.getInstance().getAccountService();
     }
 
-    private void setupEmptySpinners() {
-        ArrayAdapter<String> emptyAdapter = new ArrayAdapter<>(this,
+    private void setupGenderSpinner() {
+        String[] genders = {"Nam", "Nữ"};
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this,
                 android.R.layout.simple_spinner_item,
-                new ArrayList<>());
-        emptyAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-
-        spOriginProvince.setAdapter(emptyAdapter);
-        spOriginDistrict.setAdapter(emptyAdapter);
-        spOriginWard.setAdapter(emptyAdapter);
-        spResidenceProvince.setAdapter(emptyAdapter);
-        spResidenceDistrict.setAdapter(emptyAdapter);
-        spResidenceWard.setAdapter(emptyAdapter);
-
-        spOriginProvince.setEnabled(true);
-        spOriginDistrict.setEnabled(true);
-        spOriginWard.setEnabled(true);
-        spResidenceProvince.setEnabled(true);
-        spResidenceDistrict.setEnabled(true);
-        spResidenceWard.setEnabled(true);
-    }
-
-    private void setupSpinnerListeners() {
-        spOriginProvince.setOnItemSelectedListener(new android.widget.AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(android.widget.AdapterView<?> parent, View view, int position, long id) {
-                if (provinces != null && position < provinces.size()) {
-                    Province newProvince = provinces.get(position);
-                    if (selectedOriginProvince == null || !selectedOriginProvince.getCode().equals(newProvince.getCode())) {
-                        selectedOriginProvince = newProvince;
-                        selectedOriginDistrict = null;
-                        selectedOriginWard = null;
-                        spOriginDistrict.setAdapter(null);
-                        spOriginWard.setAdapter(null);
-                        loadDistricts(selectedOriginProvince.getCode(), true);
-                    }
-                }
-            }
-
-            @Override
-            public void onNothingSelected(android.widget.AdapterView<?> parent) {}
-        });
-
-        spOriginDistrict.setOnItemSelectedListener(new android.widget.AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(android.widget.AdapterView<?> parent, View view, int position, long id) {
-                if (selectedOriginProvince != null) {
-                    RetrofitClient.getInstance().getAddressService().getDistricts(selectedOriginProvince.getCode())
-                        .enqueue(new Callback<List<District>>() {
-                            @Override
-                            public void onResponse(Call<List<District>> call, Response<List<District>> response) {
-                                if (response.isSuccessful() && response.body() != null && position < response.body().size()) {
-                                    District newDistrict = response.body().get(position);
-                                    if (selectedOriginDistrict == null || !selectedOriginDistrict.getCode().equals(newDistrict.getCode())) {
-                                        selectedOriginDistrict = newDistrict;
-                                        selectedOriginWard = null;
-                                        spOriginWard.setAdapter(null);
-                                        loadWards(selectedOriginDistrict.getCode(), true);
-                                    }
-                                }
-                            }
-
-                            @Override
-                            public void onFailure(Call<List<District>> call, Throwable t) {
-                                Log.e(TAG, "Failed to load districts", t);
-                            }
-                        });
-                }
-            }
-
-            @Override
-            public void onNothingSelected(android.widget.AdapterView<?> parent) {}
-        });
-
-        spOriginWard.setOnItemSelectedListener(new android.widget.AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(android.widget.AdapterView<?> parent, View view, int position, long id) {
-                if (selectedOriginDistrict != null) {
-                    RetrofitClient.getInstance().getAddressService().getWards(selectedOriginDistrict.getCode())
-                        .enqueue(new Callback<List<Ward>>() {
-                            @Override
-                            public void onResponse(Call<List<Ward>> call, Response<List<Ward>> response) {
-                                if (response.isSuccessful() && response.body() != null && position < response.body().size()) {
-                                    selectedOriginWard = response.body().get(position);
-                                }
-                            }
-
-                            @Override
-                            public void onFailure(Call<List<Ward>> call, Throwable t) {
-                                Log.e(TAG, "Failed to load wards", t);
-                            }
-                        });
-                }
-            }
-
-            @Override
-            public void onNothingSelected(android.widget.AdapterView<?> parent) {}
-        });
-
-        spResidenceProvince.setOnItemSelectedListener(new android.widget.AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(android.widget.AdapterView<?> parent, View view, int position, long id) {
-                if (provinces != null && position < provinces.size()) {
-                    Province newProvince = provinces.get(position);
-                    if (selectedResidenceProvince == null || !selectedResidenceProvince.getCode().equals(newProvince.getCode())) {
-                        selectedResidenceProvince = newProvince;
-                        selectedResidenceDistrict = null;
-                        selectedResidenceWard = null;
-                        spResidenceDistrict.setAdapter(null);
-                        spResidenceWard.setAdapter(null);
-                        loadDistricts(selectedResidenceProvince.getCode(), false);
-                    }
-                }
-            }
-
-            @Override
-            public void onNothingSelected(android.widget.AdapterView<?> parent) {}
-        });
-
-        spResidenceDistrict.setOnItemSelectedListener(new android.widget.AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(android.widget.AdapterView<?> parent, View view, int position, long id) {
-                if (selectedResidenceProvince != null) {
-                    RetrofitClient.getInstance().getAddressService().getDistricts(selectedResidenceProvince.getCode())
-                        .enqueue(new Callback<List<District>>() {
-                            @Override
-                            public void onResponse(Call<List<District>> call, Response<List<District>> response) {
-                                if (response.isSuccessful() && response.body() != null && position < response.body().size()) {
-                                    District newDistrict = response.body().get(position);
-                                    if (selectedResidenceDistrict == null || !selectedResidenceDistrict.getCode().equals(newDistrict.getCode())) {
-                                        selectedResidenceDistrict = newDistrict;
-                                        selectedResidenceWard = null;
-                                        spResidenceWard.setAdapter(null);
-                                        loadWards(selectedResidenceDistrict.getCode(), false);
-                                    }
-                                }
-                            }
-
-                            @Override
-                            public void onFailure(Call<List<District>> call, Throwable t) {
-                                Log.e(TAG, "Failed to load districts", t);
-                            }
-                        });
-                }
-            }
-
-            @Override
-            public void onNothingSelected(android.widget.AdapterView<?> parent) {}
-        });
-
-        spResidenceWard.setOnItemSelectedListener(new android.widget.AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(android.widget.AdapterView<?> parent, View view, int position, long id) {
-                if (selectedResidenceDistrict != null) {
-                    RetrofitClient.getInstance().getAddressService().getWards(selectedResidenceDistrict.getCode())
-                        .enqueue(new Callback<List<Ward>>() {
-                            @Override
-                            public void onResponse(Call<List<Ward>> call, Response<List<Ward>> response) {
-                                if (response.isSuccessful() && response.body() != null && position < response.body().size()) {
-                                    selectedResidenceWard = response.body().get(position);
-                                }
-                            }
-
-                            @Override
-                            public void onFailure(Call<List<Ward>> call, Throwable t) {
-                                Log.e(TAG, "Failed to load wards", t);
-                            }
-                        });
-                }
-            }
-
-            @Override
-            public void onNothingSelected(android.widget.AdapterView<?> parent) {}
-        });
-    }
-
-    private void loadProvinces() {
-        Log.d(TAG, "Starting to load provinces...");
-        RetrofitClient.getInstance().getAddressService().getProvinces().enqueue(new Callback<ProvinceResponse>() {
-            @Override
-            public void onResponse(Call<ProvinceResponse> call, Response<ProvinceResponse> response) {
-                Log.d(TAG, "Response code: " + response.code());
-                Log.d(TAG, "Response message: " + response.message());
-                
-                if (!response.isSuccessful() || response.body() == null || response.body().getResults() == null) {
-                    String errorMessage = "Error: " + response.code();
-                    try {
-                        if (response.errorBody() != null) {
-                            String errorBody = response.errorBody().string();
-                            Log.e(TAG, "Error body: " + errorBody);
-                            errorMessage += " - " + errorBody;
-                        }
-                    } catch (Exception e) {
-                        Log.e(TAG, "Error reading error body", e);
-                    }
-                    Toast.makeText(RegisterActivity.this, errorMessage, Toast.LENGTH_LONG).show();
-                    return;
-                }
-
-                provinces = response.body().getResults();
-                Log.d(TAG, "Received " + provinces.size() + " provinces");
-                
-                if (provinces.isEmpty()) {
-                    Log.e(TAG, "Provinces list is empty");
-                    Toast.makeText(RegisterActivity.this, "Không có dữ liệu địa chỉ", Toast.LENGTH_LONG).show();
-                    return;
-                }
-
-                runOnUiThread(() -> {
-                    List<String> provinceNames = new ArrayList<>();
-                    for (Province province : provinces) {
-                        provinceNames.add(province.getName());
-                    }
-                    ArrayAdapter<String> adapter = new ArrayAdapter<>(RegisterActivity.this,
-                        android.R.layout.simple_spinner_item,
-                        provinceNames);
-                    adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-
-                    spOriginProvince.setAdapter(adapter);
-                    spResidenceProvince.setAdapter(adapter);
-                    
-                    spOriginProvince.setEnabled(true);
-                    spResidenceProvince.setEnabled(true);
-                    
-                    spOriginProvince.setSelection(0);
-                    spResidenceProvince.setSelection(0);
-                });
-            }
-
-            @Override
-            public void onFailure(Call<ProvinceResponse> call, Throwable t) {
-                Log.e(TAG, "Network error", t);
-                String errorMessage = "Lỗi kết nối: " + t.getMessage();
-                if (t instanceof java.net.UnknownHostException) {
-                    errorMessage = "Không thể kết nối đến server. Vui lòng kiểm tra kết nối mạng.";
-                } else if (t instanceof java.net.SocketTimeoutException) {
-                    errorMessage = "Kết nối đến server bị timeout. Vui lòng thử lại.";
-                }
-                Toast.makeText(RegisterActivity.this, errorMessage, Toast.LENGTH_LONG).show();
-            }
-        });
-    }
-
-    private void loadDistricts(String provinceCode, boolean isOrigin) {
-        Log.d(TAG, "Loading districts for province code: " + provinceCode);
-        RetrofitClient.getInstance().getAddressService().getDistricts(provinceCode).enqueue(new Callback<List<District>>() {
-            @Override
-            public void onResponse(Call<List<District>> call, Response<List<District>> response) {
-                if (!response.isSuccessful() || response.body() == null) {
-                    Log.e(TAG, "Failed to load districts");
-                    return;
-                }
-
-                List<District> districts = response.body();
-                Log.d(TAG, "Received " + districts.size() + " districts");
-
-                runOnUiThread(() -> {
-                    List<String> districtNames = new ArrayList<>();
-                    for (District district : districts) {
-                        districtNames.add(district.getName());
-                    }
-
-                    ArrayAdapter<String> adapter = new ArrayAdapter<>(RegisterActivity.this,
-                        android.R.layout.simple_spinner_item,
-                        districtNames);
-                    adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-
-                    if (isOrigin) {
-                        spOriginDistrict.setAdapter(adapter);
-                        spOriginDistrict.setEnabled(true);
-                        spOriginDistrict.setSelection(0);
-                    } else {
-                        spResidenceDistrict.setAdapter(adapter);
-                        spResidenceDistrict.setEnabled(true);
-                        spResidenceDistrict.setSelection(0);
-                    }
-                });
-            }
-
-            @Override
-            public void onFailure(Call<List<District>> call, Throwable t) {
-                Log.e(TAG, "Failed to load districts", t);
-                Toast.makeText(RegisterActivity.this, "Không thể tải danh sách quận/huyện", Toast.LENGTH_SHORT).show();
-            }
-        });
-    }
-
-    private void loadWards(String districtCode, boolean isOrigin) {
-        Log.d(TAG, "Loading wards for district code: " + districtCode);
-        RetrofitClient.getInstance().getAddressService().getWards(districtCode).enqueue(new Callback<List<Ward>>() {
-            @Override
-            public void onResponse(Call<List<Ward>> call, Response<List<Ward>> response) {
-                if (!response.isSuccessful() || response.body() == null) {
-                    Log.e(TAG, "Failed to load wards");
-                    return;
-                }
-
-                List<Ward> wards = response.body();
-                Log.d(TAG, "Received " + wards.size() + " wards");
-
-                runOnUiThread(() -> {
-                    List<String> wardNames = new ArrayList<>();
-                    for (Ward ward : wards) {
-                        wardNames.add(ward.getName());
-                    }
-
-                    ArrayAdapter<String> adapter = new ArrayAdapter<>(RegisterActivity.this,
-                        android.R.layout.simple_spinner_item,
-                        wardNames);
-                    adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-
-                    if (isOrigin) {
-                        spOriginWard.setAdapter(adapter);
-                        spOriginWard.setEnabled(true);
-                        spOriginWard.setSelection(0);
-                    } else {
-                        spResidenceWard.setAdapter(adapter);
-                        spResidenceWard.setEnabled(true);
-                        spResidenceWard.setSelection(0);
-                    }
-                });
-            }
-
-            @Override
-            public void onFailure(Call<List<Ward>> call, Throwable t) {
-                Log.e(TAG, "Failed to load wards", t);
-                Toast.makeText(RegisterActivity.this, "Không thể tải danh sách phường/xã", Toast.LENGTH_SHORT).show();
-            }
-        });
+                genders);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spGender.setAdapter(adapter);
     }
 
     private void setupDatePickers() {
@@ -489,6 +194,10 @@ public class RegisterActivity extends AppCompatActivity {
                 registerAccount();
             }
         });
+        loginLink.setOnClickListener(v -> {
+            startActivity(new Intent(RegisterActivity.this, LoginActivity.class));
+            finish();
+        });
     }
 
     private boolean validateInputs() {
@@ -509,22 +218,38 @@ public class RegisterActivity extends AppCompatActivity {
         }
 
         // Validate Place of Origin
-        if (selectedOriginProvince == null || selectedOriginDistrict == null || selectedOriginWard == null) {
-            Toast.makeText(this, "Vui lòng chọn đầy đủ địa chỉ quê quán", Toast.LENGTH_SHORT).show();
+        if (spOriginProvince.getSelectedItem() == null) {
+            Toast.makeText(this, "Vui lòng chọn tỉnh/thành phố quê quán", Toast.LENGTH_SHORT).show();
+            isValid = false;
+        }
+        if (spOriginDistrict.getSelectedItem() == null) {
+            Toast.makeText(this, "Vui lòng chọn quận/huyện quê quán", Toast.LENGTH_SHORT).show();
+            isValid = false;
+        }
+        if (spOriginWard.getSelectedItem() == null) {
+            Toast.makeText(this, "Vui lòng chọn phường/xã quê quán", Toast.LENGTH_SHORT).show();
             isValid = false;
         }
         if (TextUtils.isEmpty(etOriginStreet.getText())) {
-            etOriginStreet.setError("Vui lòng nhập đường/phố");
+            etOriginStreet.setError("Vui lòng nhập đường/phố quê quán");
             isValid = false;
         }
 
         // Validate Place of Residence
-        if (selectedResidenceProvince == null || selectedResidenceDistrict == null || selectedResidenceWard == null) {
-            Toast.makeText(this, "Vui lòng chọn đầy đủ địa chỉ thường trú", Toast.LENGTH_SHORT).show();
+        if (spResidenceProvince.getSelectedItem() == null) {
+            Toast.makeText(this, "Vui lòng chọn tỉnh/thành phố nơi thường trú", Toast.LENGTH_SHORT).show();
+            isValid = false;
+        }
+        if (spResidenceDistrict.getSelectedItem() == null) {
+            Toast.makeText(this, "Vui lòng chọn quận/huyện nơi thường trú", Toast.LENGTH_SHORT).show();
+            isValid = false;
+        }
+        if (spResidenceWard.getSelectedItem() == null) {
+            Toast.makeText(this, "Vui lòng chọn phường/xã nơi thường trú", Toast.LENGTH_SHORT).show();
             isValid = false;
         }
         if (TextUtils.isEmpty(etResidenceStreet.getText())) {
-            etResidenceStreet.setError("Vui lòng nhập đường/phố");
+            etResidenceStreet.setError("Vui lòng nhập đường/phố nơi thường trú");
             isValid = false;
         }
 
@@ -537,7 +262,7 @@ public class RegisterActivity extends AppCompatActivity {
             etDateOfBirth.setError("Vui lòng chọn ngày sinh");
             isValid = false;
         }
-        if (rgGender.getCheckedRadioButtonId() == -1) {
+        if (spGender.getSelectedItemPosition() == -1) {
             Toast.makeText(this, "Vui lòng chọn giới tính", Toast.LENGTH_SHORT).show();
             isValid = false;
         }
@@ -571,15 +296,15 @@ public class RegisterActivity extends AppCompatActivity {
         // Create Address objects
         Address placeOfOrigin = new Address();
         placeOfOrigin.setVilage(etOriginStreet.getText().toString());
-        placeOfOrigin.setCommune(selectedOriginWard.getName());
-        placeOfOrigin.setDistrict(selectedOriginDistrict.getName());
-        placeOfOrigin.setProvince(selectedOriginProvince.getName());
+        placeOfOrigin.setCommune(((WardDTO)spOriginWard.getSelectedItem()).getName());
+        placeOfOrigin.setDistrict(((DistrictDTO)spOriginDistrict.getSelectedItem()).getName());
+        placeOfOrigin.setProvince(((ProvinceDTO)spOriginProvince.getSelectedItem()).getName());
 
         Address placeOfResidence = new Address();
         placeOfResidence.setVilage(etResidenceStreet.getText().toString());
-        placeOfResidence.setCommune(selectedResidenceWard.getName());
-        placeOfResidence.setDistrict(selectedResidenceDistrict.getName());
-        placeOfResidence.setProvince(selectedResidenceProvince.getName());
+        placeOfResidence.setCommune(((WardDTO)spResidenceWard.getSelectedItem()).getName());
+        placeOfResidence.setDistrict(((DistrictDTO)spResidenceDistrict.getSelectedItem()).getName());
+        placeOfResidence.setProvince(((ProvinceDTO)spResidenceProvince.getSelectedItem()).getName());
 
         // Create AccountRegister object
         AccountRegister registerRequest = new AccountRegister();
@@ -606,7 +331,7 @@ public class RegisterActivity extends AppCompatActivity {
         registerRequest.setPlaceOfOrigin(placeOfOrigin);
         registerRequest.setPlaceOfResidence(placeOfResidence);
         registerRequest.setFullName(etFullName.getText().toString());
-        registerRequest.setGender(rgGender.getCheckedRadioButtonId() == R.id.rbMale ? "MALE" : "FEMALE");
+        registerRequest.setGender(spGender.getSelectedItem().toString().equals("Nam") ? "MALE" : "FEMALE");
         registerRequest.setEmail(etEmail.getText().toString());
         registerRequest.setPhone(etPhone.getText().toString());
         registerRequest.setPassword1(etPassword1.getText().toString());
@@ -616,7 +341,7 @@ public class RegisterActivity extends AppCompatActivity {
         android.util.Log.d("RegisterActivity", "Request body: " + new com.google.gson.Gson().toJson(registerRequest));
 
         // Call API using AccountService
-        RetrofitClient.getInstance().getAccountService().register(registerRequest).enqueue(new Callback<Void>() {
+        accountService.register(registerRequest).enqueue(new Callback<Void>() {
             @Override
             public void onResponse(Call<Void> call, Response<Void> response) {
                 if (response.isSuccessful()) {
@@ -648,6 +373,230 @@ public class RegisterActivity extends AppCompatActivity {
                 android.util.Log.e("RegisterActivity", "Network error", t);
                 String errorMessage = "Lỗi kết nối: " + t.getMessage();
                 Toast.makeText(RegisterActivity.this, errorMessage, Toast.LENGTH_LONG).show();
+            }
+        });
+    }
+
+    @SuppressLint("ClickableViewAccessibility")
+    private void setupAddressSpinners() {
+        // Origin Province Spinner
+        spOriginProvince.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                if (position >= 0 && position < provinces.size()) {
+                    ProvinceDTO selectedProvince = provinces.get(position);
+                    loadDistricts(selectedProvince.getCode()+"", spOriginDistrict);
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {}
+        });
+
+        // Origin District Spinner
+        spOriginDistrict.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                if (position >= 0 && position < districts.size()) {
+                    DistrictDTO selectedDistrict = districts.get(position);
+                    loadWards(selectedDistrict.getCode()+"", spOriginWard);
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {}
+        });
+
+        // Residence Province Spinner
+        spResidenceProvince.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                if (position >= 0 && position < provinces.size()) {
+                    ProvinceDTO selectedProvince = provinces.get(position);
+                    loadDistricts(selectedProvince.getCode()+"", spResidenceDistrict);
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {}
+        });
+
+        // Residence District Spinner
+        spResidenceDistrict.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                if (position >= 0 && position < districts.size()) {
+                    DistrictDTO selectedDistrict = districts.get(position);
+                    loadWards(selectedDistrict.getCode()+"", spResidenceWard);
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {}
+        });
+
+        // Load provinces initially
+        loadProvinces();
+    }
+
+    private void loadProvinces() {
+        Log.d(TAG, "Bắt đầu load danh sách tỉnh");
+        try {
+            addressService.getProvinces().enqueue(new Callback<List<ProvinceDTO>>() {
+                @Override
+                public void onResponse(Call<List<ProvinceDTO>> call, Response<List<ProvinceDTO>> response) {
+                    Log.d(TAG, "Response code: " + response.code());
+                    if (response.isSuccessful() && response.body() != null) {
+                        provinces = response.body();
+                        Log.d(TAG, "Số lượng tỉnh nhận được: " + provinces.size());
+                        
+                        ArrayAdapter<ProvinceDTO> adapter = new ArrayAdapter<ProvinceDTO>(
+                                RegisterActivity.this,
+                                android.R.layout.simple_spinner_item,
+                                provinces
+                        ) {
+                            @Override
+                            public View getView(int position, View convertView, ViewGroup parent) {
+                                TextView textView = (TextView) super.getView(position, convertView, parent);
+                                textView.setText(provinces.get(position).getName());
+                                return textView;
+                            }
+
+                            @Override
+                            public View getDropDownView(int position, View convertView, ViewGroup parent) {
+                                TextView textView = (TextView) super.getDropDownView(position, convertView, parent);
+                                textView.setText(provinces.get(position).getName());
+                                return textView;
+                            }
+                        };
+                        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                        
+                        Log.d(TAG, "Đang set adapter cho spinner tỉnh");
+                        spOriginProvince.setAdapter(adapter);
+                        spResidenceProvince.setAdapter(adapter);
+
+                        // Set default selection
+                        spOriginProvince.setSelection(0);
+                        spResidenceProvince.setSelection(0);
+                        Log.d(TAG, "Đã set adapter và selection xong");
+                    } else {
+                        String errorBody = "";
+                        try {
+                            if (response.errorBody() != null) {
+                                errorBody = response.errorBody().string();
+                            }
+                        } catch (Exception e) {
+                            errorBody = e.getMessage();
+                        }
+                        Log.e(TAG, "Lỗi response: " + response.code() + " - " + response.message() + "\nError body: " + errorBody);
+                        Toast.makeText(RegisterActivity.this, "Lỗi khi tải danh sách tỉnh: " + response.code(), Toast.LENGTH_SHORT).show();
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<List<ProvinceDTO>> call, Throwable t) {
+                    Log.e(TAG, "Lỗi khi gọi API tỉnh: " + t.getMessage(), t);
+                    Toast.makeText(RegisterActivity.this, "Lỗi khi tải danh sách tỉnh: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+                }
+            });
+        } catch (Exception e) {
+            Log.e(TAG, "Lỗi khi khởi tạo request: " + e.getMessage(), e);
+            Toast.makeText(RegisterActivity.this, "Lỗi khi khởi tạo request: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private void loadDistricts(String codeProvince, Spinner districtSpinner) {
+        Log.d(TAG, "Bắt đầu load danh sách huyện cho tỉnh: " + codeProvince);
+        addressService.getDistricts(codeProvince).enqueue(new Callback<List<DistrictDTO>>() {
+            @Override
+            public void onResponse(Call<List<DistrictDTO>> call, Response<List<DistrictDTO>> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    districts = response.body();
+                    Log.d(TAG, "Số lượng huyện nhận được: " + districts.size());
+                    
+                    ArrayAdapter<DistrictDTO> adapter = new ArrayAdapter<DistrictDTO>(
+                            RegisterActivity.this,
+                            android.R.layout.simple_spinner_item,
+                            districts
+                    ) {
+                        @Override
+                        public View getView(int position, View convertView, ViewGroup parent) {
+                            TextView textView = (TextView) super.getView(position, convertView, parent);
+                            textView.setText(districts.get(position).getName());
+                            return textView;
+                        }
+
+                        @Override
+                        public View getDropDownView(int position, View convertView, ViewGroup parent) {
+                            TextView textView = (TextView) super.getDropDownView(position, convertView, parent);
+                            textView.setText(districts.get(position).getName());
+                            return textView;
+                        }
+                    };
+                    adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                    
+                    Log.d(TAG, "Đang set adapter cho spinner huyện");
+                    districtSpinner.setAdapter(adapter);
+                    districtSpinner.setSelection(0);
+                    Log.d(TAG, "Đã set adapter và selection xong");
+                } else {
+                    Log.e(TAG, "Lỗi response: " + response.code() + " - " + response.message());
+                    Toast.makeText(RegisterActivity.this, "Lỗi khi tải danh sách huyện", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<DistrictDTO>> call, Throwable t) {
+                Log.e(TAG, "Lỗi khi gọi API huyện: " + t.getMessage());
+                Toast.makeText(RegisterActivity.this, "Lỗi khi tải danh sách huyện", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void loadWards(String districtCode, Spinner wardSpinner) {
+        Log.d(TAG, "Bắt đầu load danh sách xã cho huyện: " + districtCode);
+        addressService.getWards(districtCode).enqueue(new Callback<List<WardDTO>>() {
+            @Override
+            public void onResponse(Call<List<WardDTO>> call, Response<List<WardDTO>> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    wards = response.body();
+                    Log.d(TAG, "Số lượng xã nhận được: " + wards.size());
+                    
+                    ArrayAdapter<WardDTO> adapter = new ArrayAdapter<WardDTO>(
+                            RegisterActivity.this,
+                            android.R.layout.simple_spinner_item,
+                            wards
+                    ) {
+                        @Override
+                        public View getView(int position, View convertView, ViewGroup parent) {
+                            TextView textView = (TextView) super.getView(position, convertView, parent);
+                            textView.setText(wards.get(position).getName());
+                            return textView;
+                        }
+
+                        @Override
+                        public View getDropDownView(int position, View convertView, ViewGroup parent) {
+                            TextView textView = (TextView) super.getDropDownView(position, convertView, parent);
+                            textView.setText(wards.get(position).getName());
+                            return textView;
+                        }
+                    };
+                    adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                    
+                    Log.d(TAG, "Đang set adapter cho spinner xã");
+                    wardSpinner.setAdapter(adapter);
+                    wardSpinner.setSelection(0);
+                    Log.d(TAG, "Đã set adapter và selection xong");
+                } else {
+                    Log.e(TAG, "Lỗi response: " + response.code() + " - " + response.message());
+                    Toast.makeText(RegisterActivity.this, "Lỗi khi tải danh sách xã", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<WardDTO>> call, Throwable t) {
+                Log.e(TAG, "Lỗi khi gọi API xã: " + t.getMessage());
+                Toast.makeText(RegisterActivity.this, "Lỗi khi tải danh sách xã", Toast.LENGTH_SHORT).show();
             }
         });
     }

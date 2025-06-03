@@ -7,11 +7,9 @@ import retrofit2.converter.gson.GsonConverterFactory;
 import java.util.concurrent.TimeUnit;
 
 public class RetrofitClient {
-    private static final String BASE_URL = "https://api.mysupership.vn/";
-    private static final String API_URL = "http://10.0.2.2:8080/";
+    private static final String API_URL = "http://192.168.1.6:8080/api/";
     private static RetrofitClient instance;
     private final Retrofit retrofit;
-    private final Retrofit apiRetrofit;
 
     private RetrofitClient() {
         // Create logging interceptor
@@ -27,16 +25,11 @@ public class RetrofitClient {
                 .build();
 
         retrofit = new Retrofit.Builder()
-                .baseUrl(BASE_URL)
-                .client(okHttpClient)
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
-
-        apiRetrofit = new Retrofit.Builder()
                 .baseUrl(API_URL)
                 .client(okHttpClient)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
+
     }
 
     public static synchronized RetrofitClient getInstance() {
@@ -51,6 +44,6 @@ public class RetrofitClient {
     }
 
     public AccountService getAccountService() {
-        return apiRetrofit.create(AccountService.class);
+        return retrofit.create(AccountService.class);
     }
 } 

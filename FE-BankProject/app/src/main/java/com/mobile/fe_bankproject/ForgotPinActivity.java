@@ -61,7 +61,7 @@ public class ForgotPinActivity extends AppCompatActivity {
         Map<String, String> request = new HashMap<>();
         request.put("cardNumber", etCardNumber.getText().toString().trim());
 
-        RetrofitClient.getInstance().getApiService().sendOtpForPin(request).enqueue(new Callback<Void>() {
+        RetrofitClient.getInstance().getAccountService().sendOtpForPin(request).enqueue(new Callback<Void>() {
             @Override
             public void onResponse(Call<Void> call, Response<Void> response) {
                 if (response.isSuccessful()) {

@@ -82,7 +82,7 @@ public class ResetPinActivity extends AppCompatActivity {
         request.put("cardNumber", cardNumber);
         request.put("newPIN", etNewPin.getText().toString().trim());
 
-        RetrofitClient.getInstance().getApiService().resetPin(request).enqueue(new Callback<Void>() {
+        RetrofitClient.getInstance().getAccountService().resetPin(request).enqueue(new Callback<Void>() {
             @Override
             public void onResponse(Call<Void> call, Response<Void> response) {
                 if (response.isSuccessful()) {
