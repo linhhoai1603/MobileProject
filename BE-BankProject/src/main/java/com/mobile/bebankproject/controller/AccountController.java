@@ -3,14 +3,17 @@ package com.mobile.bebankproject.controller;
 import com.mobile.bebankproject.dto.AccountLogin;
 import com.mobile.bebankproject.dto.AccountRegister;
 import com.mobile.bebankproject.dto.AccountResponse;
+import com.mobile.bebankproject.dto.ChangePasswordRequest;
 import com.mobile.bebankproject.dto.FundTransferRequest;
 import com.mobile.bebankproject.dto.FundTransferConfirmRequest;
 import com.mobile.bebankproject.service.AccountService;
+import com.mobile.bebankproject.util.PasswordValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import com.mobile.bebankproject.dto.FundTransferPreview;
+import com.mobile.bebankproject.dto.UpdateProfileRequest;
 
 import java.util.List;
 import java.util.Map;
@@ -73,6 +76,57 @@ public class AccountController {
         return ResponseEntity.ok(accounts);
     }
 
+    @PostMapping( "/change-password-logined")
+    public ResponseEntity<?> changePasswordLogined(@RequestBody ChangePasswordRequest request) {
+        try {
+            // Validate request data
+            if (request.getAccountNumber() == null || request.getCurrentPass() == null || request.getNewPass() == null) {
+                return ResponseEntity.badRequest().body("All fields are required");
+            }
+
+            // Validate new password security requirements
+            if (!PasswordValidator.isValidPassword(request.getNewPass())) {
+                return ResponseEntity.badRequest().body("New password must be at least 8 characters long and contain at least one uppercase letter, one lowercase letter, one number, and one special character");
+            }
+
+            // Validate current password and account status
+            boolean isValid = accountService.validateAccountAndPassword(request.getAccountNumber(), request.getCurrentPass());
+            if (!isValid) {
+                return ResponseEntity.badRequest().body("Current password is incorrect or account is not active");
+            }
+
+            // Change password
+            boolean passwordChanged = accountService.changePasswordLogined(request.getAccountNumber(), request.getNewPass());
+            if (passwordChanged) {
+                return ResponseEntity.ok("Password changed successfully");
+            } else {
+                return ResponseEntity.badRequest().body("Failed to change password");
+            }
+        } catch (Exception e) {
+            return ResponseEntity.internalServerError().body(e.getMessage());
+        }
+    }
+
+    @PostMapping("/close")
+    public ResponseEntity<?> closeAccount(@RequestBody Map<String, String> request) {
+        try {
+            String accountNumber = request.get("accountNumber");
+            String password = request.get("password");
+
+            if (accountNumber == null || password == null) {
+                return ResponseEntity.badRequest().body("Account number and password are required");
+            }
+
+            boolean result = accountService.closeAccount(accountNumber, password);
+            if (result) {
+                return ResponseEntity.ok("Account closed successfully");
+            } else {
+                return ResponseEntity.badRequest().body("Failed to close account");
+            }
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
 //    @PostMapping("/transfer")
 //    public ResponseEntity<String> transfer(@RequestBody FundTransferRequest request) {
 //        boolean result = accountService.transferFund(
@@ -152,4 +206,19 @@ public class AccountController {
         return ResponseEntity.ok(result);
     }
 
+    @PutMapping("/update-profile")
+    public ResponseEntity<?> updateProfile(@RequestBody UpdateProfileRequest request) {
+        try {
+            boolean result = accountService.updateProfile(request);
+            return ResponseEntity.ok(Map.of(
+                "status", "success",
+                "message", "Profile updated successfully"
+            ));
+        } catch (RuntimeException e) {
+            return ResponseEntity.badRequest().body(Map.of(
+                "status", "error",
+                "message", e.getMessage()
+            ));
+        }
+    }
 }
