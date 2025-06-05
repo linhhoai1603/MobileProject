@@ -3,6 +3,8 @@ package com.mobile.bebankproject.controller;
 import com.mobile.bebankproject.dto.CardResponse;
 import com.mobile.bebankproject.model.Card;
 import com.mobile.bebankproject.service.CardService;
+import com.mobile.bebankproject.service.impl.CardServiceImpl;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -11,11 +13,8 @@ import java.util.Map;
 @RestController
 @RequestMapping("/api/cards")
 public class CardController {
-    private final CardService cardService;
-
-    public CardController(CardService cardService) {
-        this.cardService = cardService;
-    }
+    @Autowired
+    private CardService cardService;
 
     @GetMapping("/{cardNumber}")
     public ResponseEntity<CardResponse> getCardInfo(@PathVariable String cardNumber) {
