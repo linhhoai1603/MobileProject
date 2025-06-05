@@ -1,9 +1,9 @@
 package com.mobile.fe_bankproject.dto;
 
-import lombok.Data;
+
 
 import java.io.Serializable;
-import java.util.List;
+
 
 public class ProvinceDTO implements Serializable {
     private int code;

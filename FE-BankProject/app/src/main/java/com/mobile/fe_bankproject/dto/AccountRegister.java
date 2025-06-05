@@ -1,9 +1,7 @@
 package com.mobile.fe_bankproject.dto;
 
 import java.io.Serializable;
-import lombok.Data;
 
-@Data
 public class AccountRegister implements Serializable {
     private String number;
     private String personalId;

@@ -21,4 +21,6 @@ public class User {
     @Enumerated(EnumType.STRING)
     private Gender gender;
     private String email;
+    private String urlAvatar;
+    private String urlBackground;
 }

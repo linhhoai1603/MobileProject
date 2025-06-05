@@ -8,13 +8,18 @@ import com.mobile.bebankproject.dto.FundTransferRequest;
 import com.mobile.bebankproject.dto.FundTransferConfirmRequest;
 import com.mobile.bebankproject.service.AccountService;
 import com.mobile.bebankproject.util.PasswordValidator;
+import io.imagekit.sdk.ImageKit;
+import io.imagekit.sdk.models.FileCreateRequest;
+import io.imagekit.sdk.models.results.Result;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import com.mobile.bebankproject.dto.FundTransferPreview;
 import com.mobile.bebankproject.dto.UpdateProfileRequest;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
@@ -23,6 +28,9 @@ import java.util.Map;
 public class AccountController {
     @Autowired
     private AccountService accountService;
+
+    @Autowired
+    private ImageKit imageKit;
 
     @PostMapping("/register")
     public ResponseEntity<String> register(@RequestBody AccountRegister accountRegister) {
@@ -127,6 +135,103 @@ public class AccountController {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
+    // method upload ảnh đại diện
+    @PostMapping("/avatar/{accountNumber}")
+    public ResponseEntity<?> uploadAvatar(
+            @PathVariable String accountNumber,
+            @RequestParam("file") MultipartFile file) {
+        try {
+            if (file.isEmpty()) {
+                return ResponseEntity.badRequest().body("Please select a file to upload");
+            }
+
+            // Validate file type
+            String contentType = file.getContentType();
+            if (contentType == null || !contentType.startsWith("image/")) {
+                return ResponseEntity.badRequest().body("Only image files are allowed");
+            }
+
+            // Validate file size (max 5MB)
+            if (file.getSize() > 5 * 1024 * 1024) {
+                return ResponseEntity.badRequest().body("File size must be less than 5MB");
+            }
+
+            // Upload to ImageKit (no delete)
+            byte[] fileBytes = file.getBytes();
+            String base64 = java.util.Base64.getEncoder().encodeToString(fileBytes);
+            String fileName = "avatar_" + accountNumber + ".jpg";
+
+            FileCreateRequest fileCreateRequest = new FileCreateRequest(base64, fileName);
+            fileCreateRequest.setFolder("/avatars");
+            fileCreateRequest.setUseUniqueFileName(true);
+
+            Result result = imageKit.upload(fileCreateRequest);
+            String imageUrl = result.getUrl();
+
+            // Update avatar URL in database
+            boolean updated = accountService.updateAvatar(accountNumber, imageUrl);
+            if (updated) {
+                return ResponseEntity.ok(Map.of(
+                    "status", "success",
+                    "message", "Avatar updated successfully",
+                    "url", imageUrl
+                ));
+            } else {
+                return ResponseEntity.badRequest().body("Failed to update avatar URL in database");
+            }
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body("Failed to upload image: " + e.getMessage());
+        }
+    }
+
+    @PostMapping("/background/{accountNumber}")
+    public ResponseEntity<?> uploadBackground(
+            @PathVariable String accountNumber,
+            @RequestParam("file") MultipartFile file) {
+        try {
+            if (file.isEmpty()) {
+                return ResponseEntity.badRequest().body("Please select a file to upload");
+            }
+
+            // Validate file type
+            String contentType = file.getContentType();
+            if (contentType == null || !contentType.startsWith("image/")) {
+                return ResponseEntity.badRequest().body("Only image files are allowed");
+            }
+
+            // Validate file size (max 10MB for background images)
+            if (file.getSize() > 10 * 1024 * 1024) {
+                return ResponseEntity.badRequest().body("File size must be less than 10MB");
+            }
+
+            // Upload to ImageKit
+            byte[] fileBytes = file.getBytes();
+            String base64 = java.util.Base64.getEncoder().encodeToString(fileBytes);
+            String fileName = "background_" + accountNumber + ".jpg";
+
+            FileCreateRequest fileCreateRequest = new FileCreateRequest(base64, fileName);
+            fileCreateRequest.setFolder("/backgrounds");
+            fileCreateRequest.setUseUniqueFileName(true);
+
+            Result result = imageKit.upload(fileCreateRequest);
+            String imageUrl = result.getUrl();
+
+            // Update background URL in database
+            boolean updated = accountService.updateBackground(accountNumber, imageUrl);
+            if (updated) {
+                return ResponseEntity.ok(Map.of(
+                    "status", "success",
+                    "message", "Background updated successfully",
+                    "url", imageUrl
+                ));
+            } else {
+                return ResponseEntity.badRequest().body("Failed to update background URL in database");
+            }
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body("Failed to upload image: " + e.getMessage());
+        }
+    }
+
 //    @PostMapping("/transfer")
 //    public ResponseEntity<String> transfer(@RequestBody FundTransferRequest request) {
 //        boolean result = accountService.transferFund(

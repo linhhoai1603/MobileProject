@@ -2,7 +2,6 @@ package com.mobile.fe_bankproject.dto;
 
 import java.io.Serializable;
 
-import lombok.Data;
 
 public class WardDTO implements Serializable {
     private int code;
