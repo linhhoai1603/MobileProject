@@ -329,6 +329,7 @@
 
                     <!-- Nạp điện thoại -->
                     <LinearLayout
+                        android:id="@+id/btnPhoneRecharge"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_columnWeight="1"

@@ -22,6 +22,7 @@ import java.io.InputStream;
 import java.io.File;
 import android.graphics.BitmapFactory;
 import android.graphics.Bitmap;
+import android.widget.LinearLayout;
 
 import com.mobile.fe_bankproject.dto.AccountResponse;
 
@@ -130,6 +131,8 @@ public class MainActivity extends AppCompatActivity implements MenuFragment.Menu
         // Load saved images on startup
         loadImageFromInternalStorage();
         loadBackgroundFromInternalStorage();
+
+        LinearLayout btnPhoneRecharge = findViewById(R.id.btnPhoneRecharge);
     }
 
     private void showMenuFragment() {

@@ -69,14 +69,14 @@
             android:exported="false" />
         <activity
             android:name=".TopUpPhoneActivity"
-			android:exported="false" />
-		<activity
+            android:exported="false" />
+        <activity
             android:name=".ChangePinActivity"
             android:exported="false" />
-		<activity
+        <activity
             android:name=".ForgotPinActivity"
             android:exported="false" />
-		<activity
+        <activity
             android:name=".ResetPinActivity"
             android:exported="false" />
     </application>
