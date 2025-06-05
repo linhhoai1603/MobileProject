@@ -3,6 +3,9 @@ package com.mobile.fe_bankproject;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.content.Intent;
+import android.widget.LinearLayout;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -12,25 +15,32 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import android.widget.TextView;
-import android.widget.Button;
 import android.widget.Toast;
+import android.util.Log;
+
+import com.mobile.fe_bankproject.dto.AccountResponse;
 import com.google.android.material.textfield.TextInputEditText;
-import com.mobile.fe_bankproject.network.api.TransferApi;
-import com.mobile.fe_bankproject.network.model.TransferPreviewRequest;
-import com.mobile.fe_bankproject.network.model.TransferPreviewResponse;
+import android.text.TextWatcher;
+import android.text.Editable;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
+import com.mobile.fe_bankproject.network.ApiService;
+import com.mobile.fe_bankproject.network.ApiClient;
+import com.mobile.fe_bankproject.dto.AccountLookupResponse;
+import java.io.IOException;
 
 public class TransferMoney extends AppCompatActivity {
 
-    private TransferApi transferApi;
+    private static final String TAG = "TransferMoney";
 
-    // TODO: Replace with your actual backend base URL
-    private static final String BASE_URL = "YOUR_BACKEND_BASE_URL"; 
+    private TextView tvAccountNumber;
+    private TextView tvBalance;
+    private AccountResponse accountResponse;
+
+    private TextInputEditText edtAccountNumber;
+    private TextInputEditText edtAccountName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,70 +48,115 @@ public class TransferMoney extends AppCompatActivity {
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_transfer_money);
 
-        // Initialize Retrofit
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(BASE_URL)
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
+        // Find TextViews for account details
+        tvAccountNumber = findViewById(R.id.tvAccountNumber);
+        tvBalance = findViewById(R.id.tvBalance);
 
-        transferApi = retrofit.create(TransferApi.class);
+        // Find EditTexts for transfer details
+        edtAccountNumber = findViewById(R.id.edtAccountNumber);
+        edtAccountName = findViewById(R.id.edtAccountName);
 
-        // Thiết lập toolbar
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        TextView tvTitle = findViewById(R.id.tvTitle);
-        if (tvTitle != null) {
-            tvTitle.setText("Chuyển tiền");
+        // Get AccountResponse from Intent extras
+        if (getIntent().getExtras() != null) {
+            accountResponse = (AccountResponse) getIntent().getExtras().getSerializable("account_response");
+            if (accountResponse != null) {
+                // Update TextViews with account details
+                String accountNumberAndName = accountResponse.getAccountNumber() + " - " + accountResponse.getUser().getFullName();
+                tvAccountNumber.setText(accountNumberAndName);
+
+                // Format and set balance
+                String formattedBalance = String.format("%,.0f VND", accountResponse.getBalance());
+                tvBalance.setText(formattedBalance);
+                Log.d(TAG, "Account details set successfully.");
+            } else {
+                Log.e(TAG, "AccountResponse is null in Intent extras.");
+                Toast.makeText(this, "Không thể tải thông tin tài khoản.", Toast.LENGTH_LONG).show();
+                // Optionally finish the activity if essential data is missing
+                // finish();
+            }
+        } else {
+            Log.e(TAG, "No extras in Intent for TransferMoney.");
+            Toast.makeText(this, "Không có dữ liệu tài khoản được truyền.", Toast.LENGTH_LONG).show();
+            // Optionally finish the activity if essential data is missing
+            // finish();
         }
 
-        android.view.View mainView = findViewById(R.id.main);
-        if (mainView != null) {
-            ViewCompat.setOnApplyWindowInsetsListener(mainView, (v, insets) -> {
-                Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-                v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
-                return insets;
-            });
-        }
+        // Add TextWatcher to edtAccountNumber
+        edtAccountNumber.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                // Not needed for this functionality
+            }
 
-        // Initialize views
-        Button btnContinue = findViewById(R.id.btnContinue);
-        TextInputEditText edtAccountNumber = findViewById(R.id.edtAccountNumber);
-        TextInputEditText edtAccountName = findViewById(R.id.edtAccountName);
-        TextInputEditText edtAmount = findViewById(R.id.edtAmount);
-        TextInputEditText edtTransferContent = findViewById(R.id.edtTransferContent);
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                // Clear account name when account number changes
+                edtAccountName.setText("");
+            }
 
-        // Set OnClickListener for Continue button
-        btnContinue.setOnClickListener(v -> {
-            // Get input data
-            String accountNumber = edtAccountNumber.getText().toString();
-            String accountName = edtAccountName.getText().toString();
-            String amount = edtAmount.getText().toString();
-            String transferContent = edtTransferContent.getText().toString();
-
-            // Create request object
-            TransferPreviewRequest request = new TransferPreviewRequest(accountNumber, accountName, amount, transferContent);
-
-            // Call API
-            transferApi.previewTransfer(request).enqueue(new Callback<TransferPreviewResponse>() {
-                @Override
-                public void onResponse(Call<TransferPreviewResponse> call, Response<TransferPreviewResponse> response) {
-                    if (response.isSuccessful() && response.body() != null) {
-                        // TODO: Handle successful response
-                        // Example: Display preview information from response.body()
-                        Toast.makeText(TransferMoney.this, "API call successful!", Toast.LENGTH_SHORT).show();
-                    } else {
-                        // TODO: Handle API error (e.g., show error message)
-                        Toast.makeText(TransferMoney.this, "API call failed: " + response.code(), Toast.LENGTH_SHORT).show();
-                    }
+            @Override
+            public void afterTextChanged(Editable s) {
+                String accountNumber = s.toString().trim();
+                if (accountNumber.length() >= 10) { // Assuming account number is at least 10 digits
+                    // Call API to look up account name
+                    lookupAccountNameRetrofit(accountNumber);
+                } else {
+                    // Optionally clear account name if input is too short
+                    edtAccountName.setText("");
                 }
-
-                @Override
-                public void onFailure(Call<TransferPreviewResponse> call, Throwable t) {
-                    // TODO: Handle network errors (e.g., show error message)
-                    Toast.makeText(TransferMoney.this, "Network Error: " + t.getMessage(), Toast.LENGTH_SHORT).show();
-                }
-            });
+            }
         });
     }
+
+    // --- START: Actual Retrofit Implementation --- //
+    private void lookupAccountNameRetrofit(String accountNumber) {
+        Log.d(TAG, "Looking up account name for: " + accountNumber + " using Retrofit");
+
+        // Clear previous lookup result
+        edtAccountName.setText("Đang tra cứu..."); // Optional: show loading state
+
+        ApiService apiService = ApiClient.getClient().create(ApiService.class); // Lấy instance ApiService
+        Call<AccountLookupResponse> call = apiService.lookupAccountName(accountNumber);
+
+        call.enqueue(new Callback<AccountLookupResponse>() {
+            @Override
+            public void onResponse(Call<AccountLookupResponse> call, Response<AccountLookupResponse> response) {
+                if (response.isSuccessful()) {
+                    // API call thành công (HTTP status code 2xx)
+                    AccountLookupResponse lookupResponse = response.body();
+                    if (lookupResponse != null && lookupResponse.getAccountName() != null && !lookupResponse.getAccountName().isEmpty()) {
+                        edtAccountName.setText(lookupResponse.getAccountName());
+                    } else {
+                         // Trường hợp API trả về 200 nhưng body hoặc tên tài khoản rỗng/null
+                         edtAccountName.setText("Không tìm thấy tài khoản");
+                         Toast.makeText(TransferMoney.this, "Không tìm thấy tên tài khoản.", Toast.LENGTH_SHORT).show();
+                    }
+                } else if (response.code() == 404) {
+                    // API trả về 404 Not Found
+                    edtAccountName.setText("Không tìm thấy tài khoản");
+                    Toast.makeText(TransferMoney.this, "Không tìm thấy tài khoản với SỐ này.", Toast.LENGTH_SHORT).show();
+                } else {
+                    // Các lỗi HTTP khác (500, 400, v.v.)
+                    edtAccountName.setText("Lỗi tra cứu");
+                    try {
+                         String errorBody = response.errorBody() != null ? response.errorBody().string() : "Unknown error";
+                         Log.e(TAG, "API Error: " + response.code() + " - " + errorBody);
+                         Toast.makeText(TransferMoney.this, "Lỗi khi tra cứu tài khoản: " + response.code(), Toast.LENGTH_SHORT).show();
+                    } catch (IOException e) {
+                         Log.e(TAG, "Error reading error body", e);
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<AccountLookupResponse> call, Throwable t) {
+                // Lỗi mạng hoặc các lỗi khác trong quá trình gọi API
+                Log.e(TAG, "API Call Failed", t);
+                edtAccountName.setText("Lỗi kết nối");
+                Toast.makeText(TransferMoney.this, "Lỗi kết nối khi tra cứu tài khoản.", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+    // --- END: Actual Retrofit Implementation --- //
 
 }
