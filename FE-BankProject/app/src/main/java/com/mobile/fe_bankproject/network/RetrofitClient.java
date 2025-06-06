@@ -8,7 +8,7 @@ import java.util.concurrent.TimeUnit;
 
 public class RetrofitClient {
 //    private static final String API_URL = "http://192.168.1.6:8080/api/"; // main
-    private static final String API_URL = "http://10.0.138.12:8080/api/"; // Hoang
+    private static final String API_URL = "http://10.0.146.235:8080/api/"; // Hoang IPv4 Address
     private static RetrofitClient instance;
     private final Retrofit retrofit;
 

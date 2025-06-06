@@ -5,18 +5,18 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".transferSuccess"
+    tools:context=".TransferSuccess"
     android:background="@color/background"
     >
 
-    <include
-        android:id="@+id/toolbar"
-        layout="@layout/custom_toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+<!--    <include-->
+<!--        android:id="@+id/toolbar"-->
+<!--        layout="@layout/custom_toolbar"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        app:layout_constraintTop_toTopOf="parent"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintEnd_toEndOf="parent" />-->
 
 
 
@@ -48,6 +48,7 @@
                 android:layout_marginTop="-30dp"
                 android:text="Bạn đã chuyển thành công"
                 android:textColor="#E6FFFFFF"
+                android:gravity="center"
                 android:textSize="16sp" />
 
             <TextView
@@ -106,6 +107,7 @@
                     />
 
                 <TextView
+                    android:id="@+id/tvRecipientNameSuccess"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
@@ -116,6 +118,7 @@
             </LinearLayout>
 
             <TextView
+                android:id="@+id/tvRecipientAccountSuccess"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="2dp"
@@ -163,6 +166,7 @@
                     android:layout_weight="1"
                     android:text="Tài khoản nguồn"/>
                 <TextView
+                    android:id="@+id/tvSenderAccountSuccess"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Phan Van Hoang"
@@ -179,6 +183,7 @@
                     android:layout_weight="1"
                     android:text="Phí giao dịch"/>
                 <TextView
+                    android:id="@+id/tvTransactionFeeSuccess"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Miễn phí"
@@ -197,6 +202,7 @@
                     android:layout_weight="1"
                     android:text="Thời gian"/>
                 <TextView
+                    android:id="@+id/tvTimeSuccess"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="23:15:02, 19/05/2025"
@@ -233,6 +239,7 @@
                     android:layout_weight="1"
                     android:text="Nội dung"/>
                 <TextView
+                    android:id="@+id/tvDescriptionSuccess"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="PHAN VAN HOANG chuyen khoan"
