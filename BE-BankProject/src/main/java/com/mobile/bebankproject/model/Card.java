@@ -1,22 +1,30 @@
 package com.mobile.bebankproject.model;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 
 @Entity
-@Getter
-@Setter
+@Table(name = "cards")
+@Data
 public class Card {
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    int id;
-    String number;
-    String type;
-    CardStatus cardStatus;
-    String PIN;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @Column(unique = true, nullable = false)
+    private String cardNumber;
+
+    @Column(nullable = false)
+    private String cardHolder;
+
+    @Column(nullable = false)
+    private String pin;
+
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private CardStatus status = CardStatus.ACTIVE;
+
     @ManyToOne
-    @JoinColumn(name = "account_id")
-    private Account account;;
-
-
+    @JoinColumn(name = "account_id", nullable = false)
+    private Account account;
 }

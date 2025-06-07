@@ -237,6 +237,23 @@ public class MainActivity extends AppCompatActivity implements MenuFragment.Menu
             }
         } catch (Exception e) {
             Log.e(TAG, "Error loading background from internal storage", e);
+        LinearLayout btnPhoneRecharge = findViewById(R.id.btnPhoneRecharge);
+
+        // Find the LinearLayout for "Chuyển tiền" and set click listener
+        LinearLayout layoutTransferMoney = findViewById(R.id.layout_transfer_money);
+        if (layoutTransferMoney != null) {
+            layoutTransferMoney.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    // Create an Intent to start TransferMoneyActivity
+                    Intent intent = new Intent(MainActivity.this, TransferMoney.class);
+                    // Optional: Pass data to the next activity if needed
+                    // intent.putExtra("key", "value");
+                    // Pass the accountResponse object to the next activity
+                    intent.putExtra("account_response", accountResponse);
+                    startActivity(intent);
+                }
+            });
         }
     }
 

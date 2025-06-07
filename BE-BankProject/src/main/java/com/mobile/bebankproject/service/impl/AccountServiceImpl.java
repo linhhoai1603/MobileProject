@@ -600,4 +600,11 @@ public class AccountServiceImpl implements AccountService {
 
         return true;
     }
+
+    @Override
+    public String findAccountNameByNumber(String accountNumber) {
+        return accountRepository.findByAccountNumber(accountNumber)
+                .map(Account::getAccountName)
+                .orElse(null);
+    }
 } 

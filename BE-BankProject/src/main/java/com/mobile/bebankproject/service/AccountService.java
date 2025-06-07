@@ -57,6 +57,7 @@ public interface AccountService {
      * @param description
      */
     void requestFirebaseOtp(String fromAccountNumber, String toAccountNumber, double amount, String description);
-
+    boolean updateProfile(UpdateProfileRequest request);
+    String findAccountNameByNumber(String accountNumber);
 
 }
