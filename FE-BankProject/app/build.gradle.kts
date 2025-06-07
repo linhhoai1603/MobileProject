@@ -37,9 +37,13 @@ dependencies {
     implementation(libs.material)
     implementation(libs.activity)
     implementation(libs.constraintlayout)
+
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
+
+    implementation("com.squareup.retrofit2:converter-scalars:2.9.0")
+
     // https://mvnrepository.com/artifact/org.projectlombok/lombok
     // https://mvnrepository.com/artifact/com.squareup.retrofit2/retrofit
     // https://mvnrepository.com/artifact/com.squareup.retrofit2/retrofit
@@ -50,11 +54,11 @@ dependencies {
     implementation("com.squareup.okhttp3:logging-interceptor:4.12.0")
     compileOnly("org.projectlombok:lombok:1.18.30")
     annotationProcessor("org.projectlombok:lombok:1.18.30")
-    
+
     // OkHttp
     implementation("com.squareup.okhttp3:okhttp:4.9.1")
     implementation("com.squareup.okhttp3:logging-interceptor:4.9.1")
-    
+
     // Gson
     implementation("com.google.code.gson:gson:2.8.9")
 }
