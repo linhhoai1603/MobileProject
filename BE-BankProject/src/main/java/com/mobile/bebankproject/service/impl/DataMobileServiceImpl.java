@@ -74,7 +74,7 @@ public class DataMobileServiceImpl implements DataMobileService {
         transactionPhoneServiceRepository.save(transaction);
 
         // Send confirmation email
-        sendPurchaseConfirmationEmail(account, dataPackage, phoneNumber);
+//        sendPurchaseConfirmationEmail(account, dataPackage, phoneNumber);
 
         return true;
     }
@@ -123,6 +123,11 @@ public class DataMobileServiceImpl implements DataMobileService {
                         && (quantity == null || pkg.getQuantity() == quantity)
                         && pkg.getInStock() > 0)
                 .toList();
+    }
+
+    @Override
+    public DataMobile getDataPackageById(int id) {
+        return dataMobileRepository.getDataMobileById(id);
     }
 
     private void sendPurchaseConfirmationEmail(Account account, DataMobile dataPackage, String phoneNumber) {

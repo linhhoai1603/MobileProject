@@ -372,6 +372,19 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
+    public AccountResponse getAccount(String accountNumber) {
+        Optional<Account> account = accountRepository.findByAccountNumber(accountNumber);
+        AccountResponse accountResponse = new AccountResponse();
+        accountResponse.setId(account.get().getId());
+        accountResponse.setAccountNumber(account.get().getAccountNumber());
+        accountResponse.setAccountName(account.get().getAccountName());
+        accountResponse.setPhone(account.get().getPhone());
+        accountResponse.setBalance(account.get().getBalance());
+        accountResponse.setAccountStatus(account.get().getAccountStatus());
+        return accountResponse;
+    }
+
+    @Override
     public FundTransferPreview previewFundTransfer(String fromAccountNumber, String toAccountNumber, double amount, String description) {
         if (fromAccountNumber == null || fromAccountNumber.trim().isEmpty()) {
             throw new RuntimeException("Sender account number cannot be empty");

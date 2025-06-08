@@ -4,9 +4,11 @@ import com.mobile.bebankproject.model.TelcoProvider;
 import lombok.Data;
 
 @Data
-public class RechargeRequest {
+public class RechargeResponse {
     private String accountNumber;
-    private String pin;
     private String phoneNumber;
-    private int idPhoneCard;
-} 
+    private int cardAmount;
+    private String status;
+    private TelcoProvider telcoProvider;
+    private String message;
+}

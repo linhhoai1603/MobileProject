@@ -24,7 +24,7 @@ public interface AccountService {
     boolean updateBackground(String accountNumber, String urlBackground);
     // New method for closing account
     boolean closeAccount(String accountNumber, String password);
-
+    AccountResponse getAccount(String accountNumber);
     /**
      * Get account by account number
      * @param accountNumber the account number to find
@@ -57,7 +57,6 @@ public interface AccountService {
      * @param description
      */
     void requestFirebaseOtp(String fromAccountNumber, String toAccountNumber, double amount, String description);
-    boolean updateProfile(UpdateProfileRequest request);
     String findAccountNameByNumber(String accountNumber);
 
 }

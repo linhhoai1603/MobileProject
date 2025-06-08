@@ -5,8 +5,7 @@ public class RechargeRequest {
     private String accountNumber;
     private String pin;
     private String phoneNumber;
-    private TelcoProvider telcoProvider;
-    private double amount;
+    private int idPhoneCard;
 
     public String getAccountNumber() {
         return accountNumber;
@@ -32,19 +31,12 @@ public class RechargeRequest {
         this.phoneNumber = phoneNumber;
     }
 
-    public TelcoProvider getTelcoProvider() {
-        return telcoProvider;
+    public int getIdPhoneCard() {
+        return idPhoneCard;
     }
 
-    public void setTelcoProvider(TelcoProvider telcoProvider) {
-        this.telcoProvider = telcoProvider;
+    public void setIdPhoneCard(int idPhoneCard) {
+        this.idPhoneCard = idPhoneCard;
     }
 
-    public double getAmount() {
-        return amount;
-    }
-
-    public void setAmount(double amount) {
-        this.amount = amount;
-    }
 }

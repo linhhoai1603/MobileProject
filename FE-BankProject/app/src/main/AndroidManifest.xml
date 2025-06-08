@@ -89,6 +89,17 @@
             android:exported="false"> <!-- exported="false" nếu Activity này không cần mở từ ứng dụng khác -->
         </activity>
 
+        <!-- Newly added Activities -->
+        <activity
+            android:name=".PhoneCardActivity"
+            android:exported="false" />
+        <activity
+            android:name=".TopUpActivity"
+            android:exported="false" />
+        <activity
+            android:name=".DataActivity"
+            android:exported="false" />
+
     </application>
 
 </manifest>

@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.FrameLayout;
@@ -22,7 +23,6 @@ import android.net.Uri;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.File;
-import android.widget.LinearLayout;
 import android.database.Cursor;
 import android.content.SharedPreferences;
 import android.app.ProgressDialog;
@@ -114,6 +114,36 @@ public class MainActivity extends AppCompatActivity implements MenuFragment.Menu
         tvUserName = findViewById(R.id.tvUserName);
         btnViewAccount = findViewById(R.id.btnViewAccount);
         ivMenuIcon = findViewById(R.id.ivMenuIcon);
+
+        // Find the LinearLayout for "Chuyển tiền" and set click listener
+        LinearLayout layoutTransferMoney = findViewById(R.id.layout_transfer_money);
+        if (layoutTransferMoney != null) {
+            layoutTransferMoney.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    // Create an Intent to start TransferMoneyActivity
+                    Intent intent = new Intent(MainActivity.this, TransferMoney.class);
+                    // Pass the accountResponse object to the next activity
+                    intent.putExtra("account_response", accountResponse);
+                    startActivity(intent);
+                }
+            });
+        }
+
+        // Find the LinearLayout for "Nạp điện thoại" and set click listener
+        LinearLayout layoutTopUp = findViewById(R.id.layout_top_up);
+        if (layoutTopUp != null) {
+            layoutTopUp.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    // Create an Intent to start TopUpActivity
+                    Intent intent = new Intent(MainActivity.this, TopUpActivity.class);
+                    // Pass the accountResponse object to the next activity
+                    intent.putExtra("account_response", accountResponse);
+                    startActivity(intent);
+                }
+            });
+        }
 
         // Log the intent extras for debugging
         if (getIntent().getExtras() != null) {
@@ -213,47 +243,30 @@ public class MainActivity extends AppCompatActivity implements MenuFragment.Menu
             File file = new File(getFilesDir(), BACKGROUND_FILE_NAME);
             if (file.exists()) {
                 Glide.with(this)
-                    .load(file)
-                    .apply(new RequestOptions()
-                        .diskCacheStrategy(DiskCacheStrategy.NONE)
-                        .skipMemoryCache(true))
-                    .into(new CustomViewTarget<ConstraintLayout, Drawable>(headerSection) {
-                        @Override
-                        public void onResourceReady(@NonNull Drawable resource, @Nullable Transition<? super Drawable> transition) {
-                            getView().setBackground(resource);
-                        }
+                        .load(file)
+                        .apply(new RequestOptions()
+                                .diskCacheStrategy(DiskCacheStrategy.NONE)
+                                .skipMemoryCache(true))
+                        .into(new CustomViewTarget<ConstraintLayout, Drawable>(headerSection) {
+                            @Override
+                            public void onResourceReady(@NonNull Drawable resource, @Nullable Transition<? super Drawable> transition) {
+                                getView().setBackground(resource);
+                            }
 
-                        @Override
-                        protected void onResourceCleared(@Nullable Drawable placeholder) {
-                            getView().setBackground(placeholder);
-                        }
+                            @Override
+                            protected void onResourceCleared(@Nullable Drawable placeholder) {
+                                getView().setBackground(placeholder);
+                            }
 
-                        @Override
-                        public void onLoadFailed(@Nullable Drawable errorDrawable) {
-                             // Handle failure (optional)
-                             getView().setBackground(errorDrawable);
-                        }
-                    });
+                            @Override
+                            public void onLoadFailed(@Nullable Drawable errorDrawable) {
+                                // Handle failure (optional)
+                                getView().setBackground(errorDrawable);
+                            }
+                        });
             }
         } catch (Exception e) {
             Log.e(TAG, "Error loading background from internal storage", e);
-        LinearLayout btnPhoneRecharge = findViewById(R.id.btnPhoneRecharge);
-
-        // Find the LinearLayout for "Chuyển tiền" and set click listener
-        LinearLayout layoutTransferMoney = findViewById(R.id.layout_transfer_money);
-        if (layoutTransferMoney != null) {
-            layoutTransferMoney.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    // Create an Intent to start TransferMoneyActivity
-                    Intent intent = new Intent(MainActivity.this, TransferMoney.class);
-                    // Optional: Pass data to the next activity if needed
-                    // intent.putExtra("key", "value");
-                    // Pass the accountResponse object to the next activity
-                    intent.putExtra("account_response", accountResponse);
-                    startActivity(intent);
-                }
-            });
         }
     }
 
@@ -570,5 +583,34 @@ public class MainActivity extends AppCompatActivity implements MenuFragment.Menu
 
     private void changeBackground() {
         pickImage(false);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        updateBalance();
+    }
+
+    private void updateBalance() {
+        RetrofitClient.getInstance().getAccountService()
+                .updateBalance(accountResponse.getAccountNumber())
+                .enqueue(new Callback<AccountResponse>() {
+                    @Override
+                    public void onResponse(Call<AccountResponse> call, Response<AccountResponse> response) {
+                        if (response.isSuccessful() && response.body() != null) {
+                            accountResponse = response.body();
+                            // Lưu số dư vào SharedPreferences
+                            SharedPreferences sharedPreferences = getSharedPreferences("AccountInfo", MODE_PRIVATE);
+                            SharedPreferences.Editor editor = sharedPreferences.edit();
+                            editor.putFloat("balance", (float) accountResponse.getBalance());
+                            editor.apply();
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<AccountResponse> call, Throwable t) {
+                        Toast.makeText(MainActivity.this, "Lỗi kết nối", Toast.LENGTH_SHORT).show();
+                    }
+                });
     }
 }

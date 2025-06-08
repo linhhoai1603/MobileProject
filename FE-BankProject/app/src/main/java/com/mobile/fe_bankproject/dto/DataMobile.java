@@ -1,28 +1,21 @@
 package com.mobile.fe_bankproject.dto;
 
 
-public class DataPackagePreview {
-    private String accountNumber;
-    private String phoneNumber;
-    private String packageName;
-    private int quantity;
-    private int validDate;
-    private double price;
+public class DataMobile {
+    int id;
+    String packageName;
+    int quantity; // mb
+    int validDate; // days
+    double price;
+    int inStock;
+    TelcoProvider telcoProvider;
 
-    public String getAccountNumber() {
-        return accountNumber;
+    public int getId() {
+        return id;
     }
 
-    public void setAccountNumber(String accountNumber) {
-        this.accountNumber = accountNumber;
-    }
-
-    public String getPhoneNumber() {
-        return phoneNumber;
-    }
-
-    public void setPhoneNumber(String phoneNumber) {
-        this.phoneNumber = phoneNumber;
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getPackageName() {
@@ -55,5 +48,21 @@ public class DataPackagePreview {
 
     public void setPrice(double price) {
         this.price = price;
+    }
+
+    public int getInStock() {
+        return inStock;
+    }
+
+    public void setInStock(int inStock) {
+        this.inStock = inStock;
+    }
+
+    public TelcoProvider getTelcoProvider() {
+        return telcoProvider;
+    }
+
+    public void setTelcoProvider(TelcoProvider telcoProvider) {
+        this.telcoProvider = telcoProvider;
     }
 }

@@ -6,6 +6,7 @@ import com.mobile.bebankproject.dto.AccountResponse;
 import com.mobile.bebankproject.dto.ChangePasswordRequest;
 import com.mobile.bebankproject.dto.FundTransferRequest;
 import com.mobile.bebankproject.dto.FundTransferConfirmRequest;
+import com.mobile.bebankproject.model.Account;
 import com.mobile.bebankproject.service.AccountService;
 import com.mobile.bebankproject.util.PasswordValidator;
 import io.imagekit.sdk.ImageKit;
@@ -42,6 +43,12 @@ public class AccountController {
     @PostMapping("/login")
     public ResponseEntity<AccountResponse> login(@RequestBody AccountLogin accountLogin) {
         AccountResponse account = accountService.login(accountLogin.getPhone(), accountLogin.getPassword());
+        return ResponseEntity.ok(account);
+    }
+
+    @GetMapping("/balance/{accountNumber}")
+    public ResponseEntity<AccountResponse> balance(@PathVariable String accountNumber) {
+        AccountResponse account = accountService.getAccount(accountNumber);
         return ResponseEntity.ok(account);
     }
 

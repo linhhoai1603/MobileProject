@@ -7,4 +7,5 @@ public class DataPackageRequest {
     private String accountNumber;
     private String phoneNumber;
     private int packageId;
+    private String PIN;
 } 

@@ -9,4 +9,5 @@ import java.util.List;
 
 @Repository
 public interface DataMobileRepository extends JpaRepository<DataMobile, Integer> {
-} 
+    DataMobile getDataMobileById(int id);
+}

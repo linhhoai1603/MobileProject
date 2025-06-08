@@ -5,10 +5,12 @@ import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 import java.util.concurrent.TimeUnit;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 public class RetrofitClient {
-//    private static final String API_URL = "http://192.168.1.6:8080/api/"; // main
-    private static final String API_URL = "http://10.0.146.235:8080/api/"; // Hoang IPv4 Address
+    private static final String API_URL = "http://192.168.1.5:8080/api/"; // main
+//    private static final String API_URL = "http://10.0.146.235:8080/api/"; // Hoang IPv4 Address
     private static RetrofitClient instance;
     private final Retrofit retrofit;
 
@@ -25,12 +27,16 @@ public class RetrofitClient {
                 .writeTimeout(30, TimeUnit.SECONDS)
                 .build();
 
+        // Configure Gson to be lenient
+        Gson gson = new GsonBuilder()
+                .setLenient()
+                .create();
+
         retrofit = new Retrofit.Builder()
                 .baseUrl(API_URL)
                 .client(okHttpClient)
-                .addConverterFactory(GsonConverterFactory.create())
+                .addConverterFactory(GsonConverterFactory.create(gson))
                 .build();
-
     }
 
     public static synchronized RetrofitClient getInstance() {
@@ -46,5 +52,14 @@ public class RetrofitClient {
 
     public AccountService getAccountService() {
         return retrofit.create(AccountService.class);
+    }
+    public ApiService getApiService(){
+        return retrofit.create(ApiService.class);
+    }
+    public PhoneCardService getPhoneCardService(){
+        return retrofit.create(PhoneCardService.class);
+    }
+    public DataMobileService getDataMobileService(){
+        return retrofit.create(DataMobileService.class);
     }
 } 

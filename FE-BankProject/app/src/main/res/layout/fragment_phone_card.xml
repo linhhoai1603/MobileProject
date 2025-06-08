@@ -1,186 +1,155 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:padding="16dp">
+    android:layout_height="match_parent">
 
-    <!-- Phone Number Input Section -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:background="@drawable/bg_card"
-        android:padding="12dp"
-        android:layout_marginBottom="16dp">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center_vertical">
-
-            <ImageView
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:src="@drawable/ic_viettel"/>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Tới"
-                android:textColor="@color/gray"
-                android:layout_marginStart="8dp"/>
-
-            <TextView
-                android:id="@+id/phoneNumberText"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="033 505 9497"
-                android:textColor="@color/black"
-                android:textSize="16sp"
-                android:layout_marginStart="8dp"/>
-
-            <ImageButton
-                android:id="@+id/contactsButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="?attr/selectableItemBackgroundBorderless"
-                android:src="@drawable/ic_contacts"
-                android:padding="4dp"/>
-        </LinearLayout>
-    </LinearLayout>
-
-    <!-- Amount Grid -->
-    <GridLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:columnCount="2"
-        android:layout_marginBottom="16dp">
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/amount10k"
-            style="@style/AmountButton"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_columnWeight="1"
-            android:layout_margin="4dp"
-            android:text="10.000đ"/>
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/amount20k"
-            style="@style/AmountButton"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_columnWeight="1"
-            android:layout_margin="4dp"
-            android:text="20.000đ"/>
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/amount30k"
-            style="@style/AmountButton"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_columnWeight="1"
-            android:layout_margin="4dp"
-            android:text="30.000đ"/>
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/amount50k"
-            style="@style/AmountButton"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_columnWeight="1"
-            android:layout_margin="4dp"
-            android:text="50.000đ"/>
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/amount100k"
-            style="@style/AmountButton"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_columnWeight="1"
-            android:layout_margin="4dp"
-            android:text="100.000đ"/>
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/amount200k"
-            style="@style/AmountButton"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_columnWeight="1"
-            android:layout_margin="4dp"
-            android:text="200.000đ"/>
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/amount300k"
-            style="@style/AmountButton"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_columnWeight="1"
-            android:layout_margin="4dp"
-            android:text="300.000đ"/>
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/amount500k"
-            style="@style/AmountButton"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_columnWeight="1"
-            android:layout_margin="4dp"
-            android:text="500.000đ"/>
-    </GridLayout>
-
-    <!-- Quantity Section -->
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_marginTop="16dp">
+        android:padding="16dp">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Số lượng"
-            android:textColor="@color/black"
-            android:textSize="16sp"/>
+            android:text="Chọn nhà mạng"
+            android:textSize="14sp"
+            android:layout_marginBottom="8dp"/>
+
+        <Spinner
+            android:id="@+id/providerSpinner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bg_rounded_white"
+            android:padding="12dp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Nhập số điện thoại"
+            android:textSize="14sp"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="8dp"/>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center_vertical"
-            android:layout_marginTop="8dp">
+            android:orientation="horizontal">
 
-            <ImageButton
-                android:id="@+id/btnDecrease"
-                android:layout_width="36dp"
-                android:layout_height="36dp"
-                android:src="@drawable/ic_minus"
-                android:background="@drawable/circle_button_background"
-                android:tint="@color/black"/>
-
-            <TextView
-                android:id="@+id/tvQuantity"
-                android:layout_width="48dp"
+            <EditText
+                android:id="@+id/phoneNumberInput"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text="1"
-                android:textSize="18sp"
-                android:textColor="@color/black"
-                android:gravity="center"
-                android:layout_marginHorizontal="16dp"/>
+                android:layout_weight="1"
+                android:inputType="phone"
+                android:hint="Nhập số điện thoại"
+                android:padding="12dp"
+                android:background="@drawable/bg_rounded_white"/>
 
             <ImageButton
-                android:id="@+id/btnIncrease"
-                android:layout_width="36dp"
-                android:layout_height="36dp"
-                android:src="@drawable/ic_plus"
-                android:background="@drawable/circle_button_background"
-                android:tint="@color/primary"/>
+                android:id="@+id/contactsButton"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_marginStart="8dp"
+                android:src="@drawable/ic_contacts"
+                android:background="@drawable/bg_rounded_white"
+                android:padding="12dp"/>
         </LinearLayout>
-    </LinearLayout>
 
-</LinearLayout> 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Chọn mệnh giá"
+            android:textSize="14sp"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="8dp"/>
+
+        <RadioGroup
+            android:id="@+id/cardAmountGroup"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <RadioButton
+                android:id="@+id/card10k"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="10.000đ"
+                android:padding="12dp"
+                android:background="@drawable/bg_rounded_white"
+                android:layout_margin="4dp"/>
+
+            <RadioButton
+                android:id="@+id/card20k"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="20.000đ"
+                android:padding="12dp"
+                android:background="@drawable/bg_rounded_white"
+                android:layout_margin="4dp"/>
+
+            <RadioButton
+                android:id="@+id/card30k"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="30.000đ"
+                android:padding="12dp"
+                android:background="@drawable/bg_rounded_white"
+                android:layout_margin="4dp"/>
+
+            <RadioButton
+                android:id="@+id/card50k"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="50.000đ"
+                android:padding="12dp"
+                android:background="@drawable/bg_rounded_white"
+                android:layout_margin="4dp"/>
+
+            <RadioButton
+                android:id="@+id/card100k"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="100.000đ"
+                android:padding="12dp"
+                android:background="@drawable/bg_rounded_white"
+                android:layout_margin="4dp"/>
+
+            <RadioButton
+                android:id="@+id/card200k"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="200.000đ"
+                android:padding="12dp"
+                android:background="@drawable/bg_rounded_white"
+                android:layout_margin="4dp"/>
+
+            <RadioButton
+                android:id="@+id/card300k"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="300.000đ"
+                android:padding="12dp"
+                android:background="@drawable/bg_rounded_white"
+                android:layout_margin="4dp"/>
+
+            <RadioButton
+                android:id="@+id/card500k"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="500.000đ"
+                android:padding="12dp"
+                android:background="@drawable/bg_rounded_white"
+                android:layout_margin="4dp"/>
+        </RadioGroup>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/topUpButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Nạp thẻ"
+            android:layout_marginTop="24dp"
+            android:padding="12dp"/>
+
+    </LinearLayout>
+</ScrollView> 

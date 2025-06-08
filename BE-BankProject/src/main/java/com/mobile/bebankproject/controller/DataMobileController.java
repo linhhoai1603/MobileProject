@@ -1,5 +1,6 @@
 package com.mobile.bebankproject.controller;
 
+import com.mobile.bebankproject.dto.DataPackageResponse;
 import com.mobile.bebankproject.model.DataMobile;
 import com.mobile.bebankproject.service.DataMobileService;
 import com.mobile.bebankproject.dto.DataPackagePreview;
@@ -9,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
@@ -62,16 +64,41 @@ public class DataMobileController {
      * @return Success status
      */
     @PostMapping("/purchase")
-    public ResponseEntity<String> purchaseDataPackage(@RequestBody DataPackageRequest request) {
+    public ResponseEntity<DataPackageResponse> purchaseDataPackage(@RequestBody DataPackageRequest request) {
+        DataPackageResponse response = new DataPackageResponse();
+        response.setAccountNumber(request.getAccountNumber());
+        response.setPhoneNumber(request.getPhoneNumber());
+        response.setPackageId(request.getPackageId());
+
         try {
-            boolean success = dataMobileService.purchaseDataPackage(request.getAccountNumber(), request.getPhoneNumber(), request.getPackageId());
+            boolean success = dataMobileService.purchaseDataPackage(
+                request.getAccountNumber(),
+                request.getPhoneNumber(),
+                request.getPackageId()
+            );
+
             if (success) {
-                return ResponseEntity.ok("Purchase successful");
+                // Get package info to fill in response
+                DataMobile dataPackage = dataMobileService.getDataPackageById(request.getPackageId());
+
+                response.setPackageName(dataPackage.getPackageName());
+                response.setTelcoProvider(dataPackage.getTelcoProvider());
+                response.setAmount(dataPackage.getQuantity());
+                response.setStatus("SUCCESS");
+                response.setMessage("Data package purchase successful");
+                response.setTime(LocalDateTime.now().toString());
+
+                return ResponseEntity.ok(response);
             } else {
-                return ResponseEntity.badRequest().body("Purchase failed");
+                response.setStatus("FAILED");
+                response.setMessage("Data package purchase failed");
+                return ResponseEntity.badRequest().body(response);
             }
+
         } catch (RuntimeException e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
+            response.setStatus("FAILED");
+            response.setMessage(e.getMessage());
+            return ResponseEntity.badRequest().body(response);
         }
     }
 }

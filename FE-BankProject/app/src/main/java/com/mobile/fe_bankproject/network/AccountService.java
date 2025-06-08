@@ -3,16 +3,21 @@ package com.mobile.fe_bankproject.network;
 import com.mobile.fe_bankproject.dto.AccountLogin;
 import com.mobile.fe_bankproject.dto.AccountRegister;
 import com.mobile.fe_bankproject.dto.AccountResponse;
-import com.mobile.fe_bankproject.dto.CardResponse;
 import com.mobile.fe_bankproject.dto.ChangePasswordRequest;
 import com.mobile.fe_bankproject.dto.UpdateProfileRequest;
 import com.mobile.fe_bankproject.dto.ImageUploadResponse;
 
 import java.util.Map;
+
+import okhttp3.MultipartBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
+import retrofit2.http.GET;
+import retrofit2.http.Multipart;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
+import retrofit2.http.Part;
+import retrofit2.http.Path;
 
 public interface AccountService {
     @POST("account/login")
@@ -50,4 +55,18 @@ public interface AccountService {
 
     @POST("api/cards/forgot-pin/reset-pin")
     Call<Void> resetPin(@Body Map<String, String> request);
+
+    @Multipart
+    @POST("api/avatar/{accountNumber}")
+    Call<ImageUploadResponse> uploadAvatar(
+            @Path("accountNumber") String accountNumber,
+            @Part MultipartBody.Part body
+    );
+
+    @Multipart
+    @POST("api/background/{accountNumber}")
+    Call<ImageUploadResponse> uploadBackground(@Path("accountNumber") String accountNumber,@Part MultipartBody.Part body);
+
+    @GET("account/balance/{accountNumber}")
+    Call<AccountResponse> updateBalance(@Path("accountNumber") String accountNumber);
 }
