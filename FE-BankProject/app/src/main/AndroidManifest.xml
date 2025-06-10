@@ -33,9 +33,7 @@
         <activity
             android:name=".Demo"
             android:exported="false" />
-        <activity
-            android:name=".transferSuccess"
-            android:exported="false" />
+
         <activity
             android:name=".fill_OTP"
             android:exported="false" />
@@ -71,6 +69,9 @@
             android:name=".TopUpPhoneActivity"
             android:exported="false" />
         <activity
+            android:name=".CardManagementActivity"
+            android:exported="false" />
+        <activity
             android:name=".ChangePinActivity"
             android:exported="false" />
         <activity
@@ -79,6 +80,15 @@
         <activity
             android:name=".ResetPinActivity"
             android:exported="false" />
+        <activity
+            android:name=".TransferMoney"
+            android:exported="false" />
+        <activity
+            android:name=".confirmInfor"
+            android:exported="false"/>
+        <activity android:name=".TransferSuccess"
+            android:exported="false">
+        </activity><!-- exported="false" nếu Activity này không cần mở từ ứng dụng khác -->
     </application>
 
 </manifest>

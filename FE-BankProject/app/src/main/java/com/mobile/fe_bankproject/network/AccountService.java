@@ -42,7 +42,7 @@ public interface AccountService {
     @PUT("account/update-profile")
     Call<Void> updateProfile(@Body UpdateProfileRequest request);
 
-    @POST("api/cards/change-pin")
+    @POST("cards/change-pin")
     Call<Void> changePin(@Body Map<String, String> request);
 
     @POST("api/cards/forgot-pin/send-otp")

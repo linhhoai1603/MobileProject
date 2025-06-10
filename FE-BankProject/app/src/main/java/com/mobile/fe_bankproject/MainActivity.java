@@ -133,6 +133,23 @@ public class MainActivity extends AppCompatActivity implements MenuFragment.Menu
         loadBackgroundFromInternalStorage();
 
         LinearLayout btnPhoneRecharge = findViewById(R.id.btnPhoneRecharge);
+
+        // Find the LinearLayout for "Chuyển tiền" and set click listener
+        LinearLayout layoutTransferMoney = findViewById(R.id.layout_transfer_money);
+        if (layoutTransferMoney != null) {
+            layoutTransferMoney.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    // Create an Intent to start TransferMoneyActivity
+                    Intent intent = new Intent(MainActivity.this, TransferMoney.class);
+                    // Optional: Pass data to the next activity if needed
+                    // intent.putExtra("key", "value");
+                    // Pass the accountResponse object to the next activity
+                    intent.putExtra("account_response", accountResponse);
+                    startActivity(intent);
+                }
+            });
+        }
     }
 
     private void showMenuFragment() {
@@ -278,5 +295,17 @@ public class MainActivity extends AppCompatActivity implements MenuFragment.Menu
             return accountResponse.getAccountNumber();
         }
         return null;
+    }
+
+    public void onCardServiceClick(View view) {
+        if (accountResponse == null) {
+            Toast.makeText(this, "Không tìm thấy thông tin tài khoản", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        Intent intent = new Intent(this, CardManagementActivity.class);
+        intent.putExtra("account_number", accountResponse.getAccountNumber());
+        intent.putExtra("account_response", accountResponse);
+        startActivity(intent);
     }
 }

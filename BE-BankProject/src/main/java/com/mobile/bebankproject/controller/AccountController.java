@@ -9,6 +9,7 @@ import com.mobile.bebankproject.dto.FundTransferConfirmRequest;
 import com.mobile.bebankproject.service.AccountService;
 import com.mobile.bebankproject.util.PasswordValidator;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -219,6 +220,20 @@ public class AccountController {
                 "status", "error",
                 "message", e.getMessage()
             ));
+        }
+    }
+
+    @GetMapping("/lookup-name")
+    public ResponseEntity<?> lookupAccountName(@RequestParam String accountNumber) {
+        try {
+            String accountName = accountService.findAccountNameByNumber(accountNumber);
+            if (accountName != null) {
+                return ResponseEntity.ok(Map.of("accountName", accountName));
+            } else {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of("message", "Account not found"));
+            }
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Map.of("message", "Error looking up account", "error", e.getMessage()));
         }
     }
 }

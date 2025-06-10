@@ -12,7 +12,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.textfield.TextInputEditText;
 import com.mobile.fe_bankproject.network.RetrofitClient;
-import com.mobile.fe_bankproject.network.ApiService;
+import com.mobile.fe_bankproject.network.CardService;
 import com.mobile.fe_bankproject.dto.CardResponse;
 import com.mobile.fe_bankproject.dto.AccountResponse;
 
@@ -37,7 +37,7 @@ public class CardManagementActivity extends AppCompatActivity {
     private LinearLayout btnNewCard;
     private LinearLayout btnCardInfo;
     private boolean isCardLocked = false;
-    private ApiService apiService;
+    private CardService cardService;
     private String originalCardNumber;
     private String originalCardHolder;
     private static final String PREF_NAME = "CardPrefs";
@@ -55,7 +55,7 @@ public class CardManagementActivity extends AppCompatActivity {
         btnLock = findViewById(R.id.btnLock);
         btnNewCard = findViewById(R.id.btnNewCard);
         btnCardInfo = findViewById(R.id.btnCardInfo);
-        apiService = RetrofitClient.getInstance().getApiService();
+        cardService = RetrofitClient.getInstance().getCardService();
 
         // Lấy số thẻ từ Intent hoặc SharedPreferences
         String cardNum = getIntent().getStringExtra("card_number");
@@ -81,7 +81,7 @@ public class CardManagementActivity extends AppCompatActivity {
     }
 
     private void loadCardInfo(String cardNum) {
-        apiService.getCardInfo(cardNum).enqueue(new Callback<CardResponse>() {
+        cardService.getCardInfo(cardNum).enqueue(new Callback<CardResponse>() {
             @Override
             public void onResponse(Call<CardResponse> call, Response<CardResponse> response) {
                 if (response.isSuccessful() && response.body() != null) {
@@ -132,7 +132,7 @@ public class CardManagementActivity extends AppCompatActivity {
         Map<String, String> request = new HashMap<>();
         request.put("accountNumber", accountNumber);
 
-        apiService.createCard(request).enqueue(new Callback<CardResponse>() {
+        cardService.createCard(request).enqueue(new Callback<CardResponse>() {
             @Override
             public void onResponse(Call<CardResponse> call, Response<CardResponse> response) {
                 if (response.isSuccessful() && response.body() != null) {
@@ -222,7 +222,7 @@ public class CardManagementActivity extends AppCompatActivity {
             RequestBody requestBody = RequestBody.create(
                 MediaType.parse("application/json"), jsonObject.toString());
 
-            apiService.lockCard(requestBody).enqueue(new Callback<ResponseBody>() {
+            cardService.lockCard(requestBody).enqueue(new Callback<ResponseBody>() {
                 @Override
                 public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                     if (response.isSuccessful()) {
@@ -258,7 +258,7 @@ public class CardManagementActivity extends AppCompatActivity {
             RequestBody requestBody = RequestBody.create(
                 MediaType.parse("application/json"), jsonObject.toString());
 
-            apiService.unlockCard(requestBody).enqueue(new Callback<ResponseBody>() {
+            cardService.unlockCard(requestBody).enqueue(new Callback<ResponseBody>() {
                 @Override
                 public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                     if (response.isSuccessful()) {
@@ -322,21 +322,22 @@ public class CardManagementActivity extends AppCompatActivity {
         SharedPreferences prefs = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
         String accountNumber = prefs.getString(KEY_ACCOUNT_NUMBER, null);
         if (accountNumber != null) {
-            apiService.getAccountInfo(accountNumber).enqueue(new Callback<AccountResponse>() {
-                @Override
-                public void onResponse(Call<AccountResponse> call, Response<AccountResponse> response) {
-                    if (response.isSuccessful() && response.body() != null) {
-                        AccountResponse account = response.body();
-                        String balance = String.format("%,d VNĐ", (long)account.getBalance());
-                        tvBalance.setText(balance);
+            RetrofitClient.getInstance().getAccountService()
+                .getAccountInfo(accountNumber).enqueue(new Callback<AccountResponse>() {
+                    @Override
+                    public void onResponse(Call<AccountResponse> call, Response<AccountResponse> response) {
+                        if (response.isSuccessful() && response.body() != null) {
+                            AccountResponse account = response.body();
+                            String balance = String.format("%,d VNĐ", (long)account.getBalance());
+                            tvBalance.setText(balance);
+                        }
                     }
-                }
 
-                @Override
-                public void onFailure(Call<AccountResponse> call, Throwable t) {
-                    tvBalance.setText("Không thể lấy thông tin số dư");
-                }
-            });
+                    @Override
+                    public void onFailure(Call<AccountResponse> call, Throwable t) {
+                        tvBalance.setText("Không thể lấy thông tin số dư");
+                    }
+                });
         }
 
         btnClose.setOnClickListener(v -> dialog.dismiss());

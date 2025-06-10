@@ -1,0 +1,221 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="NONE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="7796e19d-99dd-4729-90f8-af24004f627f" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FE-BankProject/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/FE-BankProject/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FE-BankProject/.idea/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/FE-BankProject/.idea/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FE-BankProject/.idea/AndroidProjectSystem.xml" beforeDir="false" afterPath="$PROJECT_DIR$/FE-BankProject/.idea/AndroidProjectSystem.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FE-BankProject/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/FE-BankProject/.idea/compiler.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FE-BankProject/.idea/deploymentTargetSelector.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/FE-BankProject/.idea/gradle.xml" beforeDir="false" afterPath="$PROJECT_DIR$/FE-BankProject/.idea/gradle.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FE-BankProject/.idea/inspectionProfiles/Project_Default.xml" beforeDir="false" afterPath="$PROJECT_DIR$/FE-BankProject/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FE-BankProject/.idea/migrations.xml" beforeDir="false" afterPath="$PROJECT_DIR$/FE-BankProject/.idea/migrations.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FE-BankProject/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/FE-BankProject/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FE-BankProject/.idea/runConfigurations.xml" beforeDir="false" afterPath="$PROJECT_DIR$/FE-BankProject/.idea/runConfigurations.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FE-BankProject/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/FE-BankProject/.idea/vcs.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FE-BankProject/.vscode/settings.json" beforeDir="false" afterPath="$PROJECT_DIR$/FE-BankProject/.vscode/settings.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FE-BankProject/app/build.gradle.kts" beforeDir="false" afterPath="$PROJECT_DIR$/FE-BankProject/app/build.gradle.kts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FE-BankProject/app/proguard-rules.pro" beforeDir="false" afterPath="$PROJECT_DIR$/FE-BankProject/app/proguard-rules.pro" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FE-BankProject/app/src/androidTest/java/com/mobile/fe_bankproject/ExampleInstrumentedTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/FE-BankProject/app/src/androidTest/java/com/mobile/fe_bankproject/ExampleInstrumentedTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FE-BankProject/app/src/main/AndroidManifest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/FE-BankProject/app/src/main/AndroidManifest.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FE-BankProject/app/src/main/java/com/mobile/fe_bankproject/AccountDetailsFragment.java" beforeDir="false" afterPath="$PROJECT_DIR$/FE-BankProject/app/src/main/java/com/mobile/fe_bankproject/AccountDetailsFragment.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FE-BankProject/app/src/main/java/com/mobile/fe_bankproject/BaseAuthenticatedActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/FE-BankProject/app/src/main/java/com/mobile/fe_bankproject/BaseAuthenticatedActivity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FE-BankProject/app/src/main/java/com/mobile/fe_bankproject/CardManagementActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/FE-BankProject/app/src/main/java/com/mobile/fe_bankproject/CardManagementActivity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FE-BankProject/app/src/main/java/com/mobile/fe_bankproject/ChangeBackgroundImageActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/FE-BankProject/app/src/main/java/com/mobile/fe_bankproject/ChangeBackgroundImageActivity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FE-BankProject/app/src/main/java/com/mobile/fe_bankproject/ChangePasswordActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/FE-BankProject/app/src/main/java/com/mobile/fe_bankproject/ChangePasswordActivity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FE-BankProject/app/src/main/java/com/mobile/fe_bankproject/ChangePinActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/FE-BankProject/app/src/main/java/com/mobile/fe_bankproject/ChangePinActivity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FE-BankProject/app/src/main/java/com/mobile/fe_bankproject/ConfirmOTPActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/FE-BankProject/app/src/main/java/com/mobile/fe_bankproject/ConfirmOTPActivity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FE-BankProject/app/src/main/java/com/mobile/fe_bankproject/ConfirmPasswordFragment.java" beforeDir="false" afterPath="$PROJECT_DIR$/FE-BankProject/app/src/main/java/com/mobile/fe_bankproject/ConfirmPasswordFragment.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FE-BankProject/app/src/main/java/com/mobile/fe_bankproject/Data4GFragment.java" beforeDir="false" afterPath="$PROJECT_DIR$/FE-BankProject/app/src/main/java/com/mobile/fe_bankproject/Data4GFragment.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FE-BankProject/app/src/main/java/com/mobile/fe_bankproject/Demo.java" beforeDir="false" afterPath="$PROJECT_DIR$/FE-BankProject/app/src/main/java/com/mobile/fe_bankproject/Demo.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FE-BankProject/app/src/main/java/com/mobile/fe_bankproject/EditProfileActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/FE-BankProject/app/src/main/java/com/mobile/fe_bankproject/EditProfileActivity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FE-BankProject/app/src/main/java/com/mobile/fe_bankproject/ForgotPasswordActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/FE-BankProject/app/src/main/java/com/mobile/fe_bankproject/ForgotPasswordActivity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FE-BankProject/app/src/main/java/com/mobile/fe_bankproject/ForgotPinActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/FE-BankProject/app/src/main/java/com/mobile/fe_bankproject/ForgotPinActivity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FE-BankProject/app/src/main/java/com/mobile/fe_bankproject/LoginActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/FE-BankProject/app/src/main/java/com/mobile/fe_bankproject/LoginActivity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FE-BankProject/app/src/main/java/com/mobile/fe_bankproject/LogoActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/FE-BankProject/app/src/main/java/com/mobile/fe_bankproject/LogoActivity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FE-BankProject/app/src/main/java/com/mobile/fe_bankproject/MainActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/FE-BankProject/app/src/main/java/com/mobile/fe_bankproject/MainActivity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FE-BankProject/app/src/main/java/com/mobile/fe_bankproject/MenuFragment.java" beforeDir="false" afterPath="$PROJECT_DIR$/FE-BankProject/app/src/main/java/com/mobile/fe_bankproject/MenuFragment.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FE-BankProject/app/src/main/java/com/mobile/fe_bankproject/PhoneCardFragment.java" beforeDir="false" afterPath="$PROJECT_DIR$/FE-BankProject/app/src/main/java/com/mobile/fe_bankproject/PhoneCardFragment.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FE-BankProject/app/src/main/java/com/mobile/fe_bankproject/RegisterActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/FE-BankProject/app/src/main/java/com/mobile/fe_bankproject/RegisterActivity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FE-BankProject/app/src/main/java/com/mobile/fe_bankproject/ResetPinActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/FE-BankProject/app/src/main/java/com/mobile/fe_bankproject/ResetPinActivity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FE-BankProject/app/src/main/java/com/mobile/fe_bankproject/TopUpFragment.java" beforeDir="false" afterPath="$PROJECT_DIR$/FE-BankProject/app/src/main/java/com/mobile/fe_bankproject/TopUpFragment.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FE-BankProject/app/src/main/java/com/mobile/fe_bankproject/TopUpPagerAdapter.java" beforeDir="false" afterPath="$PROJECT_DIR$/FE-BankProject/app/src/main/java/com/mobile/fe_bankproject/TopUpPagerAdapter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FE-BankProject/app/src/main/java/com/mobile/fe_bankproject/TransferMoney.java" beforeDir="false" afterPath="$PROJECT_DIR$/FE-BankProject/app/src/main/java/com/mobile/fe_bankproject/TransferMoney.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FE-BankProject/app/src/main/java/com/mobile/fe_bankproject/TransferSuccess.java" beforeDir="false" afterPath="$PROJECT_DIR$/FE-BankProject/app/src/main/java/com/mobile/fe_bankproject/TransferSuccess.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FE-BankProject/app/src/main/java/com/mobile/fe_bankproject/dto/AccountLogin.java" beforeDir="false" afterPath="$PROJECT_DIR$/FE-BankProject/app/src/main/java/com/mobile/fe_bankproject/dto/AccountLogin.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FE-BankProject/app/src/main/java/com/mobile/fe_bankproject/dto/AccountRegister.java" beforeDir="false" afterPath="$PROJECT_DIR$/FE-BankProject/app/src/main/java/com/mobile/fe_bankproject/dto/AccountRegister.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FE-BankProject/app/src/main/java/com/mobile/fe_bankproject/dto/AccountResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/FE-BankProject/app/src/main/java/com/mobile/fe_bankproject/dto/AccountResponse.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FE-BankProject/app/src/main/java/com/mobile/fe_bankproject/dto/Address.java" beforeDir="false" afterPath="$PROJECT_DIR$/FE-BankProject/app/src/main/java/com/mobile/fe_bankproject/dto/Address.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FE-BankProject/app/src/main/java/com/mobile/fe_bankproject/dto/CardResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/FE-BankProject/app/src/main/java/com/mobile/fe_bankproject/dto/CardResponse.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FE-BankProject/app/src/main/java/com/mobile/fe_bankproject/dto/ChangePasswordRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/FE-BankProject/app/src/main/java/com/mobile/fe_bankproject/dto/ChangePasswordRequest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FE-BankProject/app/src/main/java/com/mobile/fe_bankproject/dto/DataPackageFilterRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/FE-BankProject/app/src/main/java/com/mobile/fe_bankproject/dto/DataPackageFilterRequest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FE-BankProject/app/src/main/java/com/mobile/fe_bankproject/dto/DataPackagePreview.java" beforeDir="false" afterPath="$PROJECT_DIR$/FE-BankProject/app/src/main/java/com/mobile/fe_bankproject/dto/DataPackagePreview.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FE-BankProject/app/src/main/java/com/mobile/fe_bankproject/dto/DataPackageRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/FE-BankProject/app/src/main/java/com/mobile/fe_bankproject/dto/DataPackageRequest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FE-BankProject/app/src/main/java/com/mobile/fe_bankproject/dto/DistrictDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/FE-BankProject/app/src/main/java/com/mobile/fe_bankproject/dto/DistrictDTO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FE-BankProject/app/src/main/java/com/mobile/fe_bankproject/dto/Gender.java" beforeDir="false" afterPath="$PROJECT_DIR$/FE-BankProject/app/src/main/java/com/mobile/fe_bankproject/dto/Gender.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FE-BankProject/app/src/main/java/com/mobile/fe_bankproject/dto/OTPVerifyRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/FE-BankProject/app/src/main/java/com/mobile/fe_bankproject/dto/OTPVerifyRequest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FE-BankProject/app/src/main/java/com/mobile/fe_bankproject/dto/ProvinceDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/FE-BankProject/app/src/main/java/com/mobile/fe_bankproject/dto/ProvinceDTO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FE-BankProject/app/src/main/java/com/mobile/fe_bankproject/dto/RechargeRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/FE-BankProject/app/src/main/java/com/mobile/fe_bankproject/dto/RechargeRequest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FE-BankProject/app/src/main/java/com/mobile/fe_bankproject/dto/ResetPasswordRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/FE-BankProject/app/src/main/java/com/mobile/fe_bankproject/dto/ResetPasswordRequest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FE-BankProject/app/src/main/java/com/mobile/fe_bankproject/dto/TelcoProvider.java" beforeDir="false" afterPath="$PROJECT_DIR$/FE-BankProject/app/src/main/java/com/mobile/fe_bankproject/dto/TelcoProvider.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FE-BankProject/app/src/main/java/com/mobile/fe_bankproject/dto/UpdateProfileRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/FE-BankProject/app/src/main/java/com/mobile/fe_bankproject/dto/UpdateProfileRequest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FE-BankProject/app/src/main/java/com/mobile/fe_bankproject/dto/WardDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/FE-BankProject/app/src/main/java/com/mobile/fe_bankproject/dto/WardDTO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FE-BankProject/app/src/main/java/com/mobile/fe_bankproject/network/AccountService.java" beforeDir="false" afterPath="$PROJECT_DIR$/FE-BankProject/app/src/main/java/com/mobile/fe_bankproject/network/AccountService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FE-BankProject/app/src/main/java/com/mobile/fe_bankproject/network/AddressService.java" beforeDir="false" afterPath="$PROJECT_DIR$/FE-BankProject/app/src/main/java/com/mobile/fe_bankproject/network/AddressService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FE-BankProject/app/src/main/java/com/mobile/fe_bankproject/network/RetrofitClient.java" beforeDir="false" afterPath="$PROJECT_DIR$/FE-BankProject/app/src/main/java/com/mobile/fe_bankproject/network/RetrofitClient.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FE-BankProject/app/src/main/java/com/mobile/fe_bankproject/network/api/TransferApi.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/FE-BankProject/app/src/main/java/com/mobile/fe_bankproject/network/model/SendOtpRequest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/FE-BankProject/app/src/main/java/com/mobile/fe_bankproject/network/model/SendOtpResponse.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/FE-BankProject/app/src/main/java/com/mobile/fe_bankproject/network/model/TransferPreviewRequest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/FE-BankProject/app/src/main/java/com/mobile/fe_bankproject/network/model/TransferPreviewResponse.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/FE-BankProject/app/src/main/java/com/mobile/fe_bankproject/utils/MyUtil.java" beforeDir="false" afterPath="$PROJECT_DIR$/FE-BankProject/app/src/main/java/com/mobile/fe_bankproject/utils/MyUtil.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FE-BankProject/app/src/main/res/anim/slide_in_left.xml" beforeDir="false" afterPath="$PROJECT_DIR$/FE-BankProject/app/src/main/res/anim/slide_in_left.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FE-BankProject/app/src/main/res/anim/slide_in_right.xml" beforeDir="false" afterPath="$PROJECT_DIR$/FE-BankProject/app/src/main/res/anim/slide_in_right.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FE-BankProject/app/src/main/res/anim/slide_out_left.xml" beforeDir="false" afterPath="$PROJECT_DIR$/FE-BankProject/app/src/main/res/anim/slide_out_left.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FE-BankProject/app/src/main/res/anim/slide_out_right.xml" beforeDir="false" afterPath="$PROJECT_DIR$/FE-BankProject/app/src/main/res/anim/slide_out_right.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FE-BankProject/app/src/main/res/drawable/bg_button_confirm.xml" beforeDir="false" afterPath="$PROJECT_DIR$/FE-BankProject/app/src/main/res/drawable/bg_button_confirm.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FE-BankProject/app/src/main/res/drawable/bg_button_outline.xml" beforeDir="false" afterPath="$PROJECT_DIR$/FE-BankProject/app/src/main/res/drawable/bg_button_outline.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FE-BankProject/app/src/main/res/drawable/bg_card.xml" beforeDir="false" afterPath="$PROJECT_DIR$/FE-BankProject/app/src/main/res/drawable/bg_card.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FE-BankProject/app/src/main/res/drawable/bg_circle_success.xml" beforeDir="false" afterPath="$PROJECT_DIR$/FE-BankProject/app/src/main/res/drawable/bg_circle_success.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FE-BankProject/app/src/main/res/drawable/bg_header_green.xml" beforeDir="false" afterPath="$PROJECT_DIR$/FE-BankProject/app/src/main/res/drawable/bg_header_green.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FE-BankProject/app/src/main/res/drawable/bg_input.xml" beforeDir="false" afterPath="$PROJECT_DIR$/FE-BankProject/app/src/main/res/drawable/bg_input.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FE-BankProject/app/src/main/res/drawable/bg_spinner.xml" beforeDir="false" afterPath="$PROJECT_DIR$/FE-BankProject/app/src/main/res/drawable/bg_spinner.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FE-BankProject/app/src/main/res/drawable/bg_topup_confirm_header.xml" beforeDir="false" afterPath="$PROJECT_DIR$/FE-BankProject/app/src/main/res/drawable/bg_topup_confirm_header.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FE-BankProject/app/src/main/res/drawable/card_background.xml" beforeDir="false" afterPath="$PROJECT_DIR$/FE-BankProject/app/src/main/res/drawable/card_background.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FE-BankProject/app/src/main/res/drawable/circle_background.xml" beforeDir="false" afterPath="$PROJECT_DIR$/FE-BankProject/app/src/main/res/drawable/circle_background.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FE-BankProject/app/src/main/res/drawable/circle_button_background.xml" beforeDir="false" afterPath="$PROJECT_DIR$/FE-BankProject/app/src/main/res/drawable/circle_button_background.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FE-BankProject/app/src/main/res/drawable/default_background.xml" beforeDir="false" afterPath="$PROJECT_DIR$/FE-BankProject/app/src/main/res/drawable/default_background.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FE-BankProject/app/src/main/res/drawable/ic_arrow_right.xml" beforeDir="false" afterPath="$PROJECT_DIR$/FE-BankProject/app/src/main/res/drawable/ic_arrow_right.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FE-BankProject/app/src/main/res/drawable/ic_auto_topup.xml" beforeDir="false" afterPath="$PROJECT_DIR$/FE-BankProject/app/src/main/res/drawable/ic_auto_topup.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FE-BankProject/app/src/main/res/drawable/ic_back.xml" beforeDir="false" afterPath="$PROJECT_DIR$/FE-BankProject/app/src/main/res/drawable/ic_back.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FE-BankProject/app/src/main/res/drawable/ic_bank_logo.xml" beforeDir="false" afterPath="$PROJECT_DIR$/FE-BankProject/app/src/main/res/drawable/ic_bank_logo.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FE-BankProject/app/src/main/res/drawable/ic_battery.xml" beforeDir="false" afterPath="$PROJECT_DIR$/FE-BankProject/app/src/main/res/drawable/ic_battery.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FE-BankProject/app/src/main/res/drawable/ic_card_add.xml" beforeDir="false" afterPath="$PROJECT_DIR$/FE-BankProject/app/src/main/res/drawable/ic_card_add.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FE-BankProject/app/src/main/res/drawable/ic_card_history.xml" beforeDir="false" afterPath="$PROJECT_DIR$/FE-BankProject/app/src/main/res/drawable/ic_card_history.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FE-BankProject/app/src/main/res/drawable/ic_card_info.xml" beforeDir="false" afterPath="$PROJECT_DIR$/FE-BankProject/app/src/main/res/drawable/ic_card_info.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FE-BankProject/app/src/main/res/drawable/ic_check_white.xml" beforeDir="false" afterPath="$PROJECT_DIR$/FE-BankProject/app/src/main/res/drawable/ic_check_white.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FE-BankProject/app/src/main/res/drawable/ic_contacts.xml" beforeDir="false" afterPath="$PROJECT_DIR$/FE-BankProject/app/src/main/res/drawable/ic_contacts.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FE-BankProject/app/src/main/res/drawable/ic_home.xml" beforeDir="false" afterPath="$PROJECT_DIR$/FE-BankProject/app/src/main/res/drawable/ic_home.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FE-BankProject/app/src/main/res/drawable/ic_launcher_background.xml" beforeDir="false" afterPath="$PROJECT_DIR$/FE-BankProject/app/src/main/res/drawable/ic_launcher_background.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FE-BankProject/app/src/main/res/drawable/ic_launcher_foreground.xml" beforeDir="false" afterPath="$PROJECT_DIR$/FE-BankProject/app/src/main/res/drawable/ic_launcher_foreground.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FE-BankProject/app/src/main/res/drawable/ic_minus.xml" beforeDir="false" afterPath="$PROJECT_DIR$/FE-BankProject/app/src/main/res/drawable/ic_minus.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FE-BankProject/app/src/main/res/drawable/ic_money.xml" beforeDir="false" afterPath="$PROJECT_DIR$/FE-BankProject/app/src/main/res/drawable/ic_money.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FE-BankProject/app/src/main/res/drawable/ic_perbank.xml" beforeDir="false" afterPath="$PROJECT_DIR$/FE-BankProject/app/src/main/res/drawable/ic_perbank.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FE-BankProject/app/src/main/res/drawable/ic_phone.xml" beforeDir="false" afterPath="$PROJECT_DIR$/FE-BankProject/app/src/main/res/drawable/ic_phone.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FE-BankProject/app/src/main/res/drawable/ic_plus.xml" beforeDir="false" afterPath="$PROJECT_DIR$/FE-BankProject/app/src/main/res/drawable/ic_plus.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FE-BankProject/app/src/main/res/drawable/ic_signal.xml" beforeDir="false" afterPath="$PROJECT_DIR$/FE-BankProject/app/src/main/res/drawable/ic_signal.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FE-BankProject/app/src/main/res/drawable/ic_topup_success_illustration.xml" beforeDir="false" afterPath="$PROJECT_DIR$/FE-BankProject/app/src/main/res/drawable/ic_topup_success_illustration.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FE-BankProject/app/src/main/res/drawable/ic_viettel.xml" beforeDir="false" afterPath="$PROJECT_DIR$/FE-BankProject/app/src/main/res/drawable/ic_viettel.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FE-BankProject/app/src/main/res/drawable/ic_visibility.xml" beforeDir="false" afterPath="$PROJECT_DIR$/FE-BankProject/app/src/main/res/drawable/ic_visibility.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FE-BankProject/app/src/main/res/drawable/ic_visibility_off.xml" beforeDir="false" afterPath="$PROJECT_DIR$/FE-BankProject/app/src/main/res/drawable/ic_visibility_off.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FE-BankProject/app/src/main/res/drawable/ic_wifi.xml" beforeDir="false" afterPath="$PROJECT_DIR$/FE-BankProject/app/src/main/res/drawable/ic_wifi.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FE-BankProject/app/src/main/res/drawable/otp_circle.xml" beforeDir="false" afterPath="$PROJECT_DIR$/FE-BankProject/app/src/main/res/drawable/otp_circle.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FE-BankProject/app/src/main/res/drawable/outline_button.xml" beforeDir="false" afterPath="$PROJECT_DIR$/FE-BankProject/app/src/main/res/drawable/outline_button.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FE-BankProject/app/src/main/res/drawable/rounded_border_background.xml" beforeDir="false" afterPath="$PROJECT_DIR$/FE-BankProject/app/src/main/res/drawable/rounded_border_background.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FE-BankProject/app/src/main/res/drawable/rounded_button.xml" beforeDir="false" afterPath="$PROJECT_DIR$/FE-BankProject/app/src/main/res/drawable/rounded_button.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FE-BankProject/app/src/main/res/drawable/rounded_button_background.xml" beforeDir="false" afterPath="$PROJECT_DIR$/FE-BankProject/app/src/main/res/drawable/rounded_button_background.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FE-BankProject/app/src/main/res/drawable/rounded_outline_button.xml" beforeDir="false" afterPath="$PROJECT_DIR$/FE-BankProject/app/src/main/res/drawable/rounded_outline_button.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FE-BankProject/app/src/main/res/layout/activity_card_management.xml" beforeDir="false" afterPath="$PROJECT_DIR$/FE-BankProject/app/src/main/res/layout/activity_card_management.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FE-BankProject/app/src/main/res/layout/activity_change_background_image.xml" beforeDir="false" afterPath="$PROJECT_DIR$/FE-BankProject/app/src/main/res/layout/activity_change_background_image.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FE-BankProject/app/src/main/res/layout/activity_change_password.xml" beforeDir="false" afterPath="$PROJECT_DIR$/FE-BankProject/app/src/main/res/layout/activity_change_password.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FE-BankProject/app/src/main/res/layout/activity_change_pin.xml" beforeDir="false" afterPath="$PROJECT_DIR$/FE-BankProject/app/src/main/res/layout/activity_change_pin.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FE-BankProject/app/src/main/res/layout/activity_confirm_infor.xml" beforeDir="false" afterPath="$PROJECT_DIR$/FE-BankProject/app/src/main/res/layout/activity_confirm_infor.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FE-BankProject/app/src/main/res/layout/activity_confirm_otp.xml" beforeDir="false" afterPath="$PROJECT_DIR$/FE-BankProject/app/src/main/res/layout/activity_confirm_otp.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FE-BankProject/app/src/main/res/layout/activity_demo.xml" beforeDir="false" afterPath="$PROJECT_DIR$/FE-BankProject/app/src/main/res/layout/activity_demo.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FE-BankProject/app/src/main/res/layout/activity_edit_profile.xml" beforeDir="false" afterPath="$PROJECT_DIR$/FE-BankProject/app/src/main/res/layout/activity_edit_profile.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FE-BankProject/app/src/main/res/layout/activity_forgot_password.xml" beforeDir="false" afterPath="$PROJECT_DIR$/FE-BankProject/app/src/main/res/layout/activity_forgot_password.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FE-BankProject/app/src/main/res/layout/activity_forgot_pin.xml" beforeDir="false" afterPath="$PROJECT_DIR$/FE-BankProject/app/src/main/res/layout/activity_forgot_pin.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FE-BankProject/app/src/main/res/layout/activity_login.xml" beforeDir="false" afterPath="$PROJECT_DIR$/FE-BankProject/app/src/main/res/layout/activity_login.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FE-BankProject/app/src/main/res/layout/activity_logo.xml" beforeDir="false" afterPath="$PROJECT_DIR$/FE-BankProject/app/src/main/res/layout/activity_logo.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FE-BankProject/app/src/main/res/layout/activity_main.xml" beforeDir="false" afterPath="$PROJECT_DIR$/FE-BankProject/app/src/main/res/layout/activity_main.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FE-BankProject/app/src/main/res/layout/activity_otp.xml" beforeDir="false" afterPath="$PROJECT_DIR$/FE-BankProject/app/src/main/res/layout/activity_otp.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FE-BankProject/app/src/main/res/layout/activity_otp_code.xml" beforeDir="false" afterPath="$PROJECT_DIR$/FE-BankProject/app/src/main/res/layout/activity_otp_code.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FE-BankProject/app/src/main/res/layout/activity_otp_input.xml" beforeDir="false" afterPath="$PROJECT_DIR$/FE-BankProject/app/src/main/res/layout/activity_otp_input.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FE-BankProject/app/src/main/res/layout/activity_phone_topup.xml" beforeDir="false" afterPath="$PROJECT_DIR$/FE-BankProject/app/src/main/res/layout/activity_phone_topup.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FE-BankProject/app/src/main/res/layout/activity_register.xml" beforeDir="false" afterPath="$PROJECT_DIR$/FE-BankProject/app/src/main/res/layout/activity_register.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FE-BankProject/app/src/main/res/layout/activity_reset_pin.xml" beforeDir="false" afterPath="$PROJECT_DIR$/FE-BankProject/app/src/main/res/layout/activity_reset_pin.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FE-BankProject/app/src/main/res/layout/activity_top_up_confirm.xml" beforeDir="false" afterPath="$PROJECT_DIR$/FE-BankProject/app/src/main/res/layout/activity_top_up_confirm.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FE-BankProject/app/src/main/res/layout/activity_top_up_phone.xml" beforeDir="false" afterPath="$PROJECT_DIR$/FE-BankProject/app/src/main/res/layout/activity_top_up_phone.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FE-BankProject/app/src/main/res/layout/activity_transfer_money.xml" beforeDir="false" afterPath="$PROJECT_DIR$/FE-BankProject/app/src/main/res/layout/activity_transfer_money.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FE-BankProject/app/src/main/res/layout/activity_verify_otp_card.xml" beforeDir="false" afterPath="$PROJECT_DIR$/FE-BankProject/app/src/main/res/layout/activity_verify_otp_card.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FE-BankProject/app/src/main/res/layout/custom_toolbar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/FE-BankProject/app/src/main/res/layout/custom_toolbar.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FE-BankProject/app/src/main/res/layout/dialog_card_info.xml" beforeDir="false" afterPath="$PROJECT_DIR$/FE-BankProject/app/src/main/res/layout/dialog_card_info.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FE-BankProject/app/src/main/res/layout/dialog_enter_pin.xml" beforeDir="false" afterPath="$PROJECT_DIR$/FE-BankProject/app/src/main/res/layout/dialog_enter_pin.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FE-BankProject/app/src/main/res/layout/dialog_new_card_info.xml" beforeDir="false" afterPath="$PROJECT_DIR$/FE-BankProject/app/src/main/res/layout/dialog_new_card_info.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FE-BankProject/app/src/main/res/layout/dialog_topup_success.xml" beforeDir="false" afterPath="$PROJECT_DIR$/FE-BankProject/app/src/main/res/layout/dialog_topup_success.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FE-BankProject/app/src/main/res/layout/fragment_account_details.xml" beforeDir="false" afterPath="$PROJECT_DIR$/FE-BankProject/app/src/main/res/layout/fragment_account_details.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FE-BankProject/app/src/main/res/layout/fragment_address_selection.xml" beforeDir="false" afterPath="$PROJECT_DIR$/FE-BankProject/app/src/main/res/layout/fragment_address_selection.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FE-BankProject/app/src/main/res/layout/fragment_confirm_password.xml" beforeDir="false" afterPath="$PROJECT_DIR$/FE-BankProject/app/src/main/res/layout/fragment_confirm_password.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FE-BankProject/app/src/main/res/layout/fragment_data.xml" beforeDir="false" afterPath="$PROJECT_DIR$/FE-BankProject/app/src/main/res/layout/fragment_data.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FE-BankProject/app/src/main/res/layout/fragment_data_4g.xml" beforeDir="false" afterPath="$PROJECT_DIR$/FE-BankProject/app/src/main/res/layout/fragment_data_4g.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FE-BankProject/app/src/main/res/layout/fragment_edit_profile.xml" beforeDir="false" afterPath="$PROJECT_DIR$/FE-BankProject/app/src/main/res/layout/fragment_edit_profile.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FE-BankProject/app/src/main/res/layout/fragment_menu.xml" beforeDir="false" afterPath="$PROJECT_DIR$/FE-BankProject/app/src/main/res/layout/fragment_menu.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FE-BankProject/app/src/main/res/layout/fragment_phone_card.xml" beforeDir="false" afterPath="$PROJECT_DIR$/FE-BankProject/app/src/main/res/layout/fragment_phone_card.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FE-BankProject/app/src/main/res/layout/fragment_top_up.xml" beforeDir="false" afterPath="$PROJECT_DIR$/FE-BankProject/app/src/main/res/layout/fragment_top_up.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FE-BankProject/app/src/main/res/layout/layout_session_expired.xml" beforeDir="false" afterPath="$PROJECT_DIR$/FE-BankProject/app/src/main/res/layout/layout_session_expired.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FE-BankProject/app/src/main/res/menu/bottom_navigation_menu.xml" beforeDir="false" afterPath="$PROJECT_DIR$/FE-BankProject/app/src/main/res/menu/bottom_navigation_menu.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FE-BankProject/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" beforeDir="false" afterPath="$PROJECT_DIR$/FE-BankProject/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FE-BankProject/app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml" beforeDir="false" afterPath="$PROJECT_DIR$/FE-BankProject/app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FE-BankProject/app/src/main/res/values-night/themes.xml" beforeDir="false" afterPath="$PROJECT_DIR$/FE-BankProject/app/src/main/res/values-night/themes.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FE-BankProject/app/src/main/res/values/colors.xml" beforeDir="false" afterPath="$PROJECT_DIR$/FE-BankProject/app/src/main/res/values/colors.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FE-BankProject/app/src/main/res/values/strings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/FE-BankProject/app/src/main/res/values/strings.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FE-BankProject/app/src/main/res/values/styles.xml" beforeDir="false" afterPath="$PROJECT_DIR$/FE-BankProject/app/src/main/res/values/styles.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FE-BankProject/app/src/main/res/values/themes.xml" beforeDir="false" afterPath="$PROJECT_DIR$/FE-BankProject/app/src/main/res/values/themes.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FE-BankProject/app/src/main/res/xml/backup_rules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/FE-BankProject/app/src/main/res/xml/backup_rules.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FE-BankProject/app/src/main/res/xml/data_extraction_rules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/FE-BankProject/app/src/main/res/xml/data_extraction_rules.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FE-BankProject/app/src/test/java/com/mobile/fe_bankproject/ExampleUnitTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/FE-BankProject/app/src/test/java/com/mobile/fe_bankproject/ExampleUnitTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FE-BankProject/data.sql" beforeDir="false" afterPath="$PROJECT_DIR$/FE-BankProject/data.sql" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FE-BankProject/gradle.properties" beforeDir="false" afterPath="$PROJECT_DIR$/FE-BankProject/gradle.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FE-BankProject/gradle/libs.versions.toml" beforeDir="false" afterPath="$PROJECT_DIR$/FE-BankProject/gradle/libs.versions.toml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FE-BankProject/gradle/wrapper/gradle-wrapper.properties" beforeDir="false" afterPath="$PROJECT_DIR$/FE-BankProject/gradle/wrapper/gradle-wrapper.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FE-BankProject/gradlew" beforeDir="false" afterPath="$PROJECT_DIR$/FE-BankProject/gradlew" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FE-BankProject/gradlew.bat" beforeDir="false" afterPath="$PROJECT_DIR$/FE-BankProject/gradlew.bat" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FE-BankProject/settings.gradle.kts" beforeDir="false" afterPath="$PROJECT_DIR$/FE-BankProject/settings.gradle.kts" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="ClangdSettings">
+    <option name="formatViaClangd" value="false" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 1
+}</component>
+  <component name="ProjectId" id="2xFkGbzkCeM7B7ilAElDQARNVOl" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.cidr.known.project.marker": "true",
+    "RunOnceActivity.readMode.enableVisualFormatting": "true",
+    "cf.first.check.clang-format": "false",
+    "cidr.known.project.marker": "true",
+    "git-widget-placeholder": "Hoang",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "D:/aaa/WorkSpace_32/Android/MobileProject/FE-BankProject"
+  }
+}]]></component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="7796e19d-99dd-4729-90f8-af24004f627f" name="Changes" comment="" />
+      <created>1747541114454</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1747541114454</updated>
+    </task>
+    <servers />
+  </component>
+</project>

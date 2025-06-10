@@ -229,6 +229,7 @@
 
                     <!-- Chuyển tiền -->
                     <LinearLayout
+                        android:id="@+id/layout_transfer_money"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_columnWeight="1"
@@ -355,12 +356,14 @@
 
                     <!-- Dịch vụ thẻ -->
                     <LinearLayout
+                        android:id="@+id/btnCardService"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_columnWeight="1"
                         android:orientation="vertical"
                         android:gravity="center"
-                        android:padding="8dp">
+                        android:padding="8dp"
+                        android:onClick="onCardServiceClick">
                         <TextView
                             android:layout_width="40dp"
                             android:layout_height="40dp"
