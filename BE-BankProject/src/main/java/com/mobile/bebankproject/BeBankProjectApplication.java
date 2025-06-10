@@ -7,6 +7,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class BeBankProjectApplication {
 
     public static void main(String[] args) {
+        System.setProperty("javax.net.ssl.trustStore", "NONE");
         SpringApplication.run(BeBankProjectApplication.class, args);
     }
 }
