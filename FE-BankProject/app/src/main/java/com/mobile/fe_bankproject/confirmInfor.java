@@ -3,7 +3,6 @@ package com.mobile.fe_bankproject;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -14,12 +13,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
-import androidx.appcompat.widget.Toolbar;
 
 // Import các lớp cần thiết cho Retrofit
 import com.mobile.fe_bankproject.dto.FundTransferRequest;
-import com.mobile.fe_bankproject.network.ApiClient; // Giả định bạn có lớp ApiClient để lấy Retrofit instance
 import com.mobile.fe_bankproject.network.ApiService; // Import interface ApiService
+import com.mobile.fe_bankproject.network.RetrofitClient;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -120,7 +118,7 @@ public class confirmInfor extends AppCompatActivity {
 
         // Khởi tạo Retrofit Service
         // Bạn cần thay thế ApiClient.getApiClient() bằng cách bạn lấy instance Retrofit trong project của mình
-        apiService = ApiClient.getClient().create(ApiService.class);
+        apiService = RetrofitClient.getInstance().getApiService();
 
         Button btnConfirm = findViewById(R.id.btnContinue);
         if (btnConfirm != null) {

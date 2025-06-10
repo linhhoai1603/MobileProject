@@ -306,6 +306,30 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
+    public boolean updateAvatar(String accountNumber, String urlAvatar) {
+        Account account = accountRepository.findByAccountNumber(accountNumber)
+                .orElseThrow(() -> new RuntimeException("Account not found"));
+        account.getUser().setUrlAvatar(urlAvatar);
+        accountRepository.save(account);
+        return  true;
+    }
+
+    @Override
+    public boolean updateBackground(String accountNumber, String urlBackground) {
+        Account account = accountRepository.findByAccountNumber(accountNumber)
+                .orElseThrow(() -> new RuntimeException("Account not found"));
+        account.getUser().setUrlBackground(urlBackground);
+        accountRepository.save(account);
+        return true;
+    }
+
+    @Override
+    public Account getAccountByAccountNumber(String accountNumber) {
+        return accountRepository.findByAccountNumber(accountNumber)
+                .orElse(null);
+    }
+
+    @Override
     @Transactional
     public boolean closeAccount(String accountNumber, String password) {
         Account account = accountRepository.findByAccountNumber(accountNumber)
@@ -345,6 +369,19 @@ public class AccountServiceImpl implements AccountService {
         sendAccountClosureEmail(account);
 
         return true;
+    }
+
+    @Override
+    public AccountResponse getAccount(String accountNumber) {
+        Optional<Account> account = accountRepository.findByAccountNumber(accountNumber);
+        AccountResponse accountResponse = new AccountResponse();
+        accountResponse.setId(account.get().getId());
+        accountResponse.setAccountNumber(account.get().getAccountNumber());
+        accountResponse.setAccountName(account.get().getAccountName());
+        accountResponse.setPhone(account.get().getPhone());
+        accountResponse.setBalance(account.get().getBalance());
+        accountResponse.setAccountStatus(account.get().getAccountStatus());
+        return accountResponse;
     }
 
     @Override

@@ -63,7 +63,7 @@
             android:layout_centerVertical="true"
             android:background="?attr/selectableItemBackgroundBorderless"
             android:src="@drawable/ic_back"
-            android:tint="@color/white"/>
+            app:tint="@color/white" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -81,7 +81,7 @@
             android:layout_centerVertical="true"
             android:background="?attr/selectableItemBackgroundBorderless"
             android:src="@drawable/ic_home"
-            android:tint="@color/white"/>
+            app:tint="@color/white" />
     </RelativeLayout>
 
     <!-- Tab Layout -->
@@ -164,11 +164,11 @@
 
                 <ImageButton
                     android:id="@+id/contactsButton"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
                     android:background="?attr/selectableItemBackgroundBorderless"
                     android:src="@drawable/ic_contacts"
-                    android:padding="4dp"/>
+                    android:contentDescription="Chọn từ danh bạ" />
             </LinearLayout>
         </LinearLayout>
 
@@ -303,7 +303,7 @@
                 android:layout_height="24dp"
                 android:src="@drawable/ic_minus"
                 android:background="?attr/selectableItemBackgroundBorderless"
-                android:tint="@color/black"/>
+                app:tint="@color/black" />
 
             <TextView
                 android:id="@+id/tvQuantity"
@@ -320,7 +320,7 @@
                 android:layout_height="24dp"
                 android:src="@drawable/ic_plus"
                 android:background="?attr/selectableItemBackgroundBorderless"
-                android:tint="@color/primary"/>
+                app:tint="@color/primary" />
         </LinearLayout>
     </LinearLayout>
 

@@ -1,8 +1,6 @@
 package com.mobile.fe_bankproject.dto;
 
-import lombok.Data;
 
-@Data
 public class UpdateProfileRequest {
     private String accountNumber;
     private String fullName;

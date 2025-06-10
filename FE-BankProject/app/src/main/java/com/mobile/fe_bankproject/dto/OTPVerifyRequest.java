@@ -2,9 +2,7 @@ package com.mobile.fe_bankproject.dto;
 
 import java.io.Serializable;
 
-import lombok.Data;
 
-@Data
 public class OTPVerifyRequest implements Serializable {
     private String email;
     private String otp;

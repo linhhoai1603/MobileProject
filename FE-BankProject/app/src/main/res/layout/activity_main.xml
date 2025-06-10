@@ -235,148 +235,170 @@
                         android:layout_columnWeight="1"
                         android:orientation="vertical"
                         android:gravity="center"
-                        android:padding="8dp">
+                        android:padding="8dp"
+                        android:background="?attr/selectableItemBackground">
+
                         <TextView
                             android:layout_width="40dp"
                             android:layout_height="40dp"
                             android:text="&#xf1d8;"
                             android:textSize="24sp"
-                            android:textColor="@android:color/darker_gray"
+                            android:textColor="#673AB7"
                             android:gravity="center"
                             android:fontFamily="@font/fontawesome"/>
+
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Chuyển tiền"
-                            android:gravity="center"
-                            android:layout_marginTop="4dp"
-                            android:textSize="12sp"/>
+                            android:textColor="#000000"
+                            android:textSize="14sp"
+                            android:layout_marginTop="4dp"/>
                     </LinearLayout>
 
                     <!-- Vay tiền -->
                     <LinearLayout
+                        android:id="@+id/layout_loan"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_columnWeight="1"
                         android:orientation="vertical"
                         android:gravity="center"
-                        android:padding="8dp">
+                        android:padding="8dp"
+                        android:background="?attr/selectableItemBackground">
+
                         <TextView
                             android:layout_width="40dp"
                             android:layout_height="40dp"
                             android:text="&#xf1e0;"
                             android:textSize="24sp"
-                            android:textColor="@android:color/darker_gray"
+                            android:textColor="#673AB7"
                             android:gravity="center"
                             android:fontFamily="@font/fontawesome"/>
+
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Vay tiền"
-                            android:gravity="center"
-                            android:layout_marginTop="4dp"
-                            android:textSize="12sp"/>
+                            android:textColor="#000000"
+                            android:textSize="14sp"
+                            android:layout_marginTop="4dp"/>
                     </LinearLayout>
 
                     <!-- Quét QR -->
                     <LinearLayout
+                        android:id="@+id/layout_scan_qr"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_columnWeight="1"
                         android:orientation="vertical"
                         android:gravity="center"
-                        android:padding="8dp">
+                        android:padding="8dp"
+                        android:background="?attr/selectableItemBackground">
+
                         <TextView
                             android:layout_width="40dp"
                             android:layout_height="40dp"
                             android:text="&#xf030;"
                             android:textSize="24sp"
-                            android:textColor="@android:color/darker_gray"
+                            android:textColor="#673AB7"
                             android:gravity="center"
                             android:fontFamily="@font/fontawesome"/>
+
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Quét QR"
-                            android:gravity="center"
-                            android:layout_marginTop="4dp"
-                            android:textSize="12sp"/>
+                            android:textColor="#000000"
+                            android:textSize="14sp"
+                            android:layout_marginTop="4dp"/>
                     </LinearLayout>
 
                     <!-- Thanh toán -->
                     <LinearLayout
+                        android:id="@+id/layout_payment"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_columnWeight="1"
                         android:orientation="vertical"
                         android:gravity="center"
-                        android:padding="8dp">
+                        android:padding="8dp"
+                        android:background="?attr/selectableItemBackground">
+
                         <TextView
                             android:layout_width="40dp"
                             android:layout_height="40dp"
                             android:text="&#xf093;"
                             android:textSize="24sp"
-                            android:textColor="@android:color/darker_gray"
+                            android:textColor="#673AB7"
                             android:gravity="center"
                             android:fontFamily="@font/fontawesome"/>
+
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Thanh toán"
-                            android:gravity="center"
-                            android:layout_marginTop="4dp"
-                            android:textSize="12sp"/>
+                            android:textColor="#000000"
+                            android:textSize="14sp"
+                            android:layout_marginTop="4dp"/>
                     </LinearLayout>
 
                     <!-- Nạp điện thoại -->
                     <LinearLayout
-                        android:id="@+id/btnPhoneRecharge"
+                        android:id="@+id/layout_top_up"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_columnWeight="1"
                         android:orientation="vertical"
                         android:gravity="center"
-                        android:padding="8dp">
+                        android:padding="8dp"
+                        android:background="?attr/selectableItemBackground">
+
                         <TextView
                             android:layout_width="40dp"
                             android:layout_height="40dp"
                             android:text="&#xf095;"
                             android:textSize="24sp"
-                            android:textColor="@android:color/darker_gray"
+                            android:textColor="#673AB7"
                             android:gravity="center"
                             android:fontFamily="@font/fontawesome"/>
+
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Nạp điện thoại"
-                            android:gravity="center"
-                            android:layout_marginTop="4dp"
-                            android:textSize="12sp"/>
+                            android:textColor="#000000"
+                            android:textSize="14sp"
+                            android:layout_marginTop="4dp"/>
                     </LinearLayout>
 
                     <!-- Dịch vụ thẻ -->
                     <LinearLayout
+                        android:id="@+id/layout_card_service"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_columnWeight="1"
                         android:orientation="vertical"
                         android:gravity="center"
-                        android:padding="8dp">
+                        android:padding="8dp"
+                        android:background="?attr/selectableItemBackground">
+
                         <TextView
                             android:layout_width="40dp"
                             android:layout_height="40dp"
                             android:text="&#xf06e;"
                             android:textSize="24sp"
-                            android:textColor="@android:color/darker_gray"
+                            android:textColor="#673AB7"
                             android:gravity="center"
                             android:fontFamily="@font/fontawesome"/>
+
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Dịch vụ thẻ"
-                            android:gravity="center"
-                            android:layout_marginTop="4dp"
-                            android:textSize="12sp"/>
+                            android:textColor="#000000"
+                            android:textSize="14sp"
+                            android:layout_marginTop="4dp"/>
                     </LinearLayout>
 
                 </GridLayout>

@@ -59,7 +59,9 @@ public class AccountDetailsFragment extends BottomSheetDialogFragment {
 
         if (accountResponse != null) {
             tvAccountNumber.setText(accountResponse.getAccountNumber());
-            tvBalance.setText(String.valueOf(accountResponse.getBalance()));
+            // Format balance to Vietnamese currency
+            String formattedBalance = String.format("%,dđ", (int)accountResponse.getBalance()).replace(",", ".");
+            tvBalance.setText(formattedBalance);
         }
 
         ivCopyAccountNumber.setOnClickListener(new View.OnClickListener() {

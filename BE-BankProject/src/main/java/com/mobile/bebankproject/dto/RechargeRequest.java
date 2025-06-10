@@ -8,6 +8,5 @@ public class RechargeRequest {
     private String accountNumber;
     private String pin;
     private String phoneNumber;
-    private TelcoProvider telcoProvider;
-    private double amount;
+    private int idPhoneCard;
 } 

@@ -19,6 +19,8 @@ public class AccountResponse {
         private String fullName;
         private String email;
         private String gender;
+        private String urlAvatar;
+        private String urlBackground;
     }
 
     public static AccountResponse fromAccount(Account account) {
@@ -36,9 +38,10 @@ public class AccountResponse {
             userResponse.setFullName(account.getUser().getFullName());
             userResponse.setEmail(account.getUser().getEmail());
             userResponse.setGender(account.getUser().getGender().toString());
+            userResponse.setUrlAvatar(account.getUser().getUrlAvatar());
+            userResponse.setUrlBackground(account.getUser().getUrlBackground());
             response.setUser(userResponse);
         }
-
         return response;
     }
 } 

@@ -14,11 +14,14 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import java.util.HashMap;
 import java.util.Map;
+import okhttp3.RequestBody;
+import okhttp3.MediaType;
+import org.json.JSONObject;
 
 public class ChangePinActivity extends AppCompatActivity {
-    private EditText  etCardNumber;
+    private EditText etCardNumber;
     private EditText etOldPin;
-    private EditText  etNewPin;
+    private EditText etNewPin;
     private Button btnChangePin;
     private Button btnForgotPin;
 
@@ -90,34 +93,88 @@ public class ChangePinActivity extends AppCompatActivity {
     }
 
     private void changePin() {
-        Map<String, String> request = new HashMap<>();
-        request.put("cardNumber", etCardNumber.getText().toString().trim());
-        request.put("oldPIN", etOldPin.getText().toString().trim());
-        request.put("newPIN", etNewPin.getText().toString().trim());
+        try {
+            // Lấy dữ liệu từ các trường nhập liệu
+            String cardNumber = etCardNumber.getText().toString().trim();
+            String oldPin = etOldPin.getText().toString().trim();
+            String newPin = etNewPin.getText().toString().trim();
 
-        RetrofitClient.getInstance().getAccountService().changePin(request).enqueue(new Callback<Void>() {
-            @Override
-            public void onResponse(Call<Void> call, Response<Void> response) {
-                if (response.isSuccessful()) {
-                    Toast.makeText(ChangePinActivity.this, "Đổi mã PIN thành công!", Toast.LENGTH_SHORT).show();
-                    finish();
-                } else {
-                    String errorMessage = "Đổi mã PIN thất bại";
-                    try {
-                        if (response.errorBody() != null) {
-                            errorMessage = response.errorBody().string();
+            // Log để debug
+            android.util.Log.d("ChangePinActivity", "Card Number: " + cardNumber);
+            android.util.Log.d("ChangePinActivity", "Old PIN: " + oldPin);
+            android.util.Log.d("ChangePinActivity", "New PIN: " + newPin);
+
+            // Kiểm tra dữ liệu đầu vào
+            if (TextUtils.isEmpty(cardNumber) || TextUtils.isEmpty(oldPin) || TextUtils.isEmpty(newPin)) {
+                etCardNumber.setError("Vui lòng nhập đầy đủ thông tin");
+                return;
+            }
+
+            // Tạo Map request
+            Map<String, String> requestMap = new HashMap<>();
+            requestMap.put("cardNumber", cardNumber);
+            requestMap.put("oldPin", oldPin);  // PIN cũ
+            requestMap.put("newPin", newPin);  // PIN mới
+
+            // Log request map
+            android.util.Log.d("ChangePinActivity", "Request Map: " + requestMap.toString());
+
+            // Gọi API đổi mã PIN
+            RetrofitClient.getInstance().getAccountService().changePin(requestMap).enqueue(new Callback<Void>() {
+                @Override
+                public void onResponse(Call<Void> call, Response<Void> response) {
+                    if (response.isSuccessful()) {
+                        runOnUiThread(() -> {
+                            Toast.makeText(ChangePinActivity.this, "Đổi mã PIN thành công!", Toast.LENGTH_SHORT).show();
+                            finish();
+                        });
+                    } else {
+                        String errorMessage = "Đổi mã PIN thất bại";
+                        try {
+                            if (response.errorBody() != null) {
+                                String errorBody = response.errorBody().string();
+                                // Log error response
+                                android.util.Log.e("ChangePinActivity", "Error Response: " + errorBody);
+                                // Parse JSON error response
+                                org.json.JSONObject jsonError = new org.json.JSONObject(errorBody);
+                                String message = jsonError.optString("message", errorMessage);
+                                if (!TextUtils.isEmpty(message)) {
+                                    errorMessage = message;
+                                }
+                            }
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                            android.util.Log.e("ChangePinActivity", "Error parsing response: " + e.getMessage());
                         }
-                    } catch (Exception e) {
-                        e.printStackTrace();
+                        final String finalErrorMessage = errorMessage;
+                        runOnUiThread(() -> {
+                            etOldPin.setError(finalErrorMessage);
+                        });
                     }
-                    Toast.makeText(ChangePinActivity.this, errorMessage, Toast.LENGTH_LONG).show();
                 }
-            }
 
-            @Override
-            public void onFailure(Call<Void> call, Throwable t) {
-                Toast.makeText(ChangePinActivity.this, "Lỗi kết nối: " + t.getMessage(), Toast.LENGTH_LONG).show();
-            }
-        });
+                @Override
+                public void onFailure(Call<Void> call, Throwable t) {
+                    String errorMessage = "Lỗi kết nối: ";
+                    if (t.getMessage() != null) {
+                        errorMessage += t.getMessage();
+                    } else {
+                        errorMessage += "Không thể kết nối đến máy chủ";
+                    }
+                    android.util.Log.e("ChangePinActivity", "Network Error: " + errorMessage);
+                    final String finalErrorMessage = errorMessage;
+                    runOnUiThread(() -> {
+                        etOldPin.setError(finalErrorMessage);
+                    });
+                }
+            });
+        } catch (Exception e) {
+            e.printStackTrace();
+            android.util.Log.e("ChangePinActivity", "Exception: " + e.getMessage());
+            final String errorMessage = "Có lỗi xảy ra: " + e.getMessage();
+            runOnUiThread(() -> {
+                etOldPin.setError(errorMessage);
+            });
+        }
     }
 }

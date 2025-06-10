@@ -1,8 +1,5 @@
 package com.mobile.fe_bankproject.dto;
 
-import lombok.Data;
-
-@Data
 public class AccountLogin {
     private String phone;
     private String password;

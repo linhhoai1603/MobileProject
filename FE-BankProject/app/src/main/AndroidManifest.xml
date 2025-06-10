@@ -5,7 +5,9 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_MEDIA_IMAGES" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" 
+        android:maxSdkVersion="32" />
 
     <application
         android:allowBackup="true"
@@ -66,7 +68,7 @@
             android:name=".ChangePasswordActivity"
             android:exported="false" />
         <activity
-            android:name=".TopUpPhoneActivity"
+            android:name=".TopUpActivity"
             android:exported="false" />
         <activity
             android:name=".ChangePinActivity"
@@ -86,6 +88,19 @@
         <activity android:name=".TransferSuccess"
             android:exported="false"> <!-- exported="false" nếu Activity này không cần mở từ ứng dụng khác -->
         </activity>
+
+        <!-- Newly added Activities -->
+        <activity
+            android:name=".PhoneCardActivity"
+            android:exported="false" />
+        <activity
+            android:name=".TopUpActivity"
+            android:exported="false" />
+        <activity
+            android:name=".DataActivity"
+            android:exported="false" />
+        <activity android:name=".CardManagementActivity"
+            android:exported="false"/>
 
     </application>
 

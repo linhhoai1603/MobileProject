@@ -3,7 +3,6 @@ package com.mobile.fe_bankproject;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -15,8 +14,8 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.mobile.fe_bankproject.dto.FundTransferConfirmRequest;
-import com.mobile.fe_bankproject.network.ApiClient;
 import com.mobile.fe_bankproject.network.ApiService;
+import com.mobile.fe_bankproject.network.RetrofitClient;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -66,7 +65,7 @@ public class fill_OTP extends AppCompatActivity {
             Toast.makeText(this, "Không nhận được dữ liệu giao dịch.", Toast.LENGTH_LONG).show();
         }
 
-        apiService = ApiClient.getApiService();
+        apiService = RetrofitClient.getInstance().getApiService();
 
         if (btnContinue != null) {
             btnContinue.setOnClickListener(v -> {

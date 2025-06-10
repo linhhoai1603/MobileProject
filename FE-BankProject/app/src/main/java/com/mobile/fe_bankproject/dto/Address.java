@@ -2,9 +2,6 @@ package com.mobile.fe_bankproject.dto;
 
 import java.io.Serializable;
 
-import lombok.Data;
-
-@Data
 public class Address implements Serializable {
     private String vilage;
     private String commune;

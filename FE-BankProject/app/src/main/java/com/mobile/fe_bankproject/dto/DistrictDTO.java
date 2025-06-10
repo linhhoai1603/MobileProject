@@ -1,9 +1,6 @@
 package com.mobile.fe_bankproject.dto;
 
-import lombok.Data;
-
 import java.io.Serializable;
-import java.util.List;
 
 public class DistrictDTO implements Serializable {
     private int code;

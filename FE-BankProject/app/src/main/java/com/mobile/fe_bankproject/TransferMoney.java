@@ -1,19 +1,12 @@
 package com.mobile.fe_bankproject;
 
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.content.Intent;
-import android.widget.LinearLayout;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import android.widget.ImageButton;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
+
 import android.widget.TextView;
 import android.widget.Toast;
 import android.util.Log;
@@ -28,13 +21,13 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import com.mobile.fe_bankproject.network.ApiService;
-import com.mobile.fe_bankproject.network.ApiClient;
 import com.mobile.fe_bankproject.dto.AccountLookupResponse;
 import java.io.IOException;
 import android.text.TextUtils;
 
 import com.mobile.fe_bankproject.dto.FundTransferRequest;
 import com.mobile.fe_bankproject.dto.FundTransferPreview;
+import com.mobile.fe_bankproject.network.RetrofitClient;
 
 public class TransferMoney extends AppCompatActivity {
 
@@ -135,7 +128,7 @@ public class TransferMoney extends AppCompatActivity {
         // Clear previous lookup result
         edtAccountName.setText("Đang tra cứu..."); // Optional: show loading state
 
-        ApiService apiService = ApiClient.getClient().create(ApiService.class); // Lấy instance ApiService
+        ApiService apiService = RetrofitClient.getInstance().getApiService(); // Lấy instance ApiService
         Call<AccountLookupResponse> call = apiService.lookupAccountName(accountNumber);
 
         call.enqueue(new Callback<AccountLookupResponse>() {
@@ -236,7 +229,7 @@ public class TransferMoney extends AppCompatActivity {
         FundTransferRequest request = new FundTransferRequest(fromAccountNumber, toAccountNumber, amount, description);
 
         // 4. Gọi API sử dụng Retrofit
-        ApiService apiService = ApiClient.getClient().create(ApiService.class);
+        ApiService apiService = RetrofitClient.getInstance().getApiService();
         Call<FundTransferPreview> call = apiService.transferPreview(request);
 
         // Thực hiện gọi bất đồng bộ
