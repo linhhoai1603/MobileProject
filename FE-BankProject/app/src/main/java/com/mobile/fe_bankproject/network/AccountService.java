@@ -69,4 +69,7 @@ public interface AccountService {
 
     @GET("account/balance/{accountNumber}")
     Call<AccountResponse> updateBalance(@Path("accountNumber") String accountNumber);
+
+    @GET("account/{accountNumber}")
+    Call<AccountResponse> getAccountInfo(@Path("accountNumber") String accountNumber);
 }

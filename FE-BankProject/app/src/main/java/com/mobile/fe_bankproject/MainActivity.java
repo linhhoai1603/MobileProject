@@ -63,8 +63,8 @@ public class MainActivity extends AppCompatActivity implements MenuFragment.Menu
     private static final int PERMISSION_REQUEST_CODE = 100;
     private static final int PICK_IMAGE_REQUEST = 1;
     private static final int PICK_BACKGROUND_REQUEST = 2;
-    private static final String AVATAR_FILE_NAME = "avatar.jpg";
-    private static final String BACKGROUND_FILE_NAME = "background.jpg";
+    private static final String AVATAR_FILE_NAME = "avatar.png";
+    private static final String BACKGROUND_FILE_NAME = "background.png";
     private static final int MAX_IMAGE_SIZE = 5 * 1024 * 1024; // 5MB in bytes
     private static final int COMPRESSION_QUALITY = 80; // Compression quality (0-100)
 
@@ -139,6 +139,62 @@ public class MainActivity extends AppCompatActivity implements MenuFragment.Menu
                     // Create an Intent to start TopUpActivity
                     Intent intent = new Intent(MainActivity.this, TopUpActivity.class);
                     // Pass the accountResponse object to the next activity
+                    intent.putExtra("account_response", accountResponse);
+                    startActivity(intent);
+                }
+            });
+        }
+
+//        // Find the LinearLayout for "Vay tiền" and set click listener
+//        LinearLayout layoutLoan = findViewById(R.id.layout_loan);
+//        if (layoutLoan != null) {
+//            layoutLoan.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View v) {
+//                    // Create an Intent to start LoanActivity
+//                    Intent intent = new Intent(MainActivity.this, LoanActivity.class);
+//                    intent.putExtra("account_response", accountResponse);
+//                    startActivity(intent);
+//                }
+//            });
+//        }
+
+//        // Find the LinearLayout for "Quét QR" and set click listener
+//        LinearLayout layoutScanQR = findViewById(R.id.layout_scan_qr);
+//        if (layoutScanQR != null) {
+//            layoutScanQR.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View v) {
+//                    // Create an Intent to start ScanQRActivity
+//                    Intent intent = new Intent(MainActivity.this, ScanQRActivity.class);
+//                    intent.putExtra("account_response", accountResponse);
+//                    startActivity(intent);
+//                }
+//            });
+//        }
+
+//        // Find the LinearLayout for "Thanh toán" and set click listener
+//        LinearLayout layoutPayment = findViewById(R.id.layout_payment);
+//        if (layoutPayment != null) {
+//            layoutPayment.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View v) {
+//                    // Create an Intent to start PaymentActivity
+//                    Intent intent = new Intent(MainActivity.this, PaymentActivity.class);
+//                    intent.putExtra("account_response", accountResponse);
+//                    startActivity(intent);
+//                }
+//            });
+//        }
+
+        // Find the LinearLayout for "Dịch vụ thẻ" and set click listener
+        LinearLayout layoutCardService = findViewById(R.id.layout_card_service);
+        if (layoutCardService != null) {
+            layoutCardService.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    // Create an Intent to start CardServiceActivity
+                    Intent intent = new Intent(MainActivity.this, CardManagementActivity.class);
                     intent.putExtra("account_response", accountResponse);
                     startActivity(intent);
                 }
@@ -308,13 +364,17 @@ public class MainActivity extends AppCompatActivity implements MenuFragment.Menu
     @Override
     public void onSelectAvatarRequested() {
         // Open gallery to select image
-        pickImage(true);
+        Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        startActivityForResult(intent, PICK_IMAGE_REQUEST);
+        hideMenu(); // Close menu after selecting option
     }
 
     @Override
     public void onSelectBackgroundRequested() {
         // Open gallery to select background image
-        pickImage(false);
+        Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        startActivityForResult(intent, PICK_BACKGROUND_REQUEST);
+        hideMenu(); // Close menu after selecting option
     }
 
     private void saveImageToInternalStorage(Uri uri, String fileName) throws Exception {
@@ -499,10 +559,17 @@ public class MainActivity extends AppCompatActivity implements MenuFragment.Menu
 
         if (resultCode == Activity.RESULT_OK && data != null && data.getData() != null) {
             Uri selectedImageUri = data.getData();
-            if (requestCode == PICK_IMAGE_REQUEST) {
-                uploadImage(selectedImageUri, true);
-            } else if (requestCode == PICK_BACKGROUND_REQUEST) {
-                uploadImage(selectedImageUri, false);
+            try {
+                if (requestCode == PICK_IMAGE_REQUEST) {
+                    saveImageToInternalStorage(selectedImageUri, AVATAR_FILE_NAME);
+                    loadImageFromInternalStorage();
+                } else if (requestCode == PICK_BACKGROUND_REQUEST) {
+                    saveImageToInternalStorage(selectedImageUri, BACKGROUND_FILE_NAME);
+                    loadBackgroundFromInternalStorage();
+                }
+            } catch (Exception e) {
+                Log.e(TAG, "Error saving or loading image", e);
+                Toast.makeText(this, "Lỗi khi lưu hoặc tải ảnh", Toast.LENGTH_SHORT).show();
             }
         }
     }
@@ -567,22 +634,6 @@ public class MainActivity extends AppCompatActivity implements MenuFragment.Menu
                 Toast.makeText(this, "Cần quyền truy cập để chọn ảnh", Toast.LENGTH_SHORT).show();
             }
         }
-    }
-
-    private void pickImage(boolean isAvatar) {
-        checkAndRequestPermissions();
-        Intent intent = new Intent(Intent.ACTION_PICK);
-        intent.setType("image/*");
-        startActivityForResult(intent, isAvatar ? PICK_IMAGE_REQUEST : PICK_BACKGROUND_REQUEST);
-    }
-
-    // Update your existing methods to use pickImage
-    private void changeAvatar() {
-        pickImage(true);
-    }
-
-    private void changeBackground() {
-        pickImage(false);
     }
 
     @Override

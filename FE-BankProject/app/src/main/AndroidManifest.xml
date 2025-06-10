@@ -68,7 +68,7 @@
             android:name=".ChangePasswordActivity"
             android:exported="false" />
         <activity
-            android:name=".TopUpPhoneActivity"
+            android:name=".TopUpActivity"
             android:exported="false" />
         <activity
             android:name=".ChangePinActivity"
@@ -99,6 +99,8 @@
         <activity
             android:name=".DataActivity"
             android:exported="false" />
+        <activity android:name=".CardManagementActivity"
+            android:exported="false"/>
 
     </application>
 

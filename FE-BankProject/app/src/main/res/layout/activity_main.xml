@@ -238,17 +238,107 @@
                         android:padding="8dp"
                         android:background="?attr/selectableItemBackground">
 
-                        <ImageView
-                            android:layout_width="48dp"
-                            android:layout_height="48dp"
-                            android:src="@drawable/ic_transfer"
-                            android:tint="@color/primary"/>
+                        <TextView
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:text="&#xf1d8;"
+                            android:textSize="24sp"
+                            android:textColor="#673AB7"
+                            android:gravity="center"
+                            android:fontFamily="@font/fontawesome"/>
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Chuyển tiền"
-                            android:textColor="@color/black"
+                            android:textColor="#000000"
+                            android:textSize="14sp"
+                            android:layout_marginTop="4dp"/>
+                    </LinearLayout>
+
+                    <!-- Vay tiền -->
+                    <LinearLayout
+                        android:id="@+id/layout_loan"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_columnWeight="1"
+                        android:orientation="vertical"
+                        android:gravity="center"
+                        android:padding="8dp"
+                        android:background="?attr/selectableItemBackground">
+
+                        <TextView
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:text="&#xf1e0;"
+                            android:textSize="24sp"
+                            android:textColor="#673AB7"
+                            android:gravity="center"
+                            android:fontFamily="@font/fontawesome"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Vay tiền"
+                            android:textColor="#000000"
+                            android:textSize="14sp"
+                            android:layout_marginTop="4dp"/>
+                    </LinearLayout>
+
+                    <!-- Quét QR -->
+                    <LinearLayout
+                        android:id="@+id/layout_scan_qr"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_columnWeight="1"
+                        android:orientation="vertical"
+                        android:gravity="center"
+                        android:padding="8dp"
+                        android:background="?attr/selectableItemBackground">
+
+                        <TextView
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:text="&#xf030;"
+                            android:textSize="24sp"
+                            android:textColor="#673AB7"
+                            android:gravity="center"
+                            android:fontFamily="@font/fontawesome"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Quét QR"
+                            android:textColor="#000000"
+                            android:textSize="14sp"
+                            android:layout_marginTop="4dp"/>
+                    </LinearLayout>
+
+                    <!-- Thanh toán -->
+                    <LinearLayout
+                        android:id="@+id/layout_payment"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_columnWeight="1"
+                        android:orientation="vertical"
+                        android:gravity="center"
+                        android:padding="8dp"
+                        android:background="?attr/selectableItemBackground">
+
+                        <TextView
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:text="&#xf093;"
+                            android:textSize="24sp"
+                            android:textColor="#673AB7"
+                            android:gravity="center"
+                            android:fontFamily="@font/fontawesome"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Thanh toán"
+                            android:textColor="#000000"
                             android:textSize="14sp"
                             android:layout_marginTop="4dp"/>
                     </LinearLayout>
@@ -264,17 +354,20 @@
                         android:padding="8dp"
                         android:background="?attr/selectableItemBackground">
 
-                        <ImageView
-                            android:layout_width="48dp"
-                            android:layout_height="48dp"
-                            android:src="@drawable/ic_phone"
-                            android:tint="@color/primary"/>
+                        <TextView
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:text="&#xf095;"
+                            android:textSize="24sp"
+                            android:textColor="#673AB7"
+                            android:gravity="center"
+                            android:fontFamily="@font/fontawesome"/>
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Nạp điện thoại"
-                            android:textColor="@color/black"
+                            android:textColor="#000000"
                             android:textSize="14sp"
                             android:layout_marginTop="4dp"/>
                     </LinearLayout>
@@ -290,17 +383,20 @@
                         android:padding="8dp"
                         android:background="?attr/selectableItemBackground">
 
-                        <ImageView
-                            android:layout_width="48dp"
-                            android:layout_height="48dp"
-                            android:src="@drawable/ic_card"
-                            android:tint="@color/primary"/>
+                        <TextView
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:text="&#xf06e;"
+                            android:textSize="24sp"
+                            android:textColor="#673AB7"
+                            android:gravity="center"
+                            android:fontFamily="@font/fontawesome"/>
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Dịch vụ thẻ"
-                            android:textColor="@color/black"
+                            android:textColor="#000000"
                             android:textSize="14sp"
                             android:layout_marginTop="4dp"/>
                     </LinearLayout>
