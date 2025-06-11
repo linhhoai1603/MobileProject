@@ -146,18 +146,18 @@ public class MainActivity extends AppCompatActivity implements MenuFragment.Menu
         }
 
 //        // Find the LinearLayout for "Vay tiền" and set click listener
-//        LinearLayout layoutLoan = findViewById(R.id.layout_loan);
-//        if (layoutLoan != null) {
-//            layoutLoan.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View v) {
-//                    // Create an Intent to start LoanActivity
-//                    Intent intent = new Intent(MainActivity.this, LoanActivity.class);
-//                    intent.putExtra("account_response", accountResponse);
-//                    startActivity(intent);
-//                }
-//            });
-//        }
+        LinearLayout layoutLoan = findViewById(R.id.layout_loan);
+        if (layoutLoan != null) {
+           layoutLoan.setOnClickListener(new View.OnClickListener() {
+               @Override
+               public void onClick(View v) {
+                   // Create an Intent to start LoanActivity
+                   Intent intent = new Intent(MainActivity.this, LoanActivity.class);
+                   intent.putExtra("account_response", accountResponse);
+                   startActivity(intent);
+               }
+           });
+        }
 
 //        // Find the LinearLayout for "Quét QR" and set click listener
 //        LinearLayout layoutScanQR = findViewById(R.id.layout_scan_qr);

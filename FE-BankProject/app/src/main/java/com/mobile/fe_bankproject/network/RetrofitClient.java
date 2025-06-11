@@ -9,8 +9,9 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 public class RetrofitClient {
-    private static final String API_URL = "http://192.168.1.6:8080/api/"; // main
+//    private static final String API_URL = "http://192.168.1.6:8080/api/"; // main
 //    private static final String API_URL = "http://10.0.146.235:8080/api/"; // Hoang IPv4 Address
+    private static final String API_URL = "http://10.0.2.2:8080/api/";
     private static RetrofitClient instance;
     private final Retrofit retrofit;
 
@@ -64,5 +65,8 @@ public class RetrofitClient {
     }
     public CardService getCardService(){
         return retrofit.create(CardService.class);
+    }
+    public LoanService getLoanService() {
+        return retrofit.create(LoanService.class);
     }
 } 
