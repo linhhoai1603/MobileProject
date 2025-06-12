@@ -1,5 +1,6 @@
 package com.mobile.fe_bankproject;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.view.View;
 import android.content.Intent;
@@ -20,6 +21,8 @@ import android.text.Editable;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+
+import com.mobile.fe_bankproject.dto.UserResponse;
 import com.mobile.fe_bankproject.network.ApiService;
 import com.mobile.fe_bankproject.dto.AccountLookupResponse;
 import java.io.IOException;
@@ -43,6 +46,7 @@ public class TransferMoney extends AppCompatActivity {
     private TextInputEditText edtTransferContent;
     private Button btnContinue;
 
+    @SuppressLint("SetTextI18n")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -63,9 +67,19 @@ public class TransferMoney extends AppCompatActivity {
         // Get AccountResponse from Intent extras
         if (getIntent().getExtras() != null) {
             accountResponse = (AccountResponse) getIntent().getExtras().getSerializable("account_response");
+            UserResponse userResponse = (UserResponse) getIntent().getExtras().getSerializable("user_response");
             if (accountResponse != null) {
                 // Update TextViews with account details
-                String accountNumberAndName = accountResponse.getAccountNumber() + " - " + accountResponse.getUser().getFullName();
+                String accountNumberAndName;
+                if (accountResponse.getUserResponse() != null) {
+                    accountNumberAndName = accountResponse.getUserResponse().getFullName() + " - Chuyển khoản";
+                    // Set default transfer content
+                    edtTransferContent.setText(accountResponse.getUserResponse().getFullName() + " chuyen khoan");
+                } else {
+                    accountNumberAndName = accountResponse.getAccountNumber() + " - Chuyển khoản";
+                    // Set default transfer content with account number
+                    edtTransferContent.setText(accountResponse.getAccountNumber() + " chuyen khoan");
+                }
                 tvAccountNumber.setText(accountNumberAndName);
 
                 // Format and set balance
@@ -75,14 +89,12 @@ public class TransferMoney extends AppCompatActivity {
             } else {
                 Log.e(TAG, "AccountResponse is null in Intent extras.");
                 Toast.makeText(this, "Không thể tải thông tin tài khoản.", Toast.LENGTH_LONG).show();
-                // Optionally finish the activity if essential data is missing
-                // finish();
+                finish();
             }
         } else {
             Log.e(TAG, "No extras in Intent for TransferMoney.");
             Toast.makeText(this, "Không có dữ liệu tài khoản được truyền.", Toast.LENGTH_LONG).show();
-            // Optionally finish the activity if essential data is missing
-            // finish();
+            finish();
         }
 
         // Add TextWatcher to edtAccountNumber

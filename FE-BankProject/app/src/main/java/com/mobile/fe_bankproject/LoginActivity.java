@@ -135,8 +135,8 @@ public class LoginActivity extends AppCompatActivity {
                         editor.putString("accountName", accountResponse.getAccountName());
                         editor.putString("phone", accountResponse.getPhone());
                         editor.putString("balance", String.valueOf(accountResponse.getBalance()));
-                        editor.putString("fullName", accountResponse.getUser().getFullName());
-                        editor.putString("email", accountResponse.getUser().getEmail());
+                        editor.putString("fullName", accountResponse.getUserResponse().getFullName());
+                        editor.putString("email", accountResponse.getUserResponse().getEmail());
                         editor.apply();
 
                         // Log the AccountResponse before passing it

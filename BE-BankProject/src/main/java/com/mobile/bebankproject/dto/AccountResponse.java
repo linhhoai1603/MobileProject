@@ -11,7 +11,7 @@ public class AccountResponse {
     private String accountName;
     private double balance;
     private Account.Status accountStatus;
-    private UserResponse user;
+    private UserResponse userResponse;
 
     @Data
     public static class UserResponse {
@@ -40,7 +40,7 @@ public class AccountResponse {
             userResponse.setGender(account.getUser().getGender().toString());
             userResponse.setUrlAvatar(account.getUser().getUrlAvatar());
             userResponse.setUrlBackground(account.getUser().getUrlBackground());
-            response.setUser(userResponse);
+            response.setUserResponse(userResponse);
         }
         return response;
     }
