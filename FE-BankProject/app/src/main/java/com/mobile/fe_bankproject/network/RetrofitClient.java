@@ -12,7 +12,7 @@ public class RetrofitClient {
 //    private static final String API_URL = "http://192.168.1.5:8080/api/"; // Hoài
 //    private static final String API_URL = "http://10.0.146.235:8080/api/"; // Hoang IPv4 Address
 //    private static final String API_URL = "http://10.0.2.2:8080/api/";
-private static final String API_URL = "https://be-mobile-production-1f49.up.railway.app/api/";  // railway
+private static final String API_URL = "https://bemobile-production-3a11.up.railway.app/api/";  // railway
     private static RetrofitClient instance;
     private final Retrofit retrofit;
 
