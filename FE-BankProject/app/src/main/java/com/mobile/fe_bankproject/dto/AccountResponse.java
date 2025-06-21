@@ -3,71 +3,68 @@ package com.mobile.fe_bankproject.dto;
 import java.io.Serializable;
 
 public class AccountResponse implements Serializable {
+    private static final long serialVersionUID = 1L;
     private int id;
     private String phone;
     private String accountNumber;
     private String accountName;
     private double balance;
     private String accountStatus;
-    private UserResponse user;
+    private UserResponse userResponse;
 
+    public int getId() {
+        return id;
+    }
 
-    public static class UserResponse implements Serializable {
-        private int id;
-        private String fullName;
-        private String email;
-        private String gender;
+    public void setId(int id) {
+        this.id = id;
+    }
 
-        public int getId() {
-            return id;
-        }
+    public String getPhone() {
+        return phone;
+    }
 
-        public void setId(int id) {
-            this.id = id;
-        }
-
-        public String getFullName() {
-            return fullName;
-        }
-
-        public void setFullName(String fullName) {
-            this.fullName = fullName;
-        }
-
-        public String getEmail() {
-            return email;
-        }
-
-        public void setEmail(String email) {
-            this.email = email;
-        }
-
-        public String getGender() {
-            return gender;
-        }
-
-        public void setGender(String gender) {
-            this.gender = gender;
-        }
+    public void setPhone(String phone) {
+        this.phone = phone;
     }
 
     public String getAccountNumber() {
         return accountNumber;
     }
 
+    public void setAccountNumber(String accountNumber) {
+        this.accountNumber = accountNumber;
+    }
+
     public String getAccountName() {
         return accountName;
+    }
+
+    public void setAccountName(String accountName) {
+        this.accountName = accountName;
     }
 
     public double getBalance() {
         return balance;
     }
 
-    public UserResponse getUser() {
-        return user;
+    public void setBalance(double balance) {
+        this.balance = balance;
     }
 
-    public String getPhone() {
-        return phone;
+    public String getAccountStatus() {
+        return accountStatus;
+    }
+
+    public void setAccountStatus(String accountStatus) {
+        this.accountStatus = accountStatus;
+    }
+
+    public UserResponse getUserResponse() {
+        return userResponse;
+    }
+
+    public void setUserResponse(UserResponse userResponse) {
+        this.userResponse = userResponse;
     }
 }

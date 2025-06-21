@@ -19,4 +19,9 @@ public class AccountLogin {
     public void setPassword(String password) {
         this.password = password;
     }
+
+    public AccountLogin(String phone, String password) {
+        this.phone = phone;
+        this.password = password;
+    }
 }

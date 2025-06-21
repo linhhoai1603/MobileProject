@@ -13,6 +13,8 @@ import android.content.Intent;
 import android.widget.Toast;
 import android.widget.Button;
 import com.mobile.fe_bankproject.network.RetrofitClient;
+import com.mobile.fe_bankproject.network.AccountService;
+import com.mobile.fe_bankproject.dto.ImageUploadResponse;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -20,6 +22,10 @@ import java.util.HashMap;
 import java.util.Map;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
+import java.io.File;
 
 public class MenuFragment extends Fragment {
 
@@ -181,5 +187,41 @@ public class MenuFragment extends Fragment {
     public void onDetach() {
         super.onDetach();
         menuListener = null;
+    }
+
+    public void uploadAvatar(File imageFile, Callback<ImageUploadResponse> callback) {
+        if (getActivity() instanceof MainActivity) {
+            MainActivity mainActivity = (MainActivity) getActivity();
+            String accountNumber = mainActivity.getAccountNumber();
+            
+            if (accountNumber != null) {
+                // Create request body for file
+                RequestBody requestFile = RequestBody.create(MediaType.parse("image/*"), imageFile);
+                MultipartBody.Part body = MultipartBody.Part.createFormData("file", imageFile.getName(), requestFile);
+
+                // Get service and make API call
+                AccountService service = RetrofitClient.getInstance().getAccountService();
+                Call<ImageUploadResponse> call = service.uploadAvatar(accountNumber, body);
+                call.enqueue(callback);
+            }
+        }
+    }
+
+    public void uploadBackground(File imageFile, Callback<ImageUploadResponse> callback) {
+        if (getActivity() instanceof MainActivity) {
+            MainActivity mainActivity = (MainActivity) getActivity();
+            String accountNumber = mainActivity.getAccountNumber();
+            
+            if (accountNumber != null) {
+                // Create request body for file
+                RequestBody requestFile = RequestBody.create(MediaType.parse("image/*"), imageFile);
+                MultipartBody.Part body = MultipartBody.Part.createFormData("file", imageFile.getName(), requestFile);
+
+                // Get service and make API call
+                AccountService service = RetrofitClient.getInstance().getAccountService();
+                Call<ImageUploadResponse> call = service.uploadBackground(accountNumber, body);
+                call.enqueue(callback);
+            }
+        }
     }
 } 

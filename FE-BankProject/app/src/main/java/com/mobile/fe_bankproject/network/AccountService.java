@@ -44,27 +44,27 @@ public interface AccountService {
     @PUT("account/update-profile")
     Call<Void> updateProfile(@Body UpdateProfileRequest request);
 
-    @POST("api/cards/change-pin")
+    @POST("cards/change-pin")
     Call<Void> changePin(@Body Map<String, String> request);
 
-    @POST("api/cards/forgot-pin/send-otp")
+    @POST("cards/forgot-pin/send-otp")
     Call<Void> sendOtpForPin(@Body Map<String, String> request);
 
-    @POST("api/cards/forgot-pin/verify-otp")
+    @POST("cards/forgot-pin/verify-otp")
     Call<Void> verifyOtpForPin(@Body Map<String, String> request);
 
-    @POST("api/cards/forgot-pin/reset-pin")
+    @POST("cards/forgot-pin/reset-pin")
     Call<Void> resetPin(@Body Map<String, String> request);
 
     @Multipart
-    @POST("api/avatar/{accountNumber}")
+    @POST("account/avatar/{accountNumber}")
     Call<ImageUploadResponse> uploadAvatar(
             @Path("accountNumber") String accountNumber,
             @Part MultipartBody.Part body
     );
 
     @Multipart
-    @POST("api/background/{accountNumber}")
+    @POST("account/background/{accountNumber}")
     Call<ImageUploadResponse> uploadBackground(@Path("accountNumber") String accountNumber,@Part MultipartBody.Part body);
 
     @GET("account/balance/{accountNumber}")

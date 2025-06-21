@@ -124,6 +124,7 @@ public class MainActivity extends AppCompatActivity implements MenuFragment.Menu
                     // Create an Intent to start TransferMoneyActivity
                     Intent intent = new Intent(MainActivity.this, TransferMoney.class);
                     // Pass the accountResponse object to the next activity
+
                     intent.putExtra("account_response", accountResponse);
                     startActivity(intent);
                 }
@@ -173,19 +174,30 @@ public class MainActivity extends AppCompatActivity implements MenuFragment.Menu
 //            });
 //        }
 
-//        // Find the LinearLayout for "Thanh toán" and set click listener
-//        LinearLayout layoutPayment = findViewById(R.id.layout_payment);
-//        if (layoutPayment != null) {
-//            layoutPayment.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View v) {
-//                    // Create an Intent to start PaymentActivity
-//                    Intent intent = new Intent(MainActivity.this, PaymentActivity.class);
-//                    intent.putExtra("account_response", accountResponse);
-//                    startActivity(intent);
-//                }
-//            });
-//        }
+        // Find the LinearLayout for "Thanh toán" and set click listener
+        LinearLayout layoutPayment = findViewById(R.id.layout_payment);
+        if (layoutPayment != null) {
+            layoutPayment.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    // Get userId from SharedPreferences
+                    SharedPreferences sharedPreferences = getSharedPreferences("UserInfo", MODE_PRIVATE);
+                    int userId = sharedPreferences.getInt("userId", -1);
+                    Log.d(TAG, "Retrieved userId from SharedPreferences: " + userId);
+
+                    if (userId == -1) {
+                        Log.e(TAG, "Could not get userId from SharedPreferences");
+                        Toast.makeText(MainActivity.this, "Lỗi: Không thể lấy thông tin người dùng", Toast.LENGTH_LONG).show();
+                        return;
+                    }
+
+                    // Create an Intent to start PaymentActivity
+                    Intent intent = new Intent(MainActivity.this, PaymentActivity.class);
+                    intent.putExtra("userId", userId);
+                    startActivity(intent);
+                }
+            });
+        }
 
         // Find the LinearLayout for "Dịch vụ thẻ" and set click listener
         LinearLayout layoutCardService = findViewById(R.id.layout_card_service);
@@ -208,19 +220,33 @@ public class MainActivity extends AppCompatActivity implements MenuFragment.Menu
             Log.d(TAG, "AccountResponse received: " + (accountResponse != null ? "not null" : "null"));
 
             if (accountResponse != null) {
-                Log.d(TAG, "User full name: " + accountResponse.getUser().getFullName());
-                tvUserName.setText(accountResponse.getUser().getFullName());
+                Log.d(TAG, "AccountResponse details:");
+                Log.d(TAG, "- AccountNumber: " + accountResponse.getAccountNumber());
+                Log.d(TAG, "- AccountName: " + accountResponse.getAccountName());
+                Log.d(TAG, "- Balance: " + accountResponse.getBalance());
+                Log.d(TAG, "- UserResponse: " + (accountResponse.getUserResponse() != null ? "not null" : "null"));
+                
+                if (accountResponse.getUserResponse() != null) {
+                    Log.d(TAG, "UserResponse details:");
+                    Log.d(TAG, "- ID: " + accountResponse.getUserResponse().getId());
+                    Log.d(TAG, "- FullName: " + accountResponse.getUserResponse().getFullName());
+                    Log.d(TAG, "- Email: " + accountResponse.getUserResponse().getEmail());
+                    tvUserName.setText(accountResponse.getUserResponse().getFullName());
+                } else {
+                    Log.e(TAG, "UserResponse is null in AccountResponse!");
+                    Toast.makeText(this, "Lỗi: Không nhận được thông tin người dùng", Toast.LENGTH_LONG).show();
+                    finish();
+                    return;
+                }
             } else {
                 Log.e(TAG, "AccountResponse is null!");
-                Toast.makeText(this, "Lỗi: Không nhận được thông tin người dùng", Toast.LENGTH_LONG).show();
-                // Navigate back to login if no user data
+                Toast.makeText(this, "Lỗi: Không nhận được thông tin tài khoản", Toast.LENGTH_LONG).show();
                 finish();
                 return;
             }
         } else {
             Log.e(TAG, "No extras in intent!");
             Toast.makeText(this, "Lỗi: Không nhận được thông tin người dùng", Toast.LENGTH_LONG).show();
-            // Navigate back to login if no extras
             finish();
             return;
         }
@@ -278,51 +304,45 @@ public class MainActivity extends AppCompatActivity implements MenuFragment.Menu
     }
 
     private void loadImageFromInternalStorage() {
-        try {
-            File file = new File(getFilesDir(), AVATAR_FILE_NAME);
-            if (file.exists()) {
-                Glide.with(this)
-                    .load(file)
-                    .apply(new RequestOptions()
-                        .diskCacheStrategy(DiskCacheStrategy.NONE)
-                        .skipMemoryCache(true)
-                        .circleCrop())
-                    .into(ivAvatar);
-            }
-        } catch (Exception e) {
-            Log.e(TAG, "Error loading image from internal storage", e);
+        if (accountResponse != null && accountResponse.getUserResponse() != null && accountResponse.getUserResponse().getUrlAvatar() != null) {
+            String avatarUrl = accountResponse.getUserResponse().getUrlAvatar();
+            Glide.with(this)
+                .load(avatarUrl)
+                .circleCrop() // For avatar
+                .placeholder(R.drawable.default_avatar) // Placeholder while loading
+                .error(R.drawable.default_avatar) // Error image if load fails
+                .into(ivAvatar);
+        } else {
+            // Set default avatar if no URL available
+            ivAvatar.setImageResource(R.drawable.default_avatar);
         }
     }
 
     private void loadBackgroundFromInternalStorage() {
-        try {
-            File file = new File(getFilesDir(), BACKGROUND_FILE_NAME);
-            if (file.exists()) {
-                Glide.with(this)
-                        .load(file)
-                        .apply(new RequestOptions()
-                                .diskCacheStrategy(DiskCacheStrategy.NONE)
-                                .skipMemoryCache(true))
-                        .into(new CustomViewTarget<ConstraintLayout, Drawable>(headerSection) {
-                            @Override
-                            public void onResourceReady(@NonNull Drawable resource, @Nullable Transition<? super Drawable> transition) {
-                                getView().setBackground(resource);
-                            }
+        if (accountResponse != null && accountResponse.getUserResponse() != null && accountResponse.getUserResponse().getUrlBackground() != null) {
+            String backgroundUrl = accountResponse.getUserResponse().getUrlBackground();
+            // Load background image
+            Glide.with(this)
+                .load(backgroundUrl)
+                .placeholder(R.drawable.default_background)
+                .error(R.drawable.default_background)
+                .into(ivBackground);
 
-                            @Override
-                            protected void onResourceCleared(@Nullable Drawable placeholder) {
-                                getView().setBackground(placeholder);
-                            }
-
-                            @Override
-                            public void onLoadFailed(@Nullable Drawable errorDrawable) {
-                                // Handle failure (optional)
-                                getView().setBackground(errorDrawable);
-                            }
-                        });
-            }
-        } catch (Exception e) {
-            Log.e(TAG, "Error loading background from internal storage", e);
+            // Also set as background for header section
+            Glide.with(this)
+                .load(backgroundUrl)
+                .placeholder(R.drawable.default_background)
+                .error(R.drawable.default_background)
+                .into(new com.bumptech.glide.request.target.ViewTarget<View, android.graphics.drawable.Drawable>(headerSection) {
+                    @Override
+                    public void onResourceReady(android.graphics.drawable.Drawable resource, com.bumptech.glide.request.transition.Transition<? super android.graphics.drawable.Drawable> transition) {
+                        headerSection.setBackground(resource);
+                    }
+                });
+        } else {
+            // Set default background if no URL available
+            ivBackground.setImageResource(R.drawable.default_background);
+            headerSection.setBackgroundResource(R.drawable.default_background);
         }
     }
 
@@ -377,17 +397,8 @@ public class MainActivity extends AppCompatActivity implements MenuFragment.Menu
         hideMenu(); // Close menu after selecting option
     }
 
-    private void saveImageToInternalStorage(Uri uri, String fileName) throws Exception {
-        InputStream inputStream = getContentResolver().openInputStream(uri);
-        FileOutputStream fileOutputStream = openFileOutput(fileName, MODE_PRIVATE);
-        byte[] buffer = new byte[1024];
-        int bytesRead;
-        while ((bytesRead = inputStream.read(buffer)) != -1) {
-            fileOutputStream.write(buffer, 0, bytesRead);
-        }
-        fileOutputStream.close();
-        inputStream.close();
-        Log.d(TAG, "Image saved to internal storage: " + fileName);
+    private void saveImageToInternalStorage(Uri uri, String fileName) {
+        // This method is no longer needed as we're using server storage
     }
 
     private File compressImage(File imageFile) throws Exception {
@@ -542,17 +553,6 @@ public class MainActivity extends AppCompatActivity implements MenuFragment.Menu
         }
     }
 
-    private String getRealPathFromUri(Uri uri) {
-        String[] projection = {MediaStore.Images.Media.DATA};
-        CursorLoader loader = new CursorLoader(this, uri, projection, null, null, null);
-        Cursor cursor = loader.loadInBackground();
-        int columnIdx = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
-        cursor.moveToFirst();
-        String result = cursor.getString(columnIdx);
-        cursor.close();
-        return result;
-    }
-
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -560,18 +560,84 @@ public class MainActivity extends AppCompatActivity implements MenuFragment.Menu
         if (resultCode == Activity.RESULT_OK && data != null && data.getData() != null) {
             Uri selectedImageUri = data.getData();
             try {
+                // Get the file from URI
+                File imageFile = new File(getRealPathFromUri(selectedImageUri));
+                
                 if (requestCode == PICK_IMAGE_REQUEST) {
-                    saveImageToInternalStorage(selectedImageUri, AVATAR_FILE_NAME);
-                    loadImageFromInternalStorage();
+                    // Upload to server
+                    MenuFragment menuFragment = (MenuFragment) getSupportFragmentManager()
+                            .findFragmentById(R.id.menu_fragment_container);
+                    if (menuFragment != null) {
+                        menuFragment.uploadAvatar(imageFile, new Callback<ImageUploadResponse>() {
+                            @Override
+                            public void onResponse(Call<ImageUploadResponse> call, Response<ImageUploadResponse> response) {
+                                if (response.isSuccessful() && response.body() != null) {
+                                    String imageUrl = response.body().getUrl();
+                                    // Load image using Glide
+                                    Glide.with(MainActivity.this)
+                                        .load(imageUrl)
+                                        .circleCrop() // For avatar
+                                        .into(ivAvatar);
+                                }
+                            }
+
+                            @Override
+                            public void onFailure(Call<ImageUploadResponse> call, Throwable t) {
+                                Toast.makeText(MainActivity.this, "Lỗi khi tải ảnh lên server", Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                    }
                 } else if (requestCode == PICK_BACKGROUND_REQUEST) {
-                    saveImageToInternalStorage(selectedImageUri, BACKGROUND_FILE_NAME);
-                    loadBackgroundFromInternalStorage();
+                    // Upload to server
+                    MenuFragment menuFragment = (MenuFragment) getSupportFragmentManager()
+                            .findFragmentById(R.id.menu_fragment_container);
+                    if (menuFragment != null) {
+                        menuFragment.uploadBackground(imageFile, new Callback<ImageUploadResponse>() {
+                            @Override
+                            public void onResponse(Call<ImageUploadResponse> call, Response<ImageUploadResponse> response) {
+                                if (response.isSuccessful() && response.body() != null) {
+                                    String imageUrl = response.body().getUrl();
+                                    // Load image using Glide
+                                    Glide.with(MainActivity.this)
+                                        .load(imageUrl)
+                                        .into(ivBackground);
+                                    // Also set as background for header section
+                                    Glide.with(MainActivity.this)
+                                        .load(imageUrl)
+                                        .into(new com.bumptech.glide.request.target.ViewTarget<View, android.graphics.drawable.Drawable>(headerSection) {
+                                            @Override
+                                            public void onResourceReady(android.graphics.drawable.Drawable resource, com.bumptech.glide.request.transition.Transition<? super android.graphics.drawable.Drawable> transition) {
+                                                headerSection.setBackground(resource);
+                                            }
+                                        });
+                                }
+                            }
+
+                            @Override
+                            public void onFailure(Call<ImageUploadResponse> call, Throwable t) {
+                                Toast.makeText(MainActivity.this, "Lỗi khi tải ảnh lên server", Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                    }
                 }
             } catch (Exception e) {
-                Log.e(TAG, "Error saving or loading image", e);
-                Toast.makeText(this, "Lỗi khi lưu hoặc tải ảnh", Toast.LENGTH_SHORT).show();
+                Log.e(TAG, "Error processing image", e);
+                Toast.makeText(this, "Lỗi khi xử lý ảnh", Toast.LENGTH_SHORT).show();
             }
         }
+    }
+
+    private String getRealPathFromUri(Uri uri) {
+        String[] projection = {MediaStore.Images.Media.DATA};
+        Cursor cursor = getContentResolver().query(uri, projection, null, null, null);
+        if (cursor != null) {
+            int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+            cursor.moveToFirst();
+            String path = cursor.getString(column_index);
+            cursor.close();
+            return path;
+        }
+        return uri.getPath();
     }
 
     // Handle back button press

@@ -102,91 +102,92 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void login(String phone, String password) {
-        // Tạo AccountLogin object
-        AccountLogin loginRequest = new AccountLogin();
-        loginRequest.setPhone(phone);
-        loginRequest.setPassword(password);
+        AccountLogin loginRequest = new AccountLogin(phone, password);
+        RetrofitClient.getInstance().getAccountService().login(loginRequest)
+                .enqueue(new Callback<AccountResponse>() {
+                    @Override
+                    public void onResponse(Call<AccountResponse> call, Response<AccountResponse> response) {
+                        // Log response details
+                        Log.d("LoginDebug", "=== RESPONSE DATA ===");
+                        Log.d("LoginDebug", "Response code: " + response.code());
+                        Log.d("LoginDebug", "Response URL: " + call.request().url());
+                        Log.d("LoginDebug", "Response headers: " + response.headers());
 
-        // Log request data
-        String requestJson = new Gson().toJson(loginRequest);
-        Log.d("LoginDebug", "=== REQUEST DATA ===");
-        Log.d("LoginDebug", "Phone: " + phone);
-        Log.d("LoginDebug", "Password: " + password);
-        Log.d("LoginDebug", "Request JSON: " + requestJson);
+                        if (response.isSuccessful() && response.body() != null) {
+                            AccountResponse accountResponse = response.body();
+                            Log.d("LoginDebug", "Login successful. Full Response: " + new Gson().toJson(accountResponse));
+                            
+                            // Check userResponse
+                            if (accountResponse.getUserResponse() == null) {
+                                Log.e("LoginDebug", "userResponse is null in accountResponse!");
+                                Toast.makeText(LoginActivity.this, 
+                                    "Lỗi: Không nhận được thông tin người dùng", Toast.LENGTH_LONG).show();
+                                return;
+                            }
 
-        // Gọi API login
-        RetrofitClient.getInstance().getAccountService().login(loginRequest).enqueue(new Callback<AccountResponse>() {
-            @Override
-            public void onResponse(Call<AccountResponse> call, Response<AccountResponse> response) {
-                // Log response details
-                Log.d("LoginDebug", "=== RESPONSE DATA ===");
-                Log.d("LoginDebug", "Response code: " + response.code());
-                Log.d("LoginDebug", "Response URL: " + call.request().url());
-                Log.d("LoginDebug", "Response headers: " + response.headers());
+                            Log.d("LoginDebug", "UserResponse details:");
+                            Log.d("LoginDebug", "- ID: " + accountResponse.getUserResponse().getId());
+                            Log.d("LoginDebug", "- FullName: " + accountResponse.getUserResponse().getFullName());
+                            Log.d("LoginDebug", "- Email: " + accountResponse.getUserResponse().getEmail());
 
-                if (response.isSuccessful() && response.body() != null) {
-                    AccountResponse accountResponse = response.body();
-                    Log.d("LoginDebug", "Login successful. Response: " + new Gson().toJson(accountResponse));
-                    try {
-                        // Lưu thông tin người dùng vào SharedPreferences
-                        SharedPreferences sharedPreferences = getSharedPreferences("UserInfo", MODE_PRIVATE);
-                        SharedPreferences.Editor editor = sharedPreferences.edit();
-                        editor.putString("accountNumber", accountResponse.getAccountNumber());
-                        editor.putString("accountName", accountResponse.getAccountName());
-                        editor.putString("phone", accountResponse.getPhone());
-                        editor.putString("balance", String.valueOf(accountResponse.getBalance()));
-                        editor.putString("fullName", accountResponse.getUser().getFullName());
-                        editor.putString("email", accountResponse.getUser().getEmail());
-                        editor.apply();
+                            try {
+                                // Lưu thông tin người dùng vào SharedPreferences
+                                SharedPreferences sharedPreferences = getSharedPreferences("UserInfo", MODE_PRIVATE);
+                                SharedPreferences.Editor editor = sharedPreferences.edit();
+                                editor.putString("accountNumber", accountResponse.getAccountNumber());
+                                editor.putString("accountName", accountResponse.getAccountName());
+                                editor.putString("phone", accountResponse.getPhone());
+                                editor.putString("balance", String.valueOf(accountResponse.getBalance()));
+                                editor.putString("fullName", accountResponse.getUserResponse().getFullName());
+                                editor.putString("email", accountResponse.getUserResponse().getEmail());
+                                editor.putInt("userId", accountResponse.getUserResponse().getId());
+                                editor.apply();
 
-                        // Log the AccountResponse before passing it
-                        Log.d("LoginDebug", "Passing AccountResponse to MainActivity: " + new Gson().toJson(accountResponse));
+                                Log.d("LoginDebug", "Saved userId to SharedPreferences: " + accountResponse.getUserResponse().getId());
 
-                        // Chuyển đến màn hình chính
-                        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                        intent.putExtra("account_response", accountResponse);
-                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                        startActivity(intent);
-                        finish();
-                    } catch (Exception e) {
-                        Log.e("LoginError", "Error processing response", e);
-                        Toast.makeText(LoginActivity.this, "Lỗi xử lý dữ liệu", Toast.LENGTH_SHORT).show();
-                    }
-                } else {
-                    try {
-                        String errorMessage = response.errorBody() != null ? response.errorBody().string() : "";
-                        Log.e("LoginError", "=== ERROR RESPONSE ===");
-                        Log.e("LoginError", "Error code: " + response.code());
-                        Log.e("LoginError", "Error message: " + errorMessage);
-                        Log.e("LoginError", "Request URL: " + call.request().url());
-                        Log.e("LoginError", "Request method: " + call.request().method());
-                        Log.e("LoginError", "Request body: " + requestJson);
+                                // Log the AccountResponse before passing it
+                                Log.d("LoginDebug", "AccountResponse before passing to MainActivity:");
+                                Log.d("LoginDebug", "- AccountNumber: " + accountResponse.getAccountNumber());
+                                Log.d("LoginDebug", "- AccountName: " + accountResponse.getAccountName());
+                                Log.d("LoginDebug", "- Balance: " + accountResponse.getBalance());
+                                Log.d("LoginDebug", "- UserResponse: " + (accountResponse.getUserResponse() != null ? "not null" : "null"));
+                                if (accountResponse.getUserResponse() != null) {
+                                    Log.d("LoginDebug", "  - User ID: " + accountResponse.getUserResponse().getId());
+                                    Log.d("LoginDebug", "  - User FullName: " + accountResponse.getUserResponse().getFullName());
+                                    Log.d("LoginDebug", "  - User Email: " + accountResponse.getUserResponse().getEmail());
+                                }
 
-                        // Xử lý các trường hợp lỗi cụ thể
-                        if (response.code() == 404) {
-                            Toast.makeText(LoginActivity.this, "Tài khoản không tồn tại", Toast.LENGTH_SHORT).show();
-                        } else if (response.code() == 401) {
-                            Toast.makeText(LoginActivity.this, "Mật khẩu không đúng", Toast.LENGTH_SHORT).show();
+                                // Chuyển đến màn hình chính
+                                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                                intent.putExtra("account_response", accountResponse);
+                                startActivity(intent);
+                                finish();
+                            } catch (Exception e) {
+                                Log.e("LoginDebug", "Error saving user data: " + e.getMessage());
+                                Toast.makeText(LoginActivity.this, 
+                                    "Lỗi khi lưu thông tin người dùng", Toast.LENGTH_LONG).show();
+                            }
                         } else {
-                            Toast.makeText(LoginActivity.this, "Lỗi đăng nhập: " + errorMessage, Toast.LENGTH_LONG).show();
+                            String errorMessage = "Đăng nhập thất bại";
+                            try {
+                                if (response.errorBody() != null) {
+                                    errorMessage += ": " + response.errorBody().string();
+                                }
+                            } catch (IOException e) {
+                                errorMessage += ": " + e.getMessage();
+                            }
+                            Log.e("LoginDebug", errorMessage);
+                            Toast.makeText(LoginActivity.this, errorMessage, Toast.LENGTH_LONG).show();
                         }
-                    } catch (IOException e) {
-                        Log.e("LoginError", "Error reading error body", e);
-                        Toast.makeText(LoginActivity.this, "Lỗi xử lý phản hồi", Toast.LENGTH_SHORT).show();
                     }
-                }
-            }
 
-            @Override
-            public void onFailure(Call<AccountResponse> call, Throwable t) {
-                Log.e("LoginError", "=== NETWORK ERROR ===");
-                Log.e("LoginError", "Error: " + t.getMessage());
-                Log.e("LoginError", "Request URL: " + call.request().url());
-                Log.e("LoginError", "Request method: " + call.request().method());
-                Log.e("LoginError", "Request body: " + requestJson);
-                Toast.makeText(LoginActivity.this, "Lỗi kết nối: " + t.getMessage(), Toast.LENGTH_SHORT).show();
-            }
-        });
+                    @Override
+                    public void onFailure(Call<AccountResponse> call, Throwable t) {
+                        Log.e("LoginDebug", "Network error: " + t.getMessage());
+                        Toast.makeText(LoginActivity.this, 
+                            "Lỗi kết nối: " + t.getMessage(), Toast.LENGTH_LONG).show();
+                    }
+                });
     }
 
 }

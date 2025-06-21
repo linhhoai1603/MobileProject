@@ -186,7 +186,7 @@ public class DataFragment extends Fragment implements DataPackageAdapter.OnPacka
         String selectedQuantity = quantitySpinner.getSelectedItem().toString();
         if (!selectedQuantity.equals("Tất cả")) {
             // Convert MB to bytes (1MB = 1024 * 1024 bytes)
-            int quantityMB = Integer.parseInt(selectedQuantity.replace("MB", ""));
+            int quantityMB = Integer.parseInt(selectedQuantity.replace("GB", ""));
             request.setQuantity(quantityMB);
         }
 
@@ -314,7 +314,7 @@ public class DataFragment extends Fragment implements DataPackageAdapter.OnPacka
         String message = String.format(
             "Gói: %s\n" +
             "Nhà mạng: %s\n" +
-            "Dung lượng: %dMB\n" +
+            "Dung lượng: %d 4G\n" +
             "Thời hạn: %d ngày\n" +
             "Số điện thoại: %s\n" +
             "Giá tiền: %,.0fđ",
@@ -373,7 +373,7 @@ public class DataFragment extends Fragment implements DataPackageAdapter.OnPacka
             "Mã gói cước: %s\n" +
             "Gói data: %s\n" +
             "Nhà mạng: %s\n" +
-            "Dung lượng: %dMB\n" +
+            "Dung lượng: %d GB\n" +
             "Thời hạn: %d ngày\n" +
             "Số điện thoại: %s\n" +
             "Số tiền: %,.0fđ\n" +
@@ -395,10 +395,10 @@ public class DataFragment extends Fragment implements DataPackageAdapter.OnPacka
             SharedPreferences.Editor editor = prefs.edit();
             editor.putString("accountNumber", accountResponse.getAccountNumber());
             editor.putString("balance", String.valueOf(accountResponse.getBalance()));
-            editor.putString("fullName", accountResponse.getUser().getFullName());
+            editor.putString("fullName", accountResponse.getUserResponse().getFullName());
             editor.putString("phoneNumber", accountResponse.getPhone());
-            editor.putString("email", accountResponse.getUser().getEmail());
-            editor.putString("userId", String.valueOf(accountResponse.getUser().getId()));
+            editor.putString("email", accountResponse.getUserResponse().getEmail());
+            editor.putString("userId", String.valueOf(accountResponse.getUserResponse().getId()));
             editor.apply();
 
             // Navigate back to home screen

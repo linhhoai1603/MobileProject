@@ -11,7 +11,7 @@ public class DataMobile {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     int id;
     String packageName;
-    int quantity; // mb
+    int quantity; // GB
     int validDate; // days
     double price;
     int inStock;
