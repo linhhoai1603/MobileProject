@@ -174,19 +174,30 @@ public class MainActivity extends AppCompatActivity implements MenuFragment.Menu
 //            });
 //        }
 
-//        // Find the LinearLayout for "Thanh toán" and set click listener
-//        LinearLayout layoutPayment = findViewById(R.id.layout_payment);
-//        if (layoutPayment != null) {
-//            layoutPayment.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View v) {
-//                    // Create an Intent to start PaymentActivity
-//                    Intent intent = new Intent(MainActivity.this, PaymentActivity.class);
-//                    intent.putExtra("account_response", accountResponse);
-//                    startActivity(intent);
-//                }
-//            });
-//        }
+        // Find the LinearLayout for "Thanh toán" and set click listener
+        LinearLayout layoutPayment = findViewById(R.id.layout_payment);
+        if (layoutPayment != null) {
+            layoutPayment.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    // Get userId from SharedPreferences
+                    SharedPreferences sharedPreferences = getSharedPreferences("UserInfo", MODE_PRIVATE);
+                    int userId = sharedPreferences.getInt("userId", -1);
+                    Log.d(TAG, "Retrieved userId from SharedPreferences: " + userId);
+
+                    if (userId == -1) {
+                        Log.e(TAG, "Could not get userId from SharedPreferences");
+                        Toast.makeText(MainActivity.this, "Lỗi: Không thể lấy thông tin người dùng", Toast.LENGTH_LONG).show();
+                        return;
+                    }
+
+                    // Create an Intent to start PaymentActivity
+                    Intent intent = new Intent(MainActivity.this, PaymentActivity.class);
+                    intent.putExtra("userId", userId);
+                    startActivity(intent);
+                }
+            });
+        }
 
         // Find the LinearLayout for "Dịch vụ thẻ" and set click listener
         LinearLayout layoutCardService = findViewById(R.id.layout_card_service);
@@ -209,18 +220,33 @@ public class MainActivity extends AppCompatActivity implements MenuFragment.Menu
             Log.d(TAG, "AccountResponse received: " + (accountResponse != null ? "not null" : "null"));
 
             if (accountResponse != null) {
-                tvUserName.setText(accountResponse.getUserResponse().getFullName());
+                Log.d(TAG, "AccountResponse details:");
+                Log.d(TAG, "- AccountNumber: " + accountResponse.getAccountNumber());
+                Log.d(TAG, "- AccountName: " + accountResponse.getAccountName());
+                Log.d(TAG, "- Balance: " + accountResponse.getBalance());
+                Log.d(TAG, "- UserResponse: " + (accountResponse.getUserResponse() != null ? "not null" : "null"));
+                
+                if (accountResponse.getUserResponse() != null) {
+                    Log.d(TAG, "UserResponse details:");
+                    Log.d(TAG, "- ID: " + accountResponse.getUserResponse().getId());
+                    Log.d(TAG, "- FullName: " + accountResponse.getUserResponse().getFullName());
+                    Log.d(TAG, "- Email: " + accountResponse.getUserResponse().getEmail());
+                    tvUserName.setText(accountResponse.getUserResponse().getFullName());
+                } else {
+                    Log.e(TAG, "UserResponse is null in AccountResponse!");
+                    Toast.makeText(this, "Lỗi: Không nhận được thông tin người dùng", Toast.LENGTH_LONG).show();
+                    finish();
+                    return;
+                }
             } else {
                 Log.e(TAG, "AccountResponse is null!");
-                Toast.makeText(this, "Lỗi: Không nhận được thông tin người dùng", Toast.LENGTH_LONG).show();
-                // Navigate back to login if no user data
+                Toast.makeText(this, "Lỗi: Không nhận được thông tin tài khoản", Toast.LENGTH_LONG).show();
                 finish();
                 return;
             }
         } else {
             Log.e(TAG, "No extras in intent!");
             Toast.makeText(this, "Lỗi: Không nhận được thông tin người dùng", Toast.LENGTH_LONG).show();
-            // Navigate back to login if no extras
             finish();
             return;
         }
