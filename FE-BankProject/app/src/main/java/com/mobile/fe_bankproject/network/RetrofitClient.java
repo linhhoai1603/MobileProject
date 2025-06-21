@@ -73,4 +73,7 @@ private static final String API_URL = "https://be-mobile-production-1f49.up.rail
     public BillService getBillService(){
         return retrofit.create(BillService.class);
     }
+    public TransactionService getTransactionService() {
+        return retrofit.create(TransactionService.class);
+    }
 } 
