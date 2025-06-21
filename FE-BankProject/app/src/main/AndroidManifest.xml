@@ -24,13 +24,7 @@
             android:name=".EditProfileActivity"
             android:exported="false" />
         <activity
-            android:name=".ChangeInfomationActivity"
-            android:exported="false" />
-        <activity
             android:name=".ChangeBackgroundImageActivity"
-            android:exported="false" />
-        <activity
-            android:name=".ChangeAvatarActivity"
             android:exported="false" />
         <activity
             android:name=".Demo"
@@ -90,15 +84,6 @@
         </activity>
 
         <!-- Newly added Activities -->
-        <activity
-            android:name=".PhoneCardActivity"
-            android:exported="false" />
-        <activity
-            android:name=".TopUpActivity"
-            android:exported="false" />
-        <activity
-            android:name=".DataActivity"
-            android:exported="false" />
         <activity android:name=".CardManagementActivity"
             android:exported="false"/>
         <activity android:name=".LoanActivity"
