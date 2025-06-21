@@ -4,6 +4,7 @@ import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
+import retrofit2.converter.scalars.ScalarsConverterFactory;
 import java.util.concurrent.TimeUnit;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -12,7 +13,7 @@ public class RetrofitClient {
 //    private static final String API_URL = "http://192.168.1.5:8080/api/"; // Hoài
 //    private static final String API_URL = "http://10.0.146.235:8080/api/"; // Hoang IPv4 Address
 //    private static final String API_URL = "http://10.0.2.2:8080/api/";
-private static final String API_URL = "https://bemobile-production-3a11.up.railway.app/api/";  // railway
+private static final String API_URL = "https://bemobile-production-0fa1.up.railway.app/api/";  // railway
     private static RetrofitClient instance;
     private final Retrofit retrofit;
 
@@ -37,6 +38,7 @@ private static final String API_URL = "https://bemobile-production-3a11.up.railw
         retrofit = new Retrofit.Builder()
                 .baseUrl(API_URL)
                 .client(okHttpClient)
+                .addConverterFactory(ScalarsConverterFactory.create())
                 .addConverterFactory(GsonConverterFactory.create(gson))
                 .build();
     }
