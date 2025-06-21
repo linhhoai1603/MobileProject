@@ -160,19 +160,17 @@ public class MainActivity extends AppCompatActivity implements MenuFragment.Menu
            });
         }
 
-//        // Find the LinearLayout for "Quét QR" and set click listener
-//        LinearLayout layoutScanQR = findViewById(R.id.layout_scan_qr);
-//        if (layoutScanQR != null) {
-//            layoutScanQR.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View v) {
-//                    // Create an Intent to start ScanQRActivity
-//                    Intent intent = new Intent(MainActivity.this, ScanQRActivity.class);
-//                    intent.putExtra("account_response", accountResponse);
-//                    startActivity(intent);
-//                }
-//            });
-//        }
+        LinearLayout layoutTransactionHistory = findViewById(R.id.layout_scan_qr);
+        if (layoutTransactionHistory != null) {
+            layoutTransactionHistory.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(MainActivity.this, TransactionHistoryActivity.class);
+                    intent.putExtra("account_number", accountResponse.getAccountNumber());
+                    startActivity(intent);
+                }
+            });
+        }
 
         // Find the LinearLayout for "Thanh toán" and set click listener
         LinearLayout layoutPayment = findViewById(R.id.layout_payment);
